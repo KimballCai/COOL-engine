@@ -1,20 +1,18 @@
 package com.nus.cool.core.util.parser;
 
-import java.io.IOException;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nus.cool.core.schema.FieldSchema;
 import com.nus.cool.core.schema.TableSchema;
+import java.io.IOException;
 
 /**
  * JsonStringTupleParser requires the schema as input, because we do not make any assumption on the
  * field order.
  */
 public class JsonStringTupleParser implements TupleParser {
-  private TableSchema schema;
-
   private static final String[] EMPTY_OUTPUT = {};
+  private TableSchema schema;
 
   public JsonStringTupleParser(TableSchema schema) {
     this.schema = schema;

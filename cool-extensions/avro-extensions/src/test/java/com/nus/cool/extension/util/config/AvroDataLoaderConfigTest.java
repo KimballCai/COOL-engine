@@ -1,21 +1,16 @@
 package com.nus.cool.extension.util.config;
 
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import com.nus.cool.core.schema.TableSchema;
+import com.nus.cool.core.util.parser.TupleParser;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-
 import org.apache.avro.Schema;
-import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.generic.GenericData;
-
-import com.nus.cool.core.schema.TableSchema;
-import com.nus.cool.core.util.parser.TupleParser;
-
-import static java.util.Arrays.asList;
+import org.apache.avro.generic.GenericRecord;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 public class AvroDataLoaderConfigTest {
   @Test(dataProvider = "AvroSchemaParserDP")

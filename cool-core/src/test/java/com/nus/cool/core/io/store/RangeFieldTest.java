@@ -1,11 +1,5 @@
 package com.nus.cool.core.io.store;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-
 import com.nus.cool.core.io.DataOutputBuffer;
 import com.nus.cool.core.io.compression.OutputCompressor;
 import com.nus.cool.core.io.readstore.DataRangeFieldRS;
@@ -16,7 +10,11 @@ import com.nus.cool.core.io.writestore.DataRangeFieldWS;
 import com.nus.cool.core.io.writestore.MetaRangeFieldWS;
 import com.nus.cool.core.schema.FieldType;
 import com.nus.cool.core.util.converter.DayIntConverter;
-
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;

@@ -14,12 +14,6 @@ public enum FilterType {
     this.text = text;
   }
 
-  @JsonValue
-  @Override
-  public String toString() {
-    return text;
-  }
-
   /** return FilterType named by string. */
   @JsonCreator
   public static FilterType forValue(String value) {
@@ -31,5 +25,11 @@ public enum FilterType {
       default:
         throw new IllegalArgumentException();
     }
+  }
+
+  @JsonValue
+  @Override
+  public String toString() {
+    return text;
   }
 }

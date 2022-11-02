@@ -51,10 +51,8 @@ public class MetaHashFieldWS implements MetaFieldWS {
   protected final FieldType fieldType;
   protected final OutputCompressor compressor;
   protected final RabinHashFunction32 rhash = RabinHashFunction32.DEFAULT_HASH_FUNCTION;
-
-  protected Map<Integer, Integer> fingerToGid = Maps.newTreeMap();
   protected final List<String> valueList = new ArrayList<>();
-
+  protected Map<Integer, Integer> fingerToGid = Maps.newTreeMap();
   /** Global hashToTerm, keys are hashed by the indexed string. */
 
   // hash of one tuple field : Term {origin value of tuple filed, global ID. }

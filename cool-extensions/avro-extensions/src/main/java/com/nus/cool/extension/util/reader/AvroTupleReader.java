@@ -1,17 +1,13 @@
 package com.nus.cool.extension.util.reader;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-
 import com.nus.cool.core.schema.TableSchema;
 import com.nus.cool.core.util.reader.TupleReader;
-
+import java.io.File;
+import java.io.IOException;
 import org.apache.avro.Schema;
 import org.apache.avro.file.DataFileReader;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericRecord;
-import org.apache.avro.io.DatumReader;
 
 public class AvroTupleReader implements TupleReader {
 

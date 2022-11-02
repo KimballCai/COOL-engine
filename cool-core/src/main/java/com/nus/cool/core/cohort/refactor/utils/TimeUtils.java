@@ -6,6 +6,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /** Utilities to represent and process time related fields. */
 public class TimeUtils {
 
+  public static TimeUnit generateTimeUnit(String str) {
+    return TimeUnit.forValue(str);
+  }
+
   /** time units. */
   public enum TimeUnit {
     HOUR("HOUR"),
@@ -26,12 +30,6 @@ public class TimeUtils {
 
     private TimeUnit(final String text) {
       this.text = text;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-      return text;
     }
 
     /** Return time unit named by a string. */
@@ -56,9 +54,11 @@ public class TimeUtils {
           throw new IllegalArgumentException();
       }
     }
-  }
 
-  public static TimeUnit generateTimeUnit(String str) {
-    return TimeUnit.forValue(str);
+    @JsonValue
+    @Override
+    public String toString() {
+      return text;
+    }
   }
 }

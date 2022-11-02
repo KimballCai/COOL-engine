@@ -37,14 +37,13 @@ import com.nus.cool.model.CoolLoader;
 import com.nus.cool.model.CoolModel;
 import com.nus.cool.queryserver.singleton.ModelPathCfg;
 import com.nus.cool.result.ExtendedResultTuple;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
-
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 
 public class QueryServerModel {
 

@@ -3,9 +3,6 @@ package com.nus.cool.queryserver.singleton;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.nus.cool.queryserver.model.NodeInfo;
 import com.nus.cool.queryserver.model.Worker;
-import org.apache.zookeeper.*;
-import org.apache.zookeeper.data.Stat;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,14 +11,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.KeeperException;
+import org.apache.zookeeper.Watcher;
+import org.apache.zookeeper.ZooDefs;
+import org.apache.zookeeper.ZooKeeper;
+import org.apache.zookeeper.data.Stat;
 
 public class ZKConnection {
 
-  private static volatile ZKConnection instance = null;
-
   private static final int ZK_PORT = 2181;
-
+  private static volatile ZKConnection instance = null;
   private ZooKeeper zk;
+
+  private ZKConnection() throws InterruptedException, IOException {
+    this.connect();
+  }
 
   public static ZKConnection getInstance() throws InterruptedException, IOException {
     if (instance == null) {
@@ -32,10 +37,6 @@ public class ZKConnection {
       }
     }
     return instance;
-  }
-
-  private ZKConnection() throws InterruptedException, IOException {
-    this.connect();
   }
 
   public void connect() throws IOException, InterruptedException {

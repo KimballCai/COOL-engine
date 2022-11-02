@@ -1,21 +1,19 @@
 package com.nus.cool.core.cohort.refactor.filter;
 
+import com.nus.cool.core.cohort.refactor.storage.Scope;
+import com.nus.cool.core.io.readstore.MetaChunkRS;
+import com.nus.cool.core.io.readstore.MetaFieldRS;
 import java.util.Arrays;
 import java.util.BitSet;
 import java.util.HashSet;
 import java.util.List;
 
-import com.nus.cool.core.cohort.refactor.storage.Scope;
-import com.nus.cool.core.io.readstore.MetaChunkRS;
-import com.nus.cool.core.io.readstore.MetaFieldRS;
-
 /** Set filter */
 public class SetFilter implements Filter {
 
   protected final FilterType type = FilterType.Set;
-
-  protected HashSet<String> valueSet;
   protected final String fieldSchema;
+  protected HashSet<String> valueSet;
   protected HashSet<Integer> gidSet;
 
   protected SetFilter(String fieldSchema, String[] Values) {

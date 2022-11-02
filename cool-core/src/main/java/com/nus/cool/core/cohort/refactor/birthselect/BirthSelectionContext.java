@@ -16,19 +16,16 @@ import java.util.Set;
  */
 public class BirthSelectionContext {
 
-  // If user is selected, we store the birth date for this user
-  private HashMap<String, LocalDateTime> userSelected;
-
-  // UserId -> BirthContextWindow, for every unselected user, we maintain a queue.
-  // It's action tuple is ordered in time series
-  private HashMap<String, BirthContextWindow> userBirthTime;
-
   // the max size of timeWindow
   private final TimeWindow maxTimeWindow;
-
   // Required from query, min frequency for every events in timeWindow.
   // EventId (index) -> Frequency (value)
   private final int[] eventMinFrequency;
+  // If user is selected, we store the birth date for this user
+  private HashMap<String, LocalDateTime> userSelected;
+  // UserId -> BirthContextWindow, for every unselected user, we maintain a queue.
+  // It's action tuple is ordered in time series
+  private HashMap<String, BirthContextWindow> userBirthTime;
 
   /** Create a BirthSelectionContext. */
   public BirthSelectionContext(TimeWindow maxTimeWindow, int[] freq) {

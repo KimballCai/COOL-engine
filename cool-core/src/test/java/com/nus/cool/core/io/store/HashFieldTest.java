@@ -1,14 +1,5 @@
 package com.nus.cool.core.io.store;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.charset.Charset;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
 import com.nus.cool.core.io.DataOutputBuffer;
 import com.nus.cool.core.io.compression.OutputCompressor;
 import com.nus.cool.core.io.readstore.DataHashFieldRS;
@@ -17,9 +8,16 @@ import com.nus.cool.core.io.readstore.MetaHashFieldRS;
 import com.nus.cool.core.io.writestore.DataHashFieldWS;
 import com.nus.cool.core.io.writestore.MetaHashFieldWS;
 import com.nus.cool.core.schema.FieldType;
-
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.charset.Charset;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;

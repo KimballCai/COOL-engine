@@ -2,7 +2,6 @@ package com.nus.cool.core.cohort.refactor.filter;
 
 import com.nus.cool.core.cohort.refactor.storage.Scope;
 import com.nus.cool.core.io.readstore.MetaChunkRS;
-
 import java.util.BitSet;
 import java.util.List;
 

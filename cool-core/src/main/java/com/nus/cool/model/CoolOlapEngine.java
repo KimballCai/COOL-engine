@@ -19,13 +19,6 @@
 
 package com.nus.cool.model;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.BitSet;
-import java.util.HashMap;
-import java.util.List;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nus.cool.core.iceberg.aggregator.AggregatorFactory;
 import com.nus.cool.core.iceberg.query.Aggregation;
@@ -39,9 +32,71 @@ import com.nus.cool.core.io.readstore.CubeRS;
 import com.nus.cool.core.io.readstore.CubletRS;
 import com.nus.cool.core.io.readstore.MetaChunkRS;
 import com.nus.cool.core.schema.TableSchema;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.BitSet;
+import java.util.HashMap;
+import java.util.List;
 
 /** Cool OLAP encgine. */
 public class CoolOlapEngine {
+
+  public static final String jsonString =
+      "{\n"
+          + "  \"dataSource\": \"default\",\n"
+          + "  \"selection\": {\n"
+          + "    \"type\": \"filter\",\n"
+          + "    \"dimension\": \"default\",\n"
+          + "    \"values\": [ \"default\" ],\n"
+          + "    \"fields\":[]\n"
+          + "  },\n"
+          + "  \"aggregations\":[\n"
+          + "    {\"fieldName\":\"default\",\n"
+          + "      \"operators\":[\"COUNT\"]}]\n"
+          + "}";
+
+  /** Profile. */
+  public static void profiling(List<BaseResult> results) {
+
+    HashMap<String, Float> profilingCount = new HashMap<>();
+    HashMap<String, Long> profilingSum = new HashMap<>();
+
+    Float totalCount = (float) 0;
+    Float totalSum = (float) 0;
+    for (BaseResult res : results) {
+      String k = res.getKey();
+      profilingCount.put(k, (float) res.getAggregatorResult().getCount());
+      profilingSum.put(k, res.getAggregatorResult().getSum());
+      totalCount += res.getAggregatorResult().getCount();
+      ;
+      totalSum += res.getAggregatorResult().getSum();
+    }
+
+    for (String key : profilingCount.keySet()) {
+      Float value = profilingCount.get(key) / totalCount;
+      profilingCount.put(key, value);
+      value = value * 100;
+      System.out.println(
+          "Key = "
+              + key
+              + ", percentage of matched records = "
+              + value.toString().substring(0, 4)
+              + "%");
+    }
+
+    for (String key : profilingSum.keySet()) {
+      long sumValue = profilingSum.get(key);
+      float value = sumValue / totalSum;
+      value = value * 100;
+      System.out.println(
+          "Key = "
+              + key
+              + ", percentage of aggregation = "
+              + Float.toString(value).substring(0, 4)
+              + "%");
+    }
+  }
 
   /**
    * Execute iceberg query. timeRange, selection => groupBY => aggregate on each group
@@ -116,62 +171,6 @@ public class CoolOlapEngine {
     results = BaseResult.merge(results);
     return results;
   }
-
-  /** Profile. */
-  public static void profiling(List<BaseResult> results) {
-
-    HashMap<String, Float> profilingCount = new HashMap<>();
-    HashMap<String, Long> profilingSum = new HashMap<>();
-
-    Float totalCount = (float) 0;
-    Float totalSum = (float) 0;
-    for (BaseResult res : results) {
-      String k = res.getKey();
-      profilingCount.put(k, (float) res.getAggregatorResult().getCount());
-      profilingSum.put(k, res.getAggregatorResult().getSum());
-      totalCount += res.getAggregatorResult().getCount();
-      ;
-      totalSum += res.getAggregatorResult().getSum();
-    }
-
-    for (String key : profilingCount.keySet()) {
-      Float value = profilingCount.get(key) / totalCount;
-      profilingCount.put(key, value);
-      value = value * 100;
-      System.out.println(
-          "Key = "
-              + key
-              + ", percentage of matched records = "
-              + value.toString().substring(0, 4)
-              + "%");
-    }
-
-    for (String key : profilingSum.keySet()) {
-      long sumValue = profilingSum.get(key);
-      float value = sumValue / totalSum;
-      value = value * 100;
-      System.out.println(
-          "Key = "
-              + key
-              + ", percentage of aggregation = "
-              + Float.toString(value).substring(0, 4)
-              + "%");
-    }
-  }
-
-  public static final String jsonString =
-      "{\n"
-          + "  \"dataSource\": \"default\",\n"
-          + "  \"selection\": {\n"
-          + "    \"type\": \"filter\",\n"
-          + "    \"dimension\": \"default\",\n"
-          + "    \"values\": [ \"default\" ],\n"
-          + "    \"fields\":[]\n"
-          + "  },\n"
-          + "  \"aggregations\":[\n"
-          + "    {\"fieldName\":\"default\",\n"
-          + "      \"operators\":[\"COUNT\"]}]\n"
-          + "}";
 
   /** Deserialize query structure. */
   public IcebergQuery generateQuery(String operation, String dataSourceName) throws IOException {

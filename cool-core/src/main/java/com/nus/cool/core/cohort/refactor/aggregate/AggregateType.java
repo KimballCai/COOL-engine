@@ -18,12 +18,6 @@ public enum AggregateType {
     this.text = text;
   }
 
-  @JsonValue
-  @Override
-  public String toString() {
-    return text;
-  }
-
   /** return AggregateType named by string. */
   @JsonCreator
   public static AggregateType forValue(String str) {
@@ -43,5 +37,11 @@ public enum AggregateType {
       default:
         throw new IllegalArgumentException();
     }
+  }
+
+  @JsonValue
+  @Override
+  public String toString() {
+    return text;
   }
 }

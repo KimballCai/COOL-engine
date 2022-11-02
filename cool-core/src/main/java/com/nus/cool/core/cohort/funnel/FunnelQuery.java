@@ -9,13 +9,10 @@ import java.util.List;
 /** Funnel query. */
 public class FunnelQuery {
 
-  private String dataSource;
-
-  private String inputCohort;
-
-  private List<BirthSequence> stages = new ArrayList<>();
-
   boolean isOrdered = true;
+  private String dataSource;
+  private String inputCohort;
+  private List<BirthSequence> stages = new ArrayList<>();
 
   public List<BirthSequence> getStages() {
     return stages;

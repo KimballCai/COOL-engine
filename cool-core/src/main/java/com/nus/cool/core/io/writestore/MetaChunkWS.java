@@ -51,15 +51,13 @@ import lombok.Getter;
  */
 public class MetaChunkWS implements Output {
 
-  private int offset;
+  @Getter private final MetaFieldWS[] metaFields;
 
   // private final int userKeyIndex;
 
   // @Getter
   // private List<Integer> invariantFieldIndex = new ArrayList<>();
-
-  @Getter private final MetaFieldWS[] metaFields;
-
+  private int offset;
   @Getter private TableSchema tableSchema;
 
   /**

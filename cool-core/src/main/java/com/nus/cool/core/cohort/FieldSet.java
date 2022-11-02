@@ -20,7 +20,6 @@
 package com.nus.cool.core.cohort;
 
 import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -29,14 +28,12 @@ import lombok.Data;
 @AllArgsConstructor
 public class FieldSet {
 
+  private FieldSetType fieldSetType;
+  private String field;
+  private List<String> values;
+
   // default constructor
   public FieldSet() {}
-
-  private FieldSetType fieldSetType;
-
-  private String field;
-
-  private List<String> values;
 
   /** Field types. */
   public enum FieldSetType {

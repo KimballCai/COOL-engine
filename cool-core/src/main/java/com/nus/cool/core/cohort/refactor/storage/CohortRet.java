@@ -60,6 +60,37 @@ public class CohortRet {
     return offset;
   }
 
+  public List<String> getCohortList() {
+    return new ArrayList<>(this.cohortToValueList.keySet());
+  }
+
+  /** Get values of each age of a cohort. */
+  public List<Integer> getValuesByCohort(String cohort) {
+    if (!this.cohortToValueList.containsKey(cohort)) {
+      return null;
+    }
+    Xaxis x = this.cohortToValueList.get(cohort);
+    return x.getValues();
+  }
+
+  @Override
+  public String toString() {
+    String ret =
+        "CohortRet [interval="
+            + interval
+            + ", max="
+            + max
+            + ", min="
+            + min
+            + ", size="
+            + size
+            + "]\n";
+    for (Entry<String, Xaxis> entry : this.cohortToValueList.entrySet()) {
+      ret += entry.getKey() + ":" + entry.getValue().toString() + "\n";
+    }
+    return ret;
+  }
+
   /** Typedef RetUnit[] to Xaxis. */
   private class Xaxis {
     private RetUnit[] retUnits;
@@ -93,36 +124,5 @@ public class CohortRet {
     public String toString() {
       return "Xaxis [retUnits=" + Arrays.toString(retUnits) + "]";
     }
-  }
-
-  public List<String> getCohortList() {
-    return new ArrayList<>(this.cohortToValueList.keySet());
-  }
-
-  /** Get values of each age of a cohort. */
-  public List<Integer> getValuesByCohort(String cohort) {
-    if (!this.cohortToValueList.containsKey(cohort)) {
-      return null;
-    }
-    Xaxis x = this.cohortToValueList.get(cohort);
-    return x.getValues();
-  }
-
-  @Override
-  public String toString() {
-    String ret =
-        "CohortRet [interval="
-            + interval
-            + ", max="
-            + max
-            + ", min="
-            + min
-            + ", size="
-            + size
-            + "]\n";
-    for (Entry<String, Xaxis> entry : this.cohortToValueList.entrySet()) {
-      ret += entry.getKey() + ":" + entry.getValue().toString() + "\n";
-    }
-    return ret;
   }
 }

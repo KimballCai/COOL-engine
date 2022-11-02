@@ -27,12 +27,9 @@ import java.nio.ByteBuffer;
 /** Read store of the cohort result. */
 public class CohortRS implements Input {
 
-  private InputVector userList;
-
   private final ByteBuffer buffer;
-
   private final int startPos;
-
+  private InputVector userList;
   private String query;
 
   private CohortRS(ByteBuffer buffer) {

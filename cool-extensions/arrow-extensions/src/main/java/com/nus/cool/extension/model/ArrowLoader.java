@@ -3,7 +3,6 @@ package com.nus.cool.extension.model;
 import com.nus.cool.core.util.config.DataLoaderConfig;
 import com.nus.cool.extension.util.config.ArrowIPCFileDataLoaderConfig;
 import com.nus.cool.model.CoolLoader;
-
 import java.io.IOException;
 
 public class ArrowLoader {

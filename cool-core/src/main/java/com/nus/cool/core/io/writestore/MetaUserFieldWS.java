@@ -20,10 +20,9 @@ import java.util.Map;
 /** MetaField WriteStore for UserKey. */
 public class MetaUserFieldWS extends MetaHashFieldWS {
 
-  protected MetaChunkWS metaChunkWS;
-
   // key is the idx of invariant field
   protected final Map<Integer, List<Integer>> invariantIdxToValueList = Maps.newHashMap();
+  protected MetaChunkWS metaChunkWS;
 
   /**
    * Constructor for MetaUserFieldWS.

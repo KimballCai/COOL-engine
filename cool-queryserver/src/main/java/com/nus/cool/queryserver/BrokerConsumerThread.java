@@ -1,18 +1,13 @@
 package com.nus.cool.queryserver;
 
-import com.nus.cool.queryserver.singleton.*;
 import com.nus.cool.queryserver.model.Parameter;
 import com.nus.cool.queryserver.model.QueryInfo;
 import com.nus.cool.queryserver.model.Worker;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.concurrent.FutureCallback;
-import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
-import org.apache.http.impl.nio.client.HttpAsyncClients;
-import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.ZooDefs;
-
+import com.nus.cool.queryserver.singleton.HDFSConnection;
+import com.nus.cool.queryserver.singleton.QueryIndex;
+import com.nus.cool.queryserver.singleton.TaskQueue;
+import com.nus.cool.queryserver.singleton.WorkerIndex;
+import com.nus.cool.queryserver.singleton.ZKConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,6 +16,14 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.concurrent.FutureCallback;
+import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
+import org.apache.http.impl.nio.client.HttpAsyncClients;
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.ZooDefs;
 
 public class BrokerConsumerThread extends Thread {
 

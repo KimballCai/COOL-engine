@@ -1,13 +1,11 @@
 package com.nus.cool.core.cohort.refactor.filter;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.BitSet;
-
 import com.google.common.base.Preconditions;
 import com.nus.cool.core.cohort.refactor.storage.Scope;
 import com.nus.cool.core.io.readstore.MetaChunkRS;
-
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.List;
 import lombok.Getter;
 
 /** Range filter class */
@@ -41,6 +39,25 @@ public class RangeFilter implements Filter {
   public RangeFilter(String fieldSchema, List<Scope> scopeList) {
     this.fieldSchema = fieldSchema;
     this.acceptRangeList = scopeList;
+  }
+
+  /**
+   * Parse string to RangeUnit Exmaple [145 - 199] = RangeUnit{left:145 , right:199}
+   *
+   * @param str string
+   * @return RangeUnit
+   */
+  private static Scope parse(String str) {
+    String[] part = str.split(splitChar);
+    Preconditions.checkArgument(part.length == 2, "Split RangeUnit failed");
+    Integer l = null, r = null;
+    if (!part[0].equals(MinLimit)) {
+      l = Integer.parseInt(part[0]);
+    }
+    if (!part[1].equals(MaxLimit)) {
+      r = Integer.parseInt(part[1]);
+    }
+    return new Scope(l, r);
   }
 
   @Override
@@ -77,25 +94,6 @@ public class RangeFilter implements Filter {
   @Override
   public FilterType getType() {
     return type;
-  }
-
-  /**
-   * Parse string to RangeUnit Exmaple [145 - 199] = RangeUnit{left:145 , right:199}
-   *
-   * @param str string
-   * @return RangeUnit
-   */
-  private static Scope parse(String str) {
-    String[] part = str.split(splitChar);
-    Preconditions.checkArgument(part.length == 2, "Split RangeUnit failed");
-    Integer l = null, r = null;
-    if (!part[0].equals(MinLimit)) {
-      l = Integer.parseInt(part[0]);
-    }
-    if (!part[1].equals(MaxLimit)) {
-      r = Integer.parseInt(part[1]);
-    }
-    return new Scope(l, r);
   }
 
   @Override

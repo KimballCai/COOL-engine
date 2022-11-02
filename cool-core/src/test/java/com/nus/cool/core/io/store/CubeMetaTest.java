@@ -1,22 +1,20 @@
 package com.nus.cool.core.io.store;
 
+import com.nus.cool.core.io.DataOutputBuffer;
+import com.nus.cool.core.io.readstore.CubeMetaRS;
+import com.nus.cool.core.io.writestore.MetaChunkWS;
+import com.nus.cool.core.schema.FieldSchema;
+import com.nus.cool.core.schema.TableSchema;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.file.Paths;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
-import com.nus.cool.core.io.DataOutputBuffer;
-import com.nus.cool.core.io.readstore.CubeMetaRS;
-import com.nus.cool.core.io.writestore.MetaChunkWS;
-import com.nus.cool.core.schema.FieldSchema;
-import com.nus.cool.core.schema.TableSchema;
 
 public class CubeMetaTest {
   static final Logger logger = LoggerFactory.getLogger(CubeMetaTest.class);

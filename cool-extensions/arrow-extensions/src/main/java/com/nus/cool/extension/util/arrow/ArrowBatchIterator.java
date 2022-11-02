@@ -1,7 +1,6 @@
 package com.nus.cool.extension.util.arrow;
 
 import java.util.Iterator;
-
 import org.apache.arrow.vector.VectorSchemaRoot;
 
 public class ArrowBatchIterator implements Iterator<ArrowRowView> {

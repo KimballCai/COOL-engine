@@ -34,52 +34,27 @@ import org.apache.commons.logging.LogFactory;
 @Data
 public class ExtendedCohortQuery {
 
-  /** Age field. */
-  @Data
-  public static class AgeField {
-
-    private String field;
-
-    private TimeUnit unit = TimeUnit.DAY;
-
-    private int ageInterval = 1;
-
-    private List<ExtendedFieldSet> eventSelection = new ArrayList<>();
-
-    private List<String> range;
-
-    private boolean fillWithLastObserved = false;
-
-    private boolean fillWithNextObserved = false;
-
-    public boolean isFillWithNextObserved() {
-      return fillWithNextObserved;
-    }
-
-    public void setFillWithNextObserved(boolean fillWithNextObserved) {
-      this.fillWithNextObserved = fillWithNextObserved;
-    }
-  }
-
   private static final Log LOG = LogFactory.getLog(ExtendedCohortQuery.class);
-
   private String dataSource;
-
   private String appKey;
-
   private BirthSequence birthSequence = new BirthSequence();
-
   private AgeField ageField = null;
-
   private List<ExtendedFieldSet> ageSelection = null;
-
   private String measure;
-
   private String inputCohort;
-
   private String outputCohort;
-
   private String userId;
+
+  /**
+   * Read query from InputStream.
+   *
+   * @param in InputStream
+   * @return query instance
+   */
+  public static ExtendedCohortQuery read(InputStream in) throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    return mapper.readValue(in, ExtendedCohortQuery.class);
+  }
 
   /** Check the validity of query. */
   @JsonIgnore
@@ -117,14 +92,30 @@ public class ExtendedCohortQuery {
     return null;
   }
 
-  /**
-   * Read query from InputStream.
-   *
-   * @param in InputStream
-   * @return query instance
-   */
-  public static ExtendedCohortQuery read(InputStream in) throws IOException {
-    ObjectMapper mapper = new ObjectMapper();
-    return mapper.readValue(in, ExtendedCohortQuery.class);
+  /** Age field. */
+  @Data
+  public static class AgeField {
+
+    private String field;
+
+    private TimeUnit unit = TimeUnit.DAY;
+
+    private int ageInterval = 1;
+
+    private List<ExtendedFieldSet> eventSelection = new ArrayList<>();
+
+    private List<String> range;
+
+    private boolean fillWithLastObserved = false;
+
+    private boolean fillWithNextObserved = false;
+
+    public boolean isFillWithNextObserved() {
+      return fillWithNextObserved;
+    }
+
+    public void setFillWithNextObserved(boolean fillWithNextObserved) {
+      this.fillWithNextObserved = fillWithNextObserved;
+    }
   }
 }

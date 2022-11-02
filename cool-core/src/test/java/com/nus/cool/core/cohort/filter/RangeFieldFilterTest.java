@@ -1,15 +1,13 @@
 package com.nus.cool.core.cohort.filter;
 
+import com.nus.cool.core.schema.TableSchema;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.nus.cool.core.schema.TableSchema;
-
-import org.testng.annotations.Test;
 import org.testng.Assert;
+import org.testng.annotations.Test;
 
 public class RangeFieldFilterTest {
   @Test

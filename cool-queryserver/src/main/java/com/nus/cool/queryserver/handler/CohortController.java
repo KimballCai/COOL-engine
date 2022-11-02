@@ -5,14 +5,17 @@ import com.nus.cool.core.cohort.ExtendedCohortQuery;
 import com.nus.cool.core.cohort.funnel.FunnelQuery;
 import com.nus.cool.queryserver.model.QueryServerModel;
 import com.nus.cool.queryserver.utils.Util;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.ws.rs.*;
 import java.io.IOException;
 import java.util.List;
+import javax.ws.rs.QueryParam;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/cohort")

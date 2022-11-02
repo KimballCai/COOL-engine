@@ -2,7 +2,6 @@ package com.nus.cool.queryserver.singleton;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,10 +10,9 @@ import java.util.concurrent.ConcurrentHashMap;
 /** record each worker's assigned tasks. */
 public class WorkerIndex {
 
+  private static volatile WorkerIndex instance = null;
   // < workerName: url contents >
   private final Map<String, String> index = new ConcurrentHashMap<>();
-
-  private static volatile WorkerIndex instance = null;
 
   private WorkerIndex() {}
 

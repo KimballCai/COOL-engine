@@ -1,12 +1,10 @@
 package com.nus.cool.extension.util.reader;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-
 import com.nus.cool.core.util.reader.TupleReader;
 import com.nus.cool.extension.util.arrow.ArrowBatchIterator;
 import com.nus.cool.extension.util.arrow.ArrowRowView;
-
+import java.io.FileInputStream;
+import java.io.IOException;
 import org.apache.arrow.memory.BufferAllocator;
 import org.apache.arrow.vector.VectorSchemaRoot;
 import org.apache.arrow.vector.compression.CompressionCodec;
@@ -45,10 +43,16 @@ public class ArrowIPCFileTupleReader implements TupleReader {
 
   @Override
   public boolean hasNext() {
-    if (empty) return false;
-    if (itr.hasNext()) return true;
+    if (empty) {
+      return false;
+    }
+    if (itr.hasNext()) {
+      return true;
+    }
     try {
-      if (!reader.loadNextBatch()) return false;
+      if (!reader.loadNextBatch()) {
+        return false;
+      }
     } catch (IOException e) {
       System.out.println("Error encountered while loading arrow batch.");
       return false;
@@ -60,7 +64,9 @@ public class ArrowIPCFileTupleReader implements TupleReader {
   @Override
   public ArrowRowView next() throws IOException {
     ArrowRowView old = itr.next();
-    if (old.valid()) return old;
+    if (old.valid()) {
+      return old;
+    }
     return hasNext() ? itr.next() : null;
   }
 

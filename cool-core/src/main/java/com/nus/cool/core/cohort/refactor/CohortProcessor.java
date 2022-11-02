@@ -1,10 +1,5 @@
 package com.nus.cool.core.cohort.refactor;
 
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nus.cool.core.cohort.refactor.ageselect.AgeSelection;
 import com.nus.cool.core.cohort.refactor.birthselect.BirthSelection;
@@ -23,7 +18,10 @@ import com.nus.cool.core.io.readstore.MetaFieldRS;
 import com.nus.cool.core.schema.FieldSchema;
 import com.nus.cool.core.schema.FieldType;
 import com.nus.cool.core.schema.TableSchema;
-
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import lombok.Getter;
 
 public class CohortProcessor {
@@ -37,16 +35,11 @@ public class CohortProcessor {
   private final BirthSelection birthSelector;
 
   @Getter private final String dataSource;
-
-  private ProjectedTuple tuple;
-
   @Getter private final CohortRet result;
-
-  private String UserIdSchema;
-
-  private String ActionTimeSchema;
-
   private final HashSet<String> projectedSchemaSet;
+  private ProjectedTuple tuple;
+  private String UserIdSchema;
+  private String ActionTimeSchema;
 
   public CohortProcessor(CohortQueryLayout layout) {
 
@@ -58,6 +51,23 @@ public class CohortProcessor {
     this.projectedSchemaSet = layout.getSchemaSet();
     this.dataSource = layout.getDataSource();
     this.result = new CohortRet(layout.getAgetSelectionLayout());
+  }
+
+  /**
+   * Read from json file and create a instance of CohortProcessor
+   *
+   * @param in File
+   * @return instance of file
+   * @throws IOException IOException
+   */
+  public static CohortProcessor readFromJson(File in) throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    CohortProcessor instance = mapper.readValue(in, CohortProcessor.class);
+    return instance;
+  }
+
+  public static CohortProcessor readFromJson(String path) throws IOException {
+    return readFromJson(new File(path));
   }
 
   /**
@@ -245,22 +255,5 @@ public class CohortProcessor {
     for (Filter filter : this.valueSelector.getFilterList()) {
       filter.loadMetaInfo(metaChunkRS);
     }
-  }
-
-  /**
-   * Read from json file and create a instance of CohortProcessor
-   *
-   * @param in File
-   * @return instance of file
-   * @throws IOException IOException
-   */
-  public static CohortProcessor readFromJson(File in) throws IOException {
-    ObjectMapper mapper = new ObjectMapper();
-    CohortProcessor instance = mapper.readValue(in, CohortProcessor.class);
-    return instance;
-  }
-
-  public static CohortProcessor readFromJson(String path) throws IOException {
-    return readFromJson(new File(path));
   }
 }

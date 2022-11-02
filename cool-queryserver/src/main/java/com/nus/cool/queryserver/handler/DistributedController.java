@@ -11,6 +11,11 @@ import com.nus.cool.queryserver.singleton.HDFSConnection;
 import com.nus.cool.queryserver.singleton.ModelPathCfg;
 import com.nus.cool.queryserver.singleton.ZKConnection;
 import com.nus.cool.result.ExtendedResultTuple;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.ByteBuffer;
+import java.util.List;
+import java.util.Map;
 import org.apache.zookeeper.KeeperException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +23,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.ByteBuffer;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/dist")

@@ -1,10 +1,5 @@
 package com.nus.cool.core.util.reader;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-
 import com.nus.cool.core.cohort.KeyFieldIterator;
 import com.nus.cool.core.io.readstore.ChunkRS;
 import com.nus.cool.core.io.readstore.CubeRS;
@@ -15,6 +10,10 @@ import com.nus.cool.core.io.storevector.InputVector;
 import com.nus.cool.core.schema.FieldSchema;
 import com.nus.cool.core.schema.TableSchema;
 import com.nus.cool.core.util.converter.DayIntConverter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 
 // if the field is marked with PreCAL, we will not be able to reconstruct the tuple
 
@@ -35,15 +34,12 @@ public class CoolTupleReader implements TupleReader {
   private final int userKeyFieldIdx;
 
   private final List<ValueConverter> valueConverters;
+  private final ListIterator<ChunkRS> chunkItr;
+  private final List<InputVector> fields;
   /** variables describing current state */
   private boolean hasNext;
 
-  private final ListIterator<ChunkRS> chunkItr;
-
   private ChunkRS curChunk;
-
-  private final List<InputVector> fields;
-
   private KeyFieldIterator curChunkUserItr;
 
   private int curUser = -1;
@@ -75,19 +71,6 @@ public class CoolTupleReader implements TupleReader {
     this.curChunk = null;
     this.fields = new ArrayList<>();
     this.hasNext = (chunkItr.hasNext()) ? skipToNextUser() : false;
-  }
-
-  interface ValueConverter {
-    String convert(int value);
-
-    public static ValueConverter createNullConverter() {
-      return new ValueConverter() {
-        @Override
-        public String convert(int value) {
-          return "NULL";
-        }
-      };
-    }
   }
 
   private List<ValueConverter> createValueConverters() {
@@ -223,5 +206,18 @@ public class CoolTupleReader implements TupleReader {
   @Override
   public void close() throws IOException {
     // no-op
+  }
+
+  interface ValueConverter {
+    public static ValueConverter createNullConverter() {
+      return new ValueConverter() {
+        @Override
+        public String convert(int value) {
+          return "NULL";
+        }
+      };
+    }
+
+    String convert(int value);
   }
 }

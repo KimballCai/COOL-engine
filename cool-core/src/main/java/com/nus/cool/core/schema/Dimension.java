@@ -19,31 +19,17 @@
 
 package com.nus.cool.core.schema;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.List;
 
 /** structure representing a dimension (column). */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Dimension {
 
-  /** Type of a dimension. */
-  public static enum DimensionType {
-    NORMAL,
-
-    PROPERTY,
-
-    CALC
-  }
-
   private DimensionType type;
-
   private String name;
-
   private String tableFieldName;
-
   private List<String> values;
-
   private FieldType fieldType;
 
   public String getName() {
@@ -84,5 +70,14 @@ public class Dimension {
 
   public void setTableFieldType(FieldType fieldType) {
     this.fieldType = fieldType;
+  }
+
+  /** Type of a dimension. */
+  public static enum DimensionType {
+    NORMAL,
+
+    PROPERTY,
+
+    CALC
   }
 }

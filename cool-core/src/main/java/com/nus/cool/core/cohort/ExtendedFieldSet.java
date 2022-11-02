@@ -25,6 +25,30 @@ import java.util.List;
 /** Field is mainly used to represent the conditions we set up for extended queries. */
 public class ExtendedFieldSet {
 
+  private FieldSetType setType;
+  private String field;
+  private FieldValue fieldValue;
+
+  public FieldSetType getFilterType() {
+    return setType;
+  }
+
+  public void setFilterType(FieldSetType setType) {
+    this.setType = setType;
+  }
+
+  public String getCubeField() {
+    return field;
+  }
+
+  public void setCubeField(String field) {
+    this.field = field;
+  }
+
+  public FieldValue getFieldValue() {
+    return fieldValue;
+  }
+
   /** Field value types. */
   public static enum FieldValueType {
     AbsoluteValue,
@@ -71,31 +95,5 @@ public class ExtendedFieldSet {
     public int getBaseEvent() {
       return baseEvent;
     }
-  }
-
-  private FieldSetType setType;
-
-  private String field;
-
-  private FieldValue fieldValue;
-
-  public FieldSetType getFilterType() {
-    return setType;
-  }
-
-  public void setFilterType(FieldSetType setType) {
-    this.setType = setType;
-  }
-
-  public String getCubeField() {
-    return field;
-  }
-
-  public void setCubeField(String field) {
-    this.field = field;
-  }
-
-  public FieldValue getFieldValue() {
-    return fieldValue;
   }
 }

@@ -1,20 +1,17 @@
 package com.nus.cool.core.cohort.refactor.ageselect;
 
-import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nus.cool.core.cohort.refactor.storage.Scope;
 import com.nus.cool.core.cohort.refactor.utils.DateUtils;
 import com.nus.cool.core.cohort.refactor.utils.TimeUtils;
 import com.nus.cool.core.cohort.refactor.utils.TimeWindow;
+import java.time.LocalDateTime;
 
 /** Store Age condition and filter valid age for cohort Analysis. */
 public class AgeSelection {
-  private TimeUtils.TimeUnit unit;
-
-  private Scope scope;
-
   @JsonIgnore public static final int DefaultNullAge = -1;
+  private TimeUtils.TimeUnit unit;
+  private Scope scope;
 
   public AgeSelection(Scope scope, TimeUtils.TimeUnit unit) {
     this.scope = scope;

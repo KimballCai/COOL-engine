@@ -21,42 +21,31 @@ package com.nus.cool.core.cohort;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.nus.cool.core.io.readstore.ChunkRS;
 import com.nus.cool.core.io.readstore.FieldRS;
 import com.nus.cool.core.io.readstore.MetaChunkRS;
 import com.nus.cool.core.io.storevector.InputVector;
 import com.nus.cool.core.io.storevector.RLEInputVector;
 import com.nus.cool.core.schema.TableSchema;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /** Cohort user selection operator. */
 public class CohortUserSection implements CohortOperator {
 
   private static Log LOG = LogFactory.getLog(CohortUserSection.class);
-
-  private TableSchema tableSchema;
-
-  private ExtendedCohortSelection sigma;
-
-  private InputVector cohortUsers;
-
-  private int curUser = -1;
-
-  private int totalDataChunks;
-
-  private int totalSkippedDataChunks;
-
-  private int totalUsers;
-
-  private int totalSkippedUsers;
-
   private final List<Integer> cubletResults = new ArrayList<>();
+  private TableSchema tableSchema;
+  private ExtendedCohortSelection sigma;
+  private InputVector cohortUsers;
+  private int curUser = -1;
+  private int totalDataChunks;
+  private int totalSkippedDataChunks;
+  private int totalUsers;
+  private int totalSkippedUsers;
 
   public CohortUserSection(ExtendedCohortSelection sigma) {
     this.sigma = checkNotNull(sigma);

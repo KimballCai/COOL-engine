@@ -14,14 +14,6 @@ public class ProjectedTuple {
 
   private HashMap<String, Integer> schema2Index;
 
-  /** Get the value by field name. */
-  public Object getValueBySchema(String schema) {
-    if (!schema2Index.containsKey(schema)) {
-      return null;
-    }
-    return tuple[schema2Index.get(schema)];
-  }
-
   /** Create a partial tuple with selected fields. */
   public ProjectedTuple(HashSet<String> schemaList) {
     this.schema2Index = new HashMap<>();
@@ -30,6 +22,14 @@ public class ProjectedTuple {
       this.schema2Index.put(schema, idx++);
     }
     this.tuple = new Object[this.schema2Index.size()];
+  }
+
+  /** Get the value by field name. */
+  public Object getValueBySchema(String schema) {
+    if (!schema2Index.containsKey(schema)) {
+      return null;
+    }
+    return tuple[schema2Index.get(schema)];
   }
 
   // public ProjectedTuple

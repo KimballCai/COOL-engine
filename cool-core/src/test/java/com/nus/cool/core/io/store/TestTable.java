@@ -1,5 +1,6 @@
 package com.nus.cool.core.io.store;
 
+import com.nus.cool.core.util.parser.CsvTupleParser;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -7,8 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import com.nus.cool.core.util.parser.CsvTupleParser;
-
 import lombok.Getter;
 
 /** Generate TestTable from csv File simply and Generate Data for UnitTest */

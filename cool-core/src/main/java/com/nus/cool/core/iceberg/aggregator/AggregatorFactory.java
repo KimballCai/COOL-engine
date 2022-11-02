@@ -22,21 +22,6 @@ package com.nus.cool.core.iceberg.aggregator;
 /** Factory class of OLAP aggregators. */
 public class AggregatorFactory {
 
-  /** OLAP Aggregator types. */
-  public enum AggregatorType {
-    COUNT,
-
-    SUM,
-
-    AVERAGE,
-
-    MAX,
-
-    MIN,
-
-    DISTINCTCOUNT
-  }
-
   /**
    * Create an OLAP aggregator of a type.
    *
@@ -60,5 +45,20 @@ public class AggregatorFactory {
       default:
         throw new IllegalArgumentException("Unknown aggregator operator: " + operator);
     }
+  }
+
+  /** OLAP Aggregator types. */
+  public enum AggregatorType {
+    COUNT,
+
+    SUM,
+
+    AVERAGE,
+
+    MAX,
+
+    MIN,
+
+    DISTINCTCOUNT
   }
 }

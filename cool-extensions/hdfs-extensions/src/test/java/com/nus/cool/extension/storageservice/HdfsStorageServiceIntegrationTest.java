@@ -1,18 +1,15 @@
 package com.nus.cool.extension.storageservice;
 
+import com.nus.cool.storageservice.StorageService;
+import com.nus.cool.storageservice.StorageServiceStatus;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
-
-import com.nus.cool.storageservice.StorageService;
-import com.nus.cool.storageservice.StorageServiceStatus;
-
 import org.apache.hadoop.conf.Configuration;
 import org.testng.Assert;
-import org.testng.annotations.Test;
 
 public class HdfsStorageServiceIntegrationTest {
 

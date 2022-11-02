@@ -38,27 +38,21 @@ import java.util.List;
  */
 public class SetFieldFilter implements FieldFilter {
 
+  private static final RabinHashFunction32 rhash = RabinHashFunction32.DEFAULT_HASH_FUNCTION;
   /** The conditions we set up. */
   private List<String> values;
-
   /** whether the condition means all the tuples. */
   private boolean isAll;
-
   /** Which condition it contains. */
   private int[] contentIds;
-
   /** Indicate which tuple in the table is eligible. */
   private BitSet filter;
-
   /** Chunk value vector for hash field. */
   private InputVector chunkValues;
-
   /** the configuration of the field set. */
   private ExtendedFieldSet fieldSet;
 
   private FieldType fieldType;
-
-  private static final RabinHashFunction32 rhash = RabinHashFunction32.DEFAULT_HASH_FUNCTION;
 
   /**
    * construct a filter on a set field.

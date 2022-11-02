@@ -24,32 +24,19 @@ import org.apache.commons.logging.LogFactory;
 public class FunnelProcess implements CohortOperator {
 
   private static Log LOG = LogFactory.getLog(FunnelProcess.class);
-
-  private TableSchema tableSchema;
-
-  private List<ExtendedCohortSelection> sigma = new ArrayList<>();
-
-  private InputVector cohortUsers;
-
-  private int curUser = -1;
-
-  private List<ExtendedCohortQuery> cohortQueries = new ArrayList<>();
-
-  private FunnelQuery funnelQuery;
-
-  private int totalDataChunks;
-
-  private int totalSkippedDataChunks;
-
-  private int totalUsers;
-
-  private int totalSkippedUsers;
-
   MetaChunkRS metaChunk;
-
   int[] cubletResults;
-
   int validFunnelStages;
+  private TableSchema tableSchema;
+  private List<ExtendedCohortSelection> sigma = new ArrayList<>();
+  private InputVector cohortUsers;
+  private int curUser = -1;
+  private List<ExtendedCohortQuery> cohortQueries = new ArrayList<>();
+  private FunnelQuery funnelQuery;
+  private int totalDataChunks;
+  private int totalSkippedDataChunks;
+  private int totalUsers;
+  private int totalSkippedUsers;
 
   public FunnelProcess() {}
 

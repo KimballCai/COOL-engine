@@ -27,22 +27,8 @@ import lombok.Setter;
  * operation status and retrieve additional information passed by storage service.
  */
 public class StorageServiceStatus {
-  /**
-   * status code indicates the status of a storage service after an operation. It is used to
-   * determine if we can continue use the service.
-   */
-  public static enum StatusCode {
-    /** Storage service is unavailable. */
-    UNAVAILABLE,
-    /** Storage service is ok. */
-    OK,
-    /** Errors occurred in storage service. */
-    ERROR
-  }
-
   // status of the storage service
   @Getter final StatusCode code;
-
   // auxiliary message from storage service
   @Setter @Getter String msg;
 
@@ -74,5 +60,18 @@ public class StorageServiceStatus {
   @Override
   public String toString() {
     return "Storage service status: " + code + (msg.isEmpty() ? "" : msg);
+  }
+
+  /**
+   * status code indicates the status of a storage service after an operation. It is used to
+   * determine if we can continue use the service.
+   */
+  public static enum StatusCode {
+    /** Storage service is unavailable. */
+    UNAVAILABLE,
+    /** Storage service is ok. */
+    OK,
+    /** Errors occurred in storage service. */
+    ERROR
   }
 }

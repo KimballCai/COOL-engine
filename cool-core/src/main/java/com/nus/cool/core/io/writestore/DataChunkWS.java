@@ -49,12 +49,10 @@ public class DataChunkWS implements Output {
 
   /** Chunk beginning offset, don't update. */
   private final int chunkBeginOffset;
-
-  /** Number of records. */
-  private int recordCount;
-
   /** Fields in data chunk. */
   private final DataFieldWS[] dataFields;
+  /** Number of records. */
+  private int recordCount;
 
   /**
    * Constructor.

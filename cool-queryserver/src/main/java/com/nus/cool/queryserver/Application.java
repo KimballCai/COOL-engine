@@ -19,7 +19,17 @@
 
 package com.nus.cool.queryserver;
 
-import com.nus.cool.queryserver.singleton.*;
+import com.nus.cool.queryserver.singleton.HDFSConnection;
+import com.nus.cool.queryserver.singleton.ModelPathCfg;
+import com.nus.cool.queryserver.singleton.QueryIndex;
+import com.nus.cool.queryserver.singleton.TaskQueue;
+import com.nus.cool.queryserver.singleton.WorkerIndex;
+import com.nus.cool.queryserver.singleton.ZKConnection;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.Collections;
 import org.apache.zookeeper.KeeperException;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -27,20 +37,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Collections;
-
 @SpringBootApplication
 public class Application {
-
-  public enum Role {
-    STANDALONE,
-    WORKER,
-    BROKER
-  }
 
   /**
    * Run server
@@ -118,5 +116,11 @@ public class Application {
         System.out.println(beanName);
       }
     };
+  }
+
+  public enum Role {
+    STANDALONE,
+    WORKER,
+    BROKER
   }
 }

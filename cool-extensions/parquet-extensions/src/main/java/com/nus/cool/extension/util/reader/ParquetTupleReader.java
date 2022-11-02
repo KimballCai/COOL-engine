@@ -1,13 +1,11 @@
 package com.nus.cool.extension.util.reader;
 
-import java.io.IOException;
-import java.util.Optional;
-
 import com.nus.cool.core.schema.TableSchema;
 import com.nus.cool.core.util.reader.TupleReader;
 import com.nus.cool.extension.util.parquet.ParquetReadSupport;
 import com.nus.cool.extension.util.parquet.ParquetRecordConverter;
-
+import java.io.IOException;
+import java.util.Optional;
 import org.apache.hadoop.fs.Path;
 import org.apache.parquet.example.data.Group;
 import org.apache.parquet.hadoop.ParquetReader;

@@ -12,6 +12,16 @@ import org.testng.annotations.Test;
 public class CoolModelTest {
 
   @Test(
+      dataProvider = "CubeReloadTestDP",
+      dependsOnMethods = {"com.nus.cool.functionality.CsvLoaderTest.CsvLoaderUnitTest"},
+      enabled = false)
+  public static void cubeReloadUnitTest(String datasetPath, String cubeName) throws IOException {
+    CoolModel coolModel = new CoolModel(datasetPath);
+    coolModel.reload(cubeName);
+    coolModel.close();
+  }
+
+  @Test(
       dataProvider = "CubeListTestDP",
       dependsOnMethods = {"com.nus.cool.functionality.CsvLoaderTest.CsvLoaderUnitTest"},
       enabled = false)
@@ -20,16 +30,6 @@ public class CoolModelTest {
     for (String cube : out) {
       Assert.assertTrue(Arrays.asList(cubes).contains(cube));
     }
-  }
-
-  @Test(
-      dataProvider = "CubeReloadTestDP",
-      dependsOnMethods = {"com.nus.cool.functionality.CsvLoaderTest.CsvLoaderUnitTest"},
-      enabled = false)
-  public static void cubeReloadUnitTest(String datasetPath, String cubeName) throws IOException {
-    CoolModel coolModel = new CoolModel(datasetPath);
-    coolModel.reload(cubeName);
-    coolModel.close();
   }
 
   /** Data provider for cube reload testing. */

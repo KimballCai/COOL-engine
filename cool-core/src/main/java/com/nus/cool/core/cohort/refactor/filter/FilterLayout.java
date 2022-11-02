@@ -2,7 +2,6 @@ package com.nus.cool.core.cohort.refactor.filter;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.common.base.Preconditions;
-
 import lombok.Getter;
 
 /** Read from json file into FilterLayout Parse to construct different filter instance */
@@ -18,6 +17,17 @@ public class FilterLayout {
   @JsonInclude(JsonInclude.Include.NON_NULL)
   @Getter
   private String[] rejectValue;
+
+  /** Default Constructor, JsonMapper use it */
+  public FilterLayout() {}
+
+  // ----------------- For Test ----------------------- //
+  public FilterLayout(Boolean IsSet, String[] acList, String[] rejList) {
+    if (IsSet) this.type = FilterType.Set;
+    else this.type = FilterType.Range;
+    this.acceptValue = acList;
+    this.rejectValue = rejList;
+  }
 
   @Override
   public String toString() {
@@ -42,16 +52,5 @@ public class FilterLayout {
       default:
         throw new IllegalArgumentException(String.format("No filter of this type named %s", type));
     }
-  }
-
-  /** Default Constructor, JsonMapper use it */
-  public FilterLayout() {}
-
-  // ----------------- For Test ----------------------- //
-  public FilterLayout(Boolean IsSet, String[] acList, String[] rejList) {
-    if (IsSet) this.type = FilterType.Set;
-    else this.type = FilterType.Range;
-    this.acceptValue = acList;
-    this.rejectValue = rejList;
   }
 }

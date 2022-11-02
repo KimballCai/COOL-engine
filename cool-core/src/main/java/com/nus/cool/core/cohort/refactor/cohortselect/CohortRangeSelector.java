@@ -1,12 +1,11 @@
 package com.nus.cool.core.cohort.refactor.cohortselect;
 
-import java.util.List;
-
 import com.nus.cool.core.cohort.refactor.filter.Filter;
 import com.nus.cool.core.cohort.refactor.filter.RangeFilter;
 import com.nus.cool.core.cohort.refactor.storage.ProjectedTuple;
 import com.nus.cool.core.cohort.refactor.storage.Scope;
 import com.nus.cool.core.io.readstore.MetaChunkRS;
+import java.util.List;
 
 /**
  * Class CohortRangeSelector for Range type column schema It helps to judge whether the value in

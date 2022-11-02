@@ -1,12 +1,10 @@
 package com.nus.cool.core.cohort.refactor.birthselect;
 
-import java.time.LocalDateTime;
-import java.util.LinkedList;
-
 import com.google.common.base.Preconditions;
 import com.nus.cool.core.cohort.refactor.utils.DateUtils;
 import com.nus.cool.core.cohort.refactor.utils.TimeWindow;
-
+import java.time.LocalDateTime;
+import java.util.LinkedList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -18,16 +16,13 @@ import lombok.Getter;
  */
 public class BirthContextWindow {
 
-  // store EventTime in a queue, in time order
-  private LinkedList<EventTime> window;
-
-  // store the frequency of chosen Event in this Window
-  @Getter private int[] eventState;
-
   private final int eventNum;
-
   // the max timeWindow
   private final TimeWindow maxTimeWindow;
+  // store EventTime in a queue, in time order
+  private LinkedList<EventTime> window;
+  // store the frequency of chosen Event in this Window
+  @Getter private int[] eventState;
 
   public BirthContextWindow(TimeWindow tWindow, int eventNum) {
     this.maxTimeWindow = tWindow;

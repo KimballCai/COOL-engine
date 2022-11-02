@@ -43,34 +43,6 @@ public class BaseResult {
 
   private AggregatorResult aggregatorResult;
 
-  private boolean equalsKey(BaseResult another) {
-    Set<String> set1 = new HashSet<>(Arrays.asList(this.getKey().split("|")));
-    Set<String> set2 = new HashSet<>(Arrays.asList(another.getKey().split("|")));
-    return set1.equals(set2);
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if ((o instanceof BaseResult)) {
-      BaseResult another = (BaseResult) o;
-      if (this.equalsKey(another)) {
-        if (this.getTimeRange().equals(another.getTimeRange())
-            && this.getFieldName().equals(another.getFieldName())) {
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
-
   /** Merge two base results. */
   public static List<BaseResult> merge(List<BaseResult> results) {
     BitSet bs = new BitSet();
@@ -103,5 +75,33 @@ public class BaseResult {
     }
     // System.out.println("bs: " + finalRes.size());
     return finalRes;
+  }
+
+  private boolean equalsKey(BaseResult another) {
+    Set<String> set1 = new HashSet<>(Arrays.asList(this.getKey().split("|")));
+    Set<String> set2 = new HashSet<>(Arrays.asList(another.getKey().split("|")));
+    return set1.equals(set2);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if ((o instanceof BaseResult)) {
+      BaseResult another = (BaseResult) o;
+      if (this.equalsKey(another)) {
+        if (this.getTimeRange().equals(another.getTimeRange())
+            && this.getFieldName().equals(another.getFieldName())) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 }

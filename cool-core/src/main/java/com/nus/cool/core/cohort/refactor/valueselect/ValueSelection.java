@@ -1,14 +1,12 @@
 package com.nus.cool.core.cohort.refactor.valueselect;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Preconditions;
 import com.nus.cool.core.cohort.refactor.aggregate.AggregateFunc;
 import com.nus.cool.core.cohort.refactor.filter.Filter;
 import com.nus.cool.core.cohort.refactor.storage.ProjectedTuple;
-
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 
 public class ValueSelection {

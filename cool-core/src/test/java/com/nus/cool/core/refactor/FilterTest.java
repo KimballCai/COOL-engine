@@ -1,12 +1,11 @@
 package com.nus.cool.core.refactor;
 
-import org.testng.Assert;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
 import com.nus.cool.core.cohort.refactor.filter.Filter;
 import com.nus.cool.core.cohort.refactor.filter.FilterLayout;
 import com.nus.cool.core.cohort.refactor.filter.RangeFilter;
+import org.testng.Assert;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 public class FilterTest {
   @Test(dataProvider = "RangeFilterAcceptDP")

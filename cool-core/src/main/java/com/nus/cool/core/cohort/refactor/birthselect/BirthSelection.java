@@ -1,13 +1,11 @@
 package com.nus.cool.core.cohort.refactor.birthselect;
 
+import com.nus.cool.core.cohort.refactor.filter.Filter;
+import com.nus.cool.core.cohort.refactor.storage.ProjectedTuple;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import com.nus.cool.core.cohort.refactor.filter.Filter;
-import com.nus.cool.core.cohort.refactor.storage.ProjectedTuple;
-
 import lombok.Getter;
 
 /** This class shows how to choose the birthAction according to cohort query */

@@ -41,33 +41,21 @@ import org.apache.commons.logging.LogFactory;
 public class ExtendedCohortAggregation implements CohortOperator {
 
   private static Log LOG = LogFactory.getLog(ExtendedCohortAggregation.class);
-
+  MetaChunkRS metaChunk;
+  Map<ExtendedCohort, Map<Integer, List<Double>>> cubletResults = new HashMap<>();
   private TableSchema tableSchema;
-
   private ExtendedCohortSelection sigma;
-
   private InputVector cohortUsers;
-
   private int curUser = -1;
-
   private ExtendedCohortQuery query;
-
   private int totalDataChunks;
-
   private int totalSkippedDataChunks;
-
   private int totalUsers;
-
   private int totalSkippedUsers;
-
   private long birthSelectionTime;
   private long ageByTime;
   private long ageSelectionTime;
   private long aggregationTime;
-
-  MetaChunkRS metaChunk;
-
-  Map<ExtendedCohort, Map<Integer, List<Double>>> cubletResults = new HashMap<>();
 
   public ExtendedCohortAggregation(ExtendedCohortSelection sigma) {
     this.sigma = checkNotNull(sigma);

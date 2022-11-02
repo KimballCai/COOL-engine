@@ -1,10 +1,9 @@
 package com.nus.cool.core.io.store;
 
+import com.nus.cool.core.schema.TableSchema;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-
-import com.nus.cool.core.schema.TableSchema;
 
 public class utils {
 

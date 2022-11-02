@@ -5,6 +5,9 @@ import com.nus.cool.core.cohort.funnel.FunnelQuery;
 import com.nus.cool.core.io.readstore.CubeRS;
 import com.nus.cool.core.io.storevector.InputVector;
 import com.nus.cool.model.CoolModel;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -12,10 +15,6 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
 
 public class FunnulAnalysisTest extends CsvLoaderTest {
   static final Logger logger = LoggerFactory.getLogger(FunnulAnalysisTest.class);

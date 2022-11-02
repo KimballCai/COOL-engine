@@ -1,7 +1,6 @@
 package com.nus.cool.extension.util.parquet;
 
 import java.util.Optional;
-
 import org.apache.parquet.example.data.Group;
 import org.apache.parquet.schema.Type;
 

@@ -25,19 +25,9 @@ import java.util.List;
 /** Selection query class. */
 public class SelectionQuery {
 
-  /** Type of selection type. */
-  public enum SelectionType {
-    and,
-    or,
-    filter
-  }
-
   private SelectionType type;
-
   private String dimension;
-
   private List<String> values;
-
   private List<SelectionQuery> fields = new ArrayList<>();
 
   public SelectionType getType() {
@@ -70,5 +60,12 @@ public class SelectionQuery {
 
   public void setFields(List<SelectionQuery> fields) {
     this.fields = fields;
+  }
+
+  /** Type of selection type. */
+  public enum SelectionType {
+    and,
+    or,
+    filter
   }
 }

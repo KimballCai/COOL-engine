@@ -32,6 +32,8 @@ import java.util.List;
  */
 public interface FieldFilter {
 
+  FieldType fieldType = null;
+
   /**
    * Get the global minimum of the conditions.
    *
@@ -82,8 +84,6 @@ public interface FieldFilter {
   List<String> getValues();
 
   ExtendedFieldSet getFieldSet();
-
-  FieldType fieldType = null;
 
   void updateValues(Double v);
 

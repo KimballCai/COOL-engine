@@ -19,6 +19,12 @@
 
 package com.nus.cool.core.schema;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.google.common.collect.Maps;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -26,23 +32,13 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.google.common.collect.Maps;
-
 /** Scheme of a cube. */
 public class CubeSchema {
 
-  private List<Dimension> dimensions;
-
-  private List<Measure> measures;
-
   @JsonIgnore private final Map<String, Integer> dimenMap = Maps.newHashMap();
-
   @JsonIgnore private final Map<String, Integer> measureMap = Maps.newHashMap();
+  private List<Dimension> dimensions;
+  private List<Measure> measures;
 
   public static CubeSchema read(InputStream in) throws IOException {
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
@@ -58,14 +54,6 @@ public class CubeSchema {
     return dimensions;
   }
 
-  /** Get a dimension by its name. */
-  public Dimension getDimension(String name) {
-    if (dimenMap.containsKey(name)) {
-      return dimensions.get(dimenMap.get(name));
-    }
-    return null;
-  }
-
   /** Set the set of dimensions. */
   public void setDimensions(List<Dimension> dimensions) {
     this.dimensions = dimensions;
@@ -75,16 +63,16 @@ public class CubeSchema {
     }
   }
 
-  public List<Measure> getMeasures() {
-    return measures;
-  }
-
-  /** Get a measure by name. */
-  public Measure getMeasure(String measureName) {
-    if (measureMap.containsKey(measureName)) {
-      return measures.get(measureMap.get(measureName));
+  /** Get a dimension by its name. */
+  public Dimension getDimension(String name) {
+    if (dimenMap.containsKey(name)) {
+      return dimensions.get(dimenMap.get(name));
     }
     return null;
+  }
+
+  public List<Measure> getMeasures() {
+    return measures;
   }
 
   /** Set measures. */
@@ -94,6 +82,14 @@ public class CubeSchema {
     for (Measure measure : measures) {
       measureMap.put(measure.getName(), i++);
     }
+  }
+
+  /** Get a measure by name. */
+  public Measure getMeasure(String measureName) {
+    if (measureMap.containsKey(measureName)) {
+      return measures.get(measureMap.get(measureName));
+    }
+    return null;
   }
 
   @Override

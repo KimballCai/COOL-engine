@@ -1,13 +1,11 @@
 package com.nus.cool.core.cohort.refactor.birthselect;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nus.cool.core.cohort.refactor.filter.Filter;
 import com.nus.cool.core.cohort.refactor.filter.FilterLayout;
-
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 
 public class EventSelectionLayout {

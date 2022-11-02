@@ -3,16 +3,15 @@ package com.nus.cool.functionality;
 import com.nus.cool.core.util.config.CsvDataLoaderConfig;
 import com.nus.cool.core.util.config.DataLoaderConfig;
 import com.nus.cool.model.CoolLoader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Paths;
 
 public class CsvLoaderTest {
   static final Logger logger = LoggerFactory.getLogger(CsvLoaderTest.class);

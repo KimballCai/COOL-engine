@@ -3,16 +3,14 @@ package com.nus.cool.core.iceberg.query;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nus.cool.core.cohort.QueryResult;
 import com.nus.cool.core.iceberg.aggregator.AggregatorFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.io.FileInputStream;
-
 import com.nus.cool.core.iceberg.result.BaseResult;
 import com.nus.cool.core.io.readstore.CubeRS;
 import com.nus.cool.model.CoolModel;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

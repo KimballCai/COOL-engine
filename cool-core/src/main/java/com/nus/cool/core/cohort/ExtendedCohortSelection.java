@@ -18,6 +18,9 @@
  */
 package com.nus.cool.core.cohort;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.nus.cool.core.cohort.aggregator.EventAggregator;
 import com.nus.cool.core.cohort.filter.AgeFieldFilter;
 import com.nus.cool.core.cohort.filter.FieldFilter;
@@ -32,12 +35,14 @@ import com.nus.cool.core.schema.DataType;
 import com.nus.cool.core.schema.FieldSchema;
 import com.nus.cool.core.schema.FieldType;
 import com.nus.cool.core.schema.TableSchema;
-
 import java.io.IOException;
-import java.util.*;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class ExtendedCohortSelection implements Operator {
 
@@ -46,37 +51,22 @@ public class ExtendedCohortSelection implements Operator {
   private final List<Map<String, FieldFilter>> birthFilters = new ArrayList<>();
 
   private final List<Map<String, FieldFilter>> birthAggFilters = new ArrayList<>();
-
+  private final Map<String, FieldFilter> ageFilters = new HashMap<>();
+  private final Map<String, FieldFilter> ageByFilters = new HashMap<>();
+  private final ArrayList<LinkedList<Integer>> eventOffset = new ArrayList<>();
+  private final ExtendedCohort cohort = new ExtendedCohort();
   // Record the minimal time frequencies of birth events
   private int[] minTriggerTime;
-
   // Record the maximal time frequencies of birth events
   private int[] maxTriggerTime;
-
-  private final Map<String, FieldFilter> ageFilters = new HashMap<>();
-
-  private final Map<String, FieldFilter> ageByFilters = new HashMap<>();
-
   private TableSchema tableSchema;
-
   private InputVector timeVector;
-
   private int maxDate;
-
   private boolean bUserActiveCublet;
-
   private boolean bUserActiveChunk;
-
   private boolean bAgeActiveChunk;
-
   private FieldFilter ageFilter;
-
   private ExtendedCohortQuery query;
-
-  private final ArrayList<LinkedList<Integer>> eventOffset = new ArrayList<>();
-
-  private final ExtendedCohort cohort = new ExtendedCohort();
-
   private ChunkRS chunk;
 
   public void init(TableSchema tableSchema, ExtendedCohortQuery q) {

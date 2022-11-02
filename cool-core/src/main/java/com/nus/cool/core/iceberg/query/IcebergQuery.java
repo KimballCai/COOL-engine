@@ -19,30 +19,19 @@
 
 package com.nus.cool.core.iceberg.query;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import lombok.Data;
 import lombok.Getter;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /** Iceberg query class. */
 @Data
 public class IcebergQuery {
-
-  /** Type to specify query granularity. */
-  public enum GranularityType {
-    DAY,
-    MONTH,
-    YEAR,
-    NULL
-  }
 
   private static final Log LOG = LogFactory.getLog(IcebergQuery.class);
   // dataSource path
@@ -55,11 +44,15 @@ public class IcebergQuery {
   private List<Aggregation> aggregations;
   // selected time range
   private String timeRange;
-
   // granularity for time range
   private GranularityType granularity;
   // granularity for groupBy, if the groupBy field is dataType,
   @Getter private GranularityType groupFieldsGranularity;
+
+  public static IcebergQuery read(InputStream in) throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    return mapper.readValue(in, IcebergQuery.class);
+  }
 
   @Override
   public String toString() {
@@ -83,8 +76,11 @@ public class IcebergQuery {
     return null;
   }
 
-  public static IcebergQuery read(InputStream in) throws IOException {
-    ObjectMapper mapper = new ObjectMapper();
-    return mapper.readValue(in, IcebergQuery.class);
+  /** Type to specify query granularity. */
+  public enum GranularityType {
+    DAY,
+    MONTH,
+    YEAR,
+    NULL
   }
 }

@@ -6,13 +6,6 @@ import com.nus.cool.core.cohort.ExtendedCohortQuery;
 import com.nus.cool.core.iceberg.query.IcebergQuery;
 import com.nus.cool.core.iceberg.result.BaseResult;
 import com.nus.cool.core.schema.TableSchema;
-import org.apache.commons.io.IOUtils;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FSDataOutputStream;
-import org.apache.hadoop.fs.FileStatus;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
+import org.apache.commons.io.IOUtils;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataOutputStream;
+import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 
 /** Initialize HDFS connection */
 public class HDFSConnection {
@@ -31,6 +30,10 @@ public class HDFSConnection {
   private static volatile HDFSConnection instance = null;
 
   private FileSystem fs;
+
+  private HDFSConnection() throws URISyntaxException, IOException {
+    this.connect();
+  }
 
   public static HDFSConnection getInstance() throws URISyntaxException, IOException {
     if (instance == null) {
@@ -43,8 +46,28 @@ public class HDFSConnection {
     return instance;
   }
 
-  private HDFSConnection() throws URISyntaxException, IOException {
-    this.connect();
+  public static void main(String[] args) throws URISyntaxException, IOException {
+    HDFSConnection fs = HDFSConnection.getInstance();
+
+    String localPath1 =
+        "/Users/kevin/project_java/COOL/datasetSource/health/v00000002/1807455469c.dz";
+    String dfsPath1 = "/cube/health/v1/1805b2fdb75v2.dz";
+    fs.uploadToDfs(localPath1, dfsPath1);
+
+    String localPath5 =
+        "/Users/kevin/project_java/COOL/datasetSource/health/v00000002/1807455469c.dz";
+    String dfsPath5 = "/cube/health/v1/1805b2fdb75v1.dz";
+    fs.uploadToDfs(localPath5, dfsPath5);
+
+    String localPath3 = "/Users/kevin/project_java/COOL/health/query2.json";
+    String dfsPath3 = "/tmp/1/query.json";
+    fs.uploadToDfs(localPath3, dfsPath3);
+
+    String localPath2 = "/Users/kevin/project_java/COOL/health/table.yaml";
+    String dfsPath2 = "/cube/health/v1/table.yaml";
+    fs.uploadToDfs(localPath2, dfsPath2);
+
+    //        ByteBuffer res = fs.readCublet("/health", "/1805b2fdb75.dz");
   }
 
   /**
@@ -233,29 +256,5 @@ public class HDFSConnection {
   public ByteBuffer readCublet(String path, String file) throws IOException {
     // System.out.println("start read cublet");
     return ByteBuffer.wrap(IOUtils.toByteArray(fs.open(new Path(path + file))));
-  }
-
-  public static void main(String[] args) throws URISyntaxException, IOException {
-    HDFSConnection fs = HDFSConnection.getInstance();
-
-    String localPath1 =
-        "/Users/kevin/project_java/COOL/datasetSource/health/v00000002/1807455469c.dz";
-    String dfsPath1 = "/cube/health/v1/1805b2fdb75v2.dz";
-    fs.uploadToDfs(localPath1, dfsPath1);
-
-    String localPath5 =
-        "/Users/kevin/project_java/COOL/datasetSource/health/v00000002/1807455469c.dz";
-    String dfsPath5 = "/cube/health/v1/1805b2fdb75v1.dz";
-    fs.uploadToDfs(localPath5, dfsPath5);
-
-    String localPath3 = "/Users/kevin/project_java/COOL/health/query2.json";
-    String dfsPath3 = "/tmp/1/query.json";
-    fs.uploadToDfs(localPath3, dfsPath3);
-
-    String localPath2 = "/Users/kevin/project_java/COOL/health/table.yaml";
-    String dfsPath2 = "/cube/health/v1/table.yaml";
-    fs.uploadToDfs(localPath2, dfsPath2);
-
-    //        ByteBuffer res = fs.readCublet("/health", "/1805b2fdb75.dz");
   }
 }

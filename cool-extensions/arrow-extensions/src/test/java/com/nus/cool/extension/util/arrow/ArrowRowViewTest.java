@@ -1,21 +1,19 @@
 package com.nus.cool.extension.util.arrow;
 
+import static java.util.Arrays.asList;
+
 import org.apache.arrow.memory.BufferAllocator;
 import org.apache.arrow.memory.RootAllocator;
 import org.apache.arrow.vector.IntVector;
 import org.apache.arrow.vector.VarCharVector;
 import org.apache.arrow.vector.VectorSchemaRoot;
-
 import org.apache.arrow.vector.types.pojo.ArrowType;
 import org.apache.arrow.vector.types.pojo.Field;
 import org.apache.arrow.vector.types.pojo.FieldType;
 import org.apache.arrow.vector.types.pojo.Schema;
-
-import org.testng.annotations.Test;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-
-import static java.util.Arrays.asList;
+import org.testng.annotations.Test;
 
 public class ArrowRowViewTest {
 

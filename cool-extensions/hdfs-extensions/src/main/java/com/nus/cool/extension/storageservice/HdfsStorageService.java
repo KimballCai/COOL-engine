@@ -1,13 +1,11 @@
 package com.nus.cool.extension.storageservice;
 
+import com.nus.cool.storageservice.StorageService;
+import com.nus.cool.storageservice.StorageServiceStatus;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
-
-import com.nus.cool.storageservice.StorageService;
-import com.nus.cool.storageservice.StorageServiceStatus;
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -22,7 +20,7 @@ public class HdfsStorageService implements StorageService {
   private final Path root;
 
   /** HDFS instance */
-  private FileSystem fs;
+  private final FileSystem fs;
 
   /**
    * Constructor taking the root path in HDFS under which data tranfer happens, and HDFS

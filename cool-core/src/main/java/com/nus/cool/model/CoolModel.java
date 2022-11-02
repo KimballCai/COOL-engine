@@ -21,20 +21,6 @@ package com.nus.cool.model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Objects;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.nus.cool.core.io.readstore.ChunkRS;
@@ -46,6 +32,18 @@ import com.nus.cool.core.io.readstore.FieldRS;
 import com.nus.cool.core.io.storevector.InputVector;
 import com.nus.cool.core.io.storevector.RLEInputVector;
 import com.nus.cool.core.schema.TableSchema;
+import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * CoolModel is a higher level abstraction of cubes for data. CoolModel can load the cubes from the
@@ -69,12 +67,9 @@ public class CoolModel implements Closeable {
 
   // Directory containing a set of cube files considered a repository
   private final File localRepo;
-
-  private String currentCube = "";
-
   public CoolCohortEngine cohortEngine = new CoolCohortEngine();
-
   public CoolOlapEngine olapEngine = new CoolOlapEngine();
+  private String currentCube = "";
 
   /**
    * Create a CoolModel to manage a cube repository. It supports to create a new cube repository if
@@ -93,6 +88,11 @@ public class CoolModel implements Closeable {
       // throw new FileNotFoundException("[x] Cube Repository " +
       // localRepo.getAbsolutePath() + " was not found");
     }
+  }
+
+  public static String[] listCubes(String path) {
+    File localRepoPara = new File(path);
+    return localRepoPara.list();
   }
 
   /** Load the latest version directory of a cube. caller: reload(String) and getCubeMeta(String) */
@@ -218,11 +218,6 @@ public class CoolModel implements Closeable {
     cubeMeta.readFrom(Files.map(cubeMetaFile).order(ByteOrder.nativeOrder()));
     this.cubeMetaStore.put(cube, cubeMeta);
     return cubeMeta;
-  }
-
-  public static String[] listCubes(String path) {
-    File localRepoPara = new File(path);
-    return localRepoPara.list();
   }
 
   public synchronized boolean isCubeLoaded(String cube) {

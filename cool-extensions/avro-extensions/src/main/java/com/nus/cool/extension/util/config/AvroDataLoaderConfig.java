@@ -1,14 +1,12 @@
 package com.nus.cool.extension.util.config;
 
-import java.io.File;
-import java.io.IOException;
-
 import com.nus.cool.core.schema.TableSchema;
 import com.nus.cool.core.util.config.DataLoaderConfig;
 import com.nus.cool.core.util.parser.TupleParser;
 import com.nus.cool.core.util.reader.TupleReader;
 import com.nus.cool.extension.util.reader.AvroTupleReader;
-
+import java.io.File;
+import java.io.IOException;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericRecord;
 
