@@ -18,22 +18,28 @@ public class AvroTupleReader implements TupleReader {
   private Schema srcSchema;
   private DataFileReader<GenericRecord> reader;
   private GenericRecord record;
-  
+
   public AvroTupleReader(File avroData, Schema avroSchema) throws IOException {
     this.srcSchema = avroSchema;
-    this.reader = new DataFileReader<GenericRecord>(avroData, 
-      new GenericDatumReader<GenericRecord>(this.srcSchema));
+    this.reader =
+        new DataFileReader<GenericRecord>(
+            avroData, new GenericDatumReader<GenericRecord>(this.srcSchema));
   }
 
   /**
-   * check whether all fields specified in the COOL schema 
-   *  are in Parquet file schema
+   * check whether all fields specified in the COOL schema are in Parquet file schema
+   *
    * @param requestedSchema input schema of COOL
-   * @return false if at least on field needed by COOL is not found 
-   *  in Parquet data file; true otherwise.
+   * @return false if at least on field needed by COOL is not found in Parquet data file; true
+   *     otherwise.
    */
   public boolean checkSchemaCompatibility(TableSchema requestedSchema) {
-    return requestedSchema.getFields().stream().allMatch(x -> this.srcSchema.getFields().stream().map(y -> y.name()).anyMatch(y -> y.equals(x.getName())));
+    return requestedSchema.getFields().stream()
+        .allMatch(
+            x ->
+                this.srcSchema.getFields().stream()
+                    .map(y -> y.name())
+                    .anyMatch(y -> y.equals(x.getName())));
   }
 
   @Override

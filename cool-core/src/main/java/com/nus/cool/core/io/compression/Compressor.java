@@ -19,9 +19,7 @@
 
 package com.nus.cool.core.io.compression;
 
-/**
- * Interface for compression opertors applying to various data structure used in COOL. 
- */
+/** Interface for compression opertors applying to various data structure used in COOL. */
 public interface Compressor {
 
   /**
@@ -34,11 +32,11 @@ public interface Compressor {
   /**
    * Compress a byte array.
    *
-   * @param src        the compressed data
-   * @param srcOff     the start offset in sec
-   * @param srcLen     the number of bytes to compress
-   * @param dest       the destination buffer
-   * @param destOff    the start offset in dest
+   * @param src the compressed data
+   * @param srcOff the start offset in sec
+   * @param srcLen the number of bytes to compress
+   * @param dest the destination buffer
+   * @param destOff the start offset in dest
    * @param maxDestLen the maximum number of bytes to write in dest
    * @return the compressed size
    */
@@ -47,11 +45,11 @@ public interface Compressor {
   /**
    * Compress an integer array.
    *
-   * @param src        the compressed data
-   * @param srcOff     the start offset in sec
-   * @param srcLen     the number of bytes to compress
-   * @param dest       the destination buffer
-   * @param destOff    the start offset in dest
+   * @param src the compressed data
+   * @param srcOff the start offset in sec
+   * @param srcLen the number of bytes to compress
+   * @param dest the destination buffer
+   * @param destOff the start offset in dest
    * @param maxDestLen the maximum number of bytes to write in dest
    * @return the compressed size
    */

@@ -35,9 +35,7 @@ import com.nus.cool.core.io.storevector.InputVector;
 import com.nus.cool.core.io.storevector.RLEInputVector;
 import com.nus.cool.core.schema.TableSchema;
 
-/**
- * Cohort user selection operator.
- */
+/** Cohort user selection operator. */
 public class CohortUserSection implements CohortOperator {
 
   private static Log LOG = LogFactory.getLog(CohortUserSection.class);
@@ -71,9 +69,10 @@ public class CohortUserSection implements CohortOperator {
   @Override
   public void close() throws IOException {
     sigma.close();
-    LOG.info(String.format(
-        "(totalChunks = %d, totalSkippedChunks = %d, totalUsers = %d,totalSkippedUsers = %d)",
-        totalDataChunks, totalSkippedDataChunks, totalUsers, totalSkippedUsers));
+    LOG.info(
+        String.format(
+            "(totalChunks = %d, totalSkippedChunks = %d, totalUsers = %d,totalSkippedUsers = %d)",
+            totalDataChunks, totalSkippedDataChunks, totalUsers, totalSkippedUsers));
   }
 
   @Override
@@ -90,15 +89,13 @@ public class CohortUserSection implements CohortOperator {
   }
 
   @Override
-  public void init(TableSchema schema, CohortQuery query) {
+  public void init(TableSchema schema, CohortQuery query) {}
 
-  }
-  
   @Override
   public boolean isCohortsInCublet() {
     return true;
   }
-  
+
   @Override
   public void process(MetaChunkRS metaChunk) {
     LOG.info("Processing metaChunk ...");

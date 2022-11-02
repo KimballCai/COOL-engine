@@ -29,21 +29,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * BirthCountAggregator is used to aggregate the cohort results
- * when the count of the users is needed.
+ * BirthCountAggregator is used to aggregate the cohort results when the count of the users is
+ * needed.
  */
 public class BirthCountAggregator implements EventAggregator {
 
   @Override
-  public void init(InputVector vec) {
-  }
+  public void init(InputVector vec) {}
 
   /**
    * Get the count of the users of a list which is the cohort result at a specific age.
    *
-   * @param  offset the cohort result
-   *
-   * @return  the count of the cohort result
+   * @param offset the cohort result
+   * @return the count of the cohort result
    */
   @Override
   public Double birthAggregate(List<Integer> offset) {
@@ -53,17 +51,23 @@ public class BirthCountAggregator implements EventAggregator {
   /**
    * Calculate the count of the age records.
    *
-   * @param  ageOffset the bitset to indicate the index for the effective record of the user
-   * @param  ageDelimiter the bitset to indicate the index of the age record
-   * @param  ageOff the index of the birth record
-   * @param  ageEnd the index of the last record of the user
-   * @param  ageInterval the user-specified parameter which is the age interval
-   * @param  ageFilter the filter that contains the necessary information for age
-   * @param  ageMetrics the result for the cohort
+   * @param ageOffset the bitset to indicate the index for the effective record of the user
+   * @param ageDelimiter the bitset to indicate the index of the age record
+   * @param ageOff the index of the birth record
+   * @param ageEnd the index of the last record of the user
+   * @param ageInterval the user-specified parameter which is the age interval
+   * @param ageFilter the filter that contains the necessary information for age
+   * @param ageMetrics the result for the cohort
    */
   @Override
-  public void ageAggregate(BitSet ageOffset, BitSet ageDelimiter, int ageOff, int ageEnd,
-      int ageInterval, FieldFilter ageFilter, Map<Integer, List<Double>> ageMetrics) {
+  public void ageAggregate(
+      BitSet ageOffset,
+      BitSet ageDelimiter,
+      int ageOff,
+      int ageEnd,
+      int ageInterval,
+      FieldFilter ageFilter,
+      Map<Integer, List<Double>> ageMetrics) {
     int offset = ageOffset.nextSetBit(ageOff);
     int age = 1;
     int boffset = ageDelimiter.nextSetBit(ageOff);
@@ -100,35 +104,42 @@ public class BirthCountAggregator implements EventAggregator {
   /**
    * Calculate the count of the age records.
    *
-   * @param  ageOffset the bitset to indicate the index for the effective record of the user
-   * @param  time the values of the field which denotes the action time
-   * @param  birthDay the birth date for the user
-   * @param  ageOff the index of the birth record
-   * @param  ageEnd the index of the last record of the user
-   * @param  ageInterval the user-specified parameter which is the age interval
-   * @param  unit the time unit which is always DAY, WEEK or MONTH.
-   * @param  ageFilter the filter that contains the necessary information for age
-   * @param  ageMetrics the result for the cohort
+   * @param ageOffset the bitset to indicate the index for the effective record of the user
+   * @param time the values of the field which denotes the action time
+   * @param birthDay the birth date for the user
+   * @param ageOff the index of the birth record
+   * @param ageEnd the index of the last record of the user
+   * @param ageInterval the user-specified parameter which is the age interval
+   * @param unit the time unit which is always DAY, WEEK or MONTH.
+   * @param ageFilter the filter that contains the necessary information for age
+   * @param ageMetrics the result for the cohort
    */
   @Override
-  public void ageAggregate(BitSet ageOffset, InputVector time, int birthDay, int ageOff,
-      int ageEnd, int ageInterval, TimeUnit unit, FieldFilter ageFilter,
+  public void ageAggregate(
+      BitSet ageOffset,
+      InputVector time,
+      int birthDay,
+      int ageOff,
+      int ageEnd,
+      int ageInterval,
+      TimeUnit unit,
+      FieldFilter ageFilter,
       Map<Integer, List<Double>> ageMetrics) {
-    //skip to the first day
+    // skip to the first day
     int ageDate = TimeUtils.getDateofNextTimeUnitN(birthDay, unit, 1);
     int toffset = TimeUtils.skipToDate(time, ageOff, ageEnd, ageDate);
-    int age = 0; 
+    int age = 0;
     int offset = 0;
     while (toffset < ageEnd && offset >= 0) {
       // determine the age
       do {
         age++;
-        offset = ageOffset.nextSetBit(toffset);        
+        offset = ageOffset.nextSetBit(toffset);
         if (offset < 0) {
           return;
-        } 
+        }
         ageDate = TimeUtils.getDateofNextTimeUnitN(ageDate, unit, ageInterval);
-        toffset = TimeUtils.skipToDate(time, toffset, ageEnd, ageDate);    
+        toffset = TimeUtils.skipToDate(time, toffset, ageEnd, ageDate);
       } while (!ageFilter.accept(age) || offset >= toffset);
       List<Double> metric = ageMetrics.get(age);
       if (metric == null) {
@@ -136,22 +147,29 @@ public class BirthCountAggregator implements EventAggregator {
         metric.add(new Double(0));
         ageMetrics.put(age, metric);
       }
-            
+
       int v = metric.get(0).intValue();
       do {
         ++v;
         offset = ageOffset.nextSetBit(offset + 1);
       } while (offset >= 0 && offset < toffset);
-            
+
       metric.set(0, (double) v);
-    }    
+    }
   }
 
   @Override
-  public void ageAggregateMetirc(BitSet ageOffset, InputVector time, int birthDay, int ageOff,
-      int ageEnd, int ageInterval,
-      TimeUnit unit, FieldFilter ageFilter, InputVector fieldValue,
-      Map<Integer, List<Double>> ageMetrics){
+  public void ageAggregateMetirc(
+      BitSet ageOffset,
+      InputVector time,
+      int birthDay,
+      int ageOff,
+      int ageEnd,
+      int ageInterval,
+      TimeUnit unit,
+      FieldFilter ageFilter,
+      InputVector fieldValue,
+      Map<Integer, List<Double>> ageMetrics) {
     // TODO Auto-generated method stub
   }
 }

@@ -47,30 +47,23 @@ public class CohortSelection implements Operator {
 
   private TableSchema schema;
 
-  /**
-   * Whether the cublet contains eligible tuples.
-   */
-  @Getter
-  private boolean userActiveCublet;
+  /** Whether the cublet contains eligible tuples. */
+  @Getter private boolean userActiveCublet;
 
   // /**
   // * Whether the cublet contains eligible age tuples.
   // */
   // private boolean bAgeActiveCublet;
 
-  /**
-   * Whether the chunk contains eligible tuples.
-   */
-  @Getter
-  private boolean userActiveChunk;
+  /** Whether the chunk contains eligible tuples. */
+  @Getter private boolean userActiveChunk;
 
   // /**
   // * Whether the chunk contains eligible age tuples.
   // */
   // private boolean bAgeActiveChunk;
 
-  @Getter
-  private FieldFilter appFilter;
+  @Getter private FieldFilter appFilter;
 
   private Map<String, FieldFilter> birthFilters = Maps.newHashMap();
 
@@ -82,9 +75,9 @@ public class CohortSelection implements Operator {
 
   /**
    * Init the cohort select conditions.
-
+   *
    * @param schema the table to be checks
-   * @param query  the condition of the selection
+   * @param query the condition of the selection
    */
   @Override
   public void init(TableSchema schema, CohortQuery query) {
@@ -93,27 +86,30 @@ public class CohortSelection implements Operator {
 
     // Create AppKey, birthselectors and ageselectors
     String app = query.getAppKey();
-    this.appFilter = FieldFilterFactory
-        .create(this.schema.getField(this.schema.getAppKeyFieldIdx()), null, Arrays.asList(app));
+    this.appFilter =
+        FieldFilterFactory.create(
+            this.schema.getField(this.schema.getAppKeyFieldIdx()), null, Arrays.asList(app));
 
     List<FieldSet> birthSelectors = query.getBirthSelection();
     for (FieldSet fs : birthSelectors) {
       String fieldName = fs.getField();
-      this.birthFilters.put(fieldName,
+      this.birthFilters.put(
+          fieldName,
           FieldFilterFactory.create(this.schema.getField(fieldName), null, fs.getValues()));
     }
 
     List<FieldSet> ageSelectors = query.getAgeSelection();
     for (FieldSet fs : ageSelectors) {
       String fieldName = fs.getField();
-      this.ageFilters.put(fieldName,
+      this.ageFilters.put(
+          fieldName,
           FieldFilterFactory.create(this.schema.getField(fieldName), null, fs.getValues()));
     }
   }
 
   /**
    * Check whether the metachunk(cublet) contain eligible tuples.
-
+   *
    * @param metaChunk the metachunk(cublet) to be checked
    */
   @Override
@@ -121,8 +117,9 @@ public class CohortSelection implements Operator {
     this.userActiveCublet = true;
     // this.bAgeActiveCublet = true;
 
-    boolean accept = this.appFilter
-        .accept(metaChunk.getMetaField(this.schema.getAppKeyFieldIdx(), FieldType.AppKey));
+    boolean accept =
+        this.appFilter.accept(
+            metaChunk.getMetaField(this.schema.getAppKeyFieldIdx(), FieldType.AppKey));
     if (!accept) {
       this.userActiveCublet = false;
       return;
@@ -141,7 +138,7 @@ public class CohortSelection implements Operator {
 
   /**
    * Check whether the chunk contain eligible tuples and record the corresponding fields.
-
+   *
    * @param chunk the chunk to be checked
    */
   @Override
@@ -176,7 +173,7 @@ public class CohortSelection implements Operator {
 
   /**
    * Check whether the user is born.
-
+   *
    * @param birthOff the birth offset of the user in the table
    * @return 0 indicates the user cannot be born and 1 indicates the user is born
    */
@@ -196,10 +193,10 @@ public class CohortSelection implements Operator {
 
   /**
    * Check the age tuples of a user and record which tuple is needed.
-
+   *
    * @param ageOff the offset of the start position in table
    * @param ageEnd the offset of the end position in table
-   * @param bs     the Bitset which indicate which tuple is needed
+   * @param bs the Bitset which indicate which tuple is needed
    */
   public void selectAgeActivities(int ageOff, int ageEnd, BitSet bs) {
     for (Map.Entry<String, FieldFilter> entry : this.ageFilters.entrySet()) {

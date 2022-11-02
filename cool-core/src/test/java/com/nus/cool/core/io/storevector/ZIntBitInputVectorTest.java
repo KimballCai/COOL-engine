@@ -11,9 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-/**
- * Testing ZIntBit input vector. 
- */
+/** Testing ZIntBit input vector. */
 public class ZIntBitInputVectorTest {
   @Test(dataProvider = "ZIntBitDP")
   public void zintbitinputvectorUnitTest(int[] numbers) {
@@ -21,12 +19,8 @@ public class ZIntBitInputVectorTest {
     int max = ArrayUtil.max(numbers);
     int count = numbers.length;
 
-    Histogram hist = Histogram.builder()
-        .min(min)
-        .max(max)
-        .numOfValues(count)
-        .type(CompressType.KeyHash)
-        .build();
+    Histogram hist =
+        Histogram.builder().min(min).max(max).numOfValues(count).type(CompressType.KeyHash).build();
     Compressor compressor = new ZIntBitCompressor(hist);
     int maxLen = compressor.maxCompressedLength();
     byte[] compressed = new byte[maxLen];
@@ -38,18 +32,14 @@ public class ZIntBitInputVectorTest {
     for (int i = 0; i < in.size(); i++) {
       Assert.assertEquals(in.get(i), numbers[i]);
     }
-
   }
 
-  /**
-   * Data provider.
-   */
+  /** Data provider. */
   @DataProvider(name = "ZIntBitDP")
   public Object[][] dpArgs() {
     return new Object[][] {
-        { new int[] { 0, 0, 8, 3, 4, 5, 6, 1000, 2354, 9499 } },
-        { new int[] { 1, 5, 233, 777, 333, 999, 3434 } }
+      {new int[] {0, 0, 8, 3, 4, 5, 6, 1000, 2354, 9499}},
+      {new int[] {1, 5, 233, 777, 333, 999, 3434}}
     };
   }
-
 }

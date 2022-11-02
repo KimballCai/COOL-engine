@@ -32,30 +32,22 @@ import lombok.Getter;
 
 /**
  * Range MetaField write store.
- * 
- * <p>
- * Data Layout
- * -------------
- * | min | max |
- * -------------
+ *
+ * <p>Data Layout ------------- | min | max | -------------
  */
 public class MetaRangeFieldWS implements MetaFieldWS {
 
   private final FieldType fieldType;
 
-  @Getter
-  private int min;
+  @Getter private int min;
 
-  @Getter
-  private int max;
+  @Getter private int max;
 
   private int cubeMax;
 
   private int cubeMin;
 
-  /**
-   * Create a write store of a int field for meta chunks.
-   */
+  /** Create a write store of a int field for meta chunks. */
   public MetaRangeFieldWS(FieldType type) {
     this.fieldType = type;
     this.min = Integer.MAX_VALUE;

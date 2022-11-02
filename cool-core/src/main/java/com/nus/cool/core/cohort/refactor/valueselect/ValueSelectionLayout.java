@@ -18,39 +18,37 @@ import lombok.Getter;
 @Getter
 public class ValueSelectionLayout {
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<FilterLayout> filters;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private List<FilterLayout> filters;
 
-    @JsonProperty("function")
-    private AggregateType functionType;
+  @JsonProperty("function")
+  private AggregateType functionType;
 
-    @JsonProperty("observedSchema")
-    private String chosenSchema;
+  @JsonProperty("observedSchema")
+  private String chosenSchema;
 
-    @JsonIgnore
-    private HashSet<String> schemaList;
+  @JsonIgnore private HashSet<String> schemaList;
 
-    public ValueSelection generate(){
-        List<Filter> filterList = null;
-        if(this.filters != null) {
-            filterList = new ArrayList<>();
-            for(FilterLayout layout : this.filters){
-                filterList.add(layout.generateFilter());
-            }
-        }
-        AggregateFunc func =  AggregateFactory.generateAggregate(functionType, chosenSchema);
-        return new ValueSelection(filterList, func);
+  public ValueSelection generate() {
+    List<Filter> filterList = null;
+    if (this.filters != null) {
+      filterList = new ArrayList<>();
+      for (FilterLayout layout : this.filters) {
+        filterList.add(layout.generateFilter());
+      }
     }
+    AggregateFunc func = AggregateFactory.generateAggregate(functionType, chosenSchema);
+    return new ValueSelection(filterList, func);
+  }
 
-    public List<String> getSchemaList(){
-        if(schemaList == null){
-            schemaList = new HashSet<>();
-            if(this.filters == null) return new ArrayList<>(schemaList);
-            for(FilterLayout layout: this.filters){
-                schemaList.add(layout.getFieldSchema());
-            }
-        }
-        return new ArrayList<>(schemaList);
+  public List<String> getSchemaList() {
+    if (schemaList == null) {
+      schemaList = new HashSet<>();
+      if (this.filters == null) return new ArrayList<>(schemaList);
+      for (FilterLayout layout : this.filters) {
+        schemaList.add(layout.getFieldSchema());
+      }
     }
-    
+    return new ArrayList<>(schemaList);
+  }
 }

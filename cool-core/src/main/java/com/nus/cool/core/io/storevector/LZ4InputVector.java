@@ -26,9 +26,7 @@ import java.nio.charset.Charset;
 import net.jpountz.lz4.LZ4Factory;
 import net.jpountz.lz4.LZ4FastDecompressor;
 
-/**
- * Input vector of an LZ4 compressed structure.
- */
+/** Input vector of an LZ4 compressed structure. */
 public class LZ4InputVector implements InputVector {
 
   private int zLen;
@@ -64,9 +62,7 @@ public class LZ4InputVector implements InputVector {
     this.decoded = true;
   }
 
-  /**
-   * number of items.
-   */
+  /** number of items. */
   @Override
   public int size() {
     if (!decoded) {
@@ -113,9 +109,7 @@ public class LZ4InputVector implements InputVector {
     buffer.limit(oldLimit);
   }
 
-  /**
-   * Return the string value given its index.
-   */
+  /** Return the string value given its index. */
   public String getString(int index, Charset charset) {
     if (!decoded) {
       decode();

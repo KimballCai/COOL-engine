@@ -11,12 +11,9 @@ import java.util.Collections;
 import static java.util.Arrays.asList;
 import org.apache.arrow.memory.*;
 
-
 import lombok.AllArgsConstructor;
 
-/**
- * Encapsulation of a record in an Arrow record batch
- */
+/** Encapsulation of a record in an Arrow record batch */
 @AllArgsConstructor
 public class ArrowRowView {
   private final VectorSchemaRoot root;
@@ -27,11 +24,11 @@ public class ArrowRowView {
   }
 
   public Optional<Object> getField(String name) {
-    return Optional.ofNullable(valid() ? root.getVector(name) : null)
-            .map(x -> x.getObject(index));
+    return Optional.ofNullable(valid() ? root.getVector(name) : null).map(x -> x.getObject(index));
   }
 
-  public static <T> T newVector(Class<T> c, String name, ArrowType type, BufferAllocator allocator) {
+  public static <T> T newVector(
+      Class<T> c, String name, ArrowType type, BufferAllocator allocator) {
     return c.cast(FieldType.nullable(type).createNewSingleVector(name, allocator, null));
   }
 }

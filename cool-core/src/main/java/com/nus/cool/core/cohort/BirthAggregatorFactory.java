@@ -31,9 +31,7 @@ import com.nus.cool.core.cohort.aggregator.UserCountAggregatorEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Factory class of birth aggregators.
- */
+/** Factory class of birth aggregators. */
 public class BirthAggregatorFactory {
 
   private static final Map<String, EventAggregator> aggregators = new HashMap<>();

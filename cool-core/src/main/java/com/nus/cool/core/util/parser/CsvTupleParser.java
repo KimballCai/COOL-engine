@@ -19,9 +19,7 @@
 
 package com.nus.cool.core.util.parser;
 
-/**
- * CsvTupleParser is a parser to parse a tuple from a csv file to array.
- */
+/** CsvTupleParser is a parser to parse a tuple from a csv file to array. */
 public class CsvTupleParser implements TupleParser {
   /**
    * Parse csv tuple to array.

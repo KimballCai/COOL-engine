@@ -35,17 +35,11 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 /**
- * Range index, used to store chunk data for two fieldTypes, including
- * ActionTime, Metric.
- * <p>
- * Data layout
- * ------------------------------
- * | codec | min | max | values |
- * ------------------------------
- * where
- * min = min of the values
- * max = max of the values
- * values = column data (compressed)
+ * Range index, used to store chunk data for two fieldTypes, including ActionTime, Metric.
+ *
+ * <p>Data layout ------------------------------ | codec | min | max | values |
+ * ------------------------------ where min = min of the values max = max of the values values =
+ * column data (compressed)
  */
 public class DataRangeFieldWS implements DataFieldWS {
 
@@ -58,7 +52,7 @@ public class DataRangeFieldWS implements DataFieldWS {
   /**
    * Constructor for DataRangeFieldWS.
    *
-   * @param fieldType  fieldtype
+   * @param fieldType fieldtype
    * @param compressor compressor
    */
   public DataRangeFieldWS(FieldType fieldType, OutputCompressor compressor) {
@@ -90,7 +84,7 @@ public class DataRangeFieldWS implements DataFieldWS {
   @Override
   public int writeTo(DataOutput out) throws IOException {
     int bytesWritten = 0;
-    int[] key = { Integer.MAX_VALUE, Integer.MIN_VALUE };
+    int[] key = {Integer.MAX_VALUE, Integer.MIN_VALUE};
     // key[0] Min Key[1] Max
     int[] value = new int[this.buffer.size() / Ints.BYTES];
 
@@ -117,13 +111,14 @@ public class DataRangeFieldWS implements DataFieldWS {
     // Write values, i.e. the data within the column
     int count = value.length;
     int rawSize = count * Ints.BYTES;
-    Histogram hist = Histogram.builder()
-        .min(key[0])
-        .max(key[1])
-        .numOfValues(count)
-        .rawSize(rawSize)
-        .type(CompressType.ValueFast)
-        .build();
+    Histogram hist =
+        Histogram.builder()
+            .min(key[0])
+            .max(key[1])
+            .numOfValues(count)
+            .rawSize(rawSize)
+            .type(CompressType.ValueFast)
+            .build();
     this.compressor.reset(hist, value, 0, value.length);
     bytesWritten += this.compressor.writeTo(out);
     return bytesWritten;

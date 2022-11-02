@@ -33,46 +33,29 @@ import lombok.Getter;
 
 /**
  * MetaChunk read store
- * <p>
- * MetaChunk layout
- * ------------------------------------------
- * | MetaChunkData | header | header offset |
- * ------------------------------------------
- * <p>
- * MetaChunkData layout
- * -------------------------------------
- * | field 1 | field 2 | ... | field N |
- * -------------------------------------
- * <p>
- * header layout
- * ---------------------------------------
- * | ChunkType | #fields | field offsets |
- * ---------------------------------------
- * where
- * ChunkType = ChunkType.META
- * #fields = number of fields
+ *
+ * <p>MetaChunk layout ------------------------------------------ | MetaChunkData | header | header
+ * offset | ------------------------------------------
+ *
+ * <p>MetaChunkData layout ------------------------------------- | field 1 | field 2 | ... | field N
+ * | -------------------------------------
+ *
+ * <p>header layout --------------------------------------- | ChunkType | #fields | field offsets |
+ * --------------------------------------- where ChunkType = ChunkType.META #fields = number of
+ * fields
  */
 public class MetaChunkRS implements Input {
 
-  /**
-   * TableSchema for this meta chunk.
-   */
-  @Getter
-  private TableSchema schema;
+  /** TableSchema for this meta chunk. */
+  @Getter private TableSchema schema;
 
-  /**
-   * charset defined in table schema.
-   */
+  /** charset defined in table schema. */
   private Charset charset;
 
-  /**
-   * stored data byte buffer.
-   */
+  /** stored data byte buffer. */
   private ByteBuffer buffer;
 
-  /**
-   * offsets for fields in this meta chunk.
-   */
+  /** offsets for fields in this meta chunk. */
   private int[] fieldOffsets;
 
   private Map<Integer, MetaFieldRS> fields = Maps.newHashMap();

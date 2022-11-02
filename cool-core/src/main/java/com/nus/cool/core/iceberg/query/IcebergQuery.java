@@ -32,15 +32,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.Getter;
 
-/**
- * Iceberg query class.
- */
+/** Iceberg query class. */
 @Data
 public class IcebergQuery {
 
-  /**
-   * Type to specify query granularity.
-   */
+  /** Type to specify query granularity. */
   public enum GranularityType {
     DAY,
     MONTH,
@@ -63,8 +59,7 @@ public class IcebergQuery {
   // granularity for time range
   private GranularityType granularity;
   // granularity for groupBy, if the groupBy field is dataType,
-  @Getter
-  private GranularityType groupFieldsGranularity;
+  @Getter private GranularityType groupFieldsGranularity;
 
   @Override
   public String toString() {
@@ -77,9 +72,7 @@ public class IcebergQuery {
     return null;
   }
 
-  /**
-   * Pretty print of icerberg query.
-   */
+  /** Pretty print of icerberg query. */
   public String toPrettyString() {
     ObjectMapper mapper = new ObjectMapper();
     try {

@@ -33,20 +33,16 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.collect.Maps;
 
-/**
- * Scheme of a cube.
- */
+/** Scheme of a cube. */
 public class CubeSchema {
 
   private List<Dimension> dimensions;
 
   private List<Measure> measures;
 
-  @JsonIgnore
-  private final Map<String, Integer> dimenMap = Maps.newHashMap();
+  @JsonIgnore private final Map<String, Integer> dimenMap = Maps.newHashMap();
 
-  @JsonIgnore
-  private final Map<String, Integer> measureMap = Maps.newHashMap();
+  @JsonIgnore private final Map<String, Integer> measureMap = Maps.newHashMap();
 
   public static CubeSchema read(InputStream in) throws IOException {
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
@@ -57,16 +53,12 @@ public class CubeSchema {
     return read(new FileInputStream(schemaFile));
   }
 
-  /**
-   * Return the dimensions.
-   */
+  /** Return the dimensions. */
   public List<Dimension> getDimensions() {
     return dimensions;
   }
 
-  /**
-   * Get a dimension by its name.
-   */
+  /** Get a dimension by its name. */
   public Dimension getDimension(String name) {
     if (dimenMap.containsKey(name)) {
       return dimensions.get(dimenMap.get(name));
@@ -74,9 +66,7 @@ public class CubeSchema {
     return null;
   }
 
-  /**
-   * Set the set of dimensions.
-   */
+  /** Set the set of dimensions. */
   public void setDimensions(List<Dimension> dimensions) {
     this.dimensions = dimensions;
     int i = 0;
@@ -89,9 +79,7 @@ public class CubeSchema {
     return measures;
   }
 
-  /**
-   * Get a measure by name.
-   */
+  /** Get a measure by name. */
   public Measure getMeasure(String measureName) {
     if (measureMap.containsKey(measureName)) {
       return measures.get(measureMap.get(measureName));
@@ -99,9 +87,7 @@ public class CubeSchema {
     return null;
   }
 
-  /**
-   * Set measures.
-   */
+  /** Set measures. */
   public void setMeasures(List<Measure> measures) {
     this.measures = measures;
     int i = 0;

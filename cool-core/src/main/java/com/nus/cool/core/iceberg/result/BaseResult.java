@@ -29,9 +29,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Base result class.
- */
+/** Base result class. */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -73,9 +71,7 @@ public class BaseResult {
     }
   }
 
-  /**
-   * Merge two base results.
-   */
+  /** Merge two base results. */
   public static List<BaseResult> merge(List<BaseResult> results) {
     BitSet bs = new BitSet();
     bs.set(0, results.size());

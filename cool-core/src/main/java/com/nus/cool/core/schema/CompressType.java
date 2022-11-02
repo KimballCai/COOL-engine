@@ -19,34 +19,21 @@
 
 package com.nus.cool.core.schema;
 
-/**
- * CompressType defines the types for different kinds of values.
- */
+/** CompressType defines the types for different kinds of values. */
 public enum CompressType {
 
-  /**
-   * Compress type for finger print of data store in HashMetaField.
-   */
+  /** Compress type for finger print of data store in HashMetaField. */
   KeyFinger,
 
-  /**
-   * Compress type for data store in HashMetaField.
-   */
+  /** Compress type for data store in HashMetaField. */
   KeyString,
 
-  /**
-   * Compress type for keys of HashField.
-   */
+  /** Compress type for keys of HashField. */
   KeyHash,
 
-  /**
-   * Compress type for values of hashField.
-   */
+  /** Compress type for values of hashField. */
   Value,
 
-  /**
-   * Compress type for values of rangeField.
-   */
+  /** Compress type for values of rangeField. */
   ValueFast
-
 }

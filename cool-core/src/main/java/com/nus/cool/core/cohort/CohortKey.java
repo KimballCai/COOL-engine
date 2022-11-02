@@ -23,31 +23,23 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.List;
 
-/**
- * CohortKey defines the characteristic of a cohort.
- */
+/** CohortKey defines the characteristic of a cohort. */
 public class CohortKey {
 
-  /**
-   * cohort ID.
-   */
+  /** cohort ID. */
   private int cohort;
 
-  /**
-   * The age of the cohort.
-   */
+  /** The age of the cohort. */
   private int age;
 
-  /**
-   * The users in the cohort.
-   */
+  /** The users in the cohort. */
   private List<String> userlist;
 
   /**
    * construction function of the class.
-
-   * @param cohort   the cohort id of the target cohort
-   * @param age      the age of the target cohort
+   *
+   * @param cohort the cohort id of the target cohort
+   * @param age the age of the target cohort
    * @param userlist the Userlist of the target cohort
    */
   public CohortKey(int cohort, int age, List<String> userlist) {
@@ -59,9 +51,9 @@ public class CohortKey {
 
   /**
    * construction function of the class.
-
+   *
    * @param cohort the cohort id of the target cohort
-   * @param age    the age of the target cohort
+   * @param age the age of the target cohort
    */
   public CohortKey(int cohort, int age) {
     checkArgument(cohort >= 0 && age >= 0);
@@ -82,9 +74,7 @@ public class CohortKey {
     return age;
   }
 
-  /**
-   * The hash code of the cohort, it could be used to identify cohorts.
-   */
+  /** The hash code of the cohort, it could be used to identify cohorts. */
   @Override
   public int hashCode() {
     int result = 1;
@@ -95,7 +85,7 @@ public class CohortKey {
 
   /**
    * Whether the target CohortKey class equals this object.
-
+   *
    * @return 0 inidcates they are different and 1 indicates they are the same
    */
   @Override
@@ -108,9 +98,7 @@ public class CohortKey {
     return equal;
   }
 
-  /**
-   * Get the string of cohort id and age.
-   */
+  /** Get the string of cohort id and age. */
   @Override
   public String toString() {
     return String.format("(c = %d, age = %d)", cohort, age);

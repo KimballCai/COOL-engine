@@ -26,9 +26,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Aggregation result class.
- */
+/** Aggregation result class. */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -46,12 +44,9 @@ public class AggregatorResult {
 
   private Float countDistinct;
 
-  @JsonIgnore
-  private Set<String> distinctSet = new HashSet<>();
+  @JsonIgnore private Set<String> distinctSet = new HashSet<>();
 
-  /**
-   * Merge aggregation results.
-   */
+  /** Merge aggregation results. */
   public void merge(AggregatorResult res) {
     if (this.countDistinct != null) {
       this.distinctSet.addAll(res.getDistinctSet());

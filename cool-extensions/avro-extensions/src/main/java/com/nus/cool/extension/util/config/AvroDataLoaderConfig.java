@@ -27,8 +27,7 @@ public class AvroDataLoaderConfig extends DataLoaderConfig {
   }
 
   @Override
-  public TupleReader createTupleReader(File dataFile)
-    throws IOException {
+  public TupleReader createTupleReader(File dataFile) throws IOException {
     return new AvroTupleReader(dataFile, this.schema);
   }
 
@@ -38,14 +37,15 @@ public class AvroDataLoaderConfig extends DataLoaderConfig {
       @Override
       public String[] parse(Object tuple) {
         if (!(tuple instanceof GenericRecord)) {
-          System.out.println(
-            "Unexpected tuple type: not avro record");
+          System.out.println("Unexpected tuple type: not avro record");
           return new String[0]; // return an empty string
         }
 
         GenericRecord avroTuple = (GenericRecord) tuple;
 
-        return tableSchema.getFields().stream().map(x -> avroTuple.get(x.getName()).toString()).toArray(String[]::new);
+        return tableSchema.getFields().stream()
+            .map(x -> avroTuple.get(x.getName()).toString())
+            .toArray(String[]::new);
       }
     };
   }

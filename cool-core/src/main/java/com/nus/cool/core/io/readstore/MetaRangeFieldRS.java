@@ -22,10 +22,7 @@ package com.nus.cool.core.io.readstore;
 import com.nus.cool.core.schema.FieldType;
 import java.nio.ByteBuffer;
 
-
-/**
- * Meta RangeField ReadStore.
- */
+/** Meta RangeField ReadStore. */
 public class MetaRangeFieldRS implements MetaFieldRS {
 
   private FieldType fieldType;

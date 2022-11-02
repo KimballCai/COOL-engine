@@ -4,9 +4,7 @@ import com.nus.cool.core.io.storevector.InputVector;
 import com.nus.cool.core.schema.FieldType;
 import java.nio.ByteBuffer;
 
-/**
- * Invariant RangeField ReadStore.
- */
+/** Invariant RangeField ReadStore. */
 public class DataInvariantRangeFieldRS implements FieldRS {
 
   private final MetaUserFieldRS userMetaField;
@@ -20,13 +18,16 @@ public class DataInvariantRangeFieldRS implements FieldRS {
   /**
    * Constructor of DataInvariantRangeFieldRS.
    *
-   * @param fieldType     fieldType
-   * @param invariantIdx  the index of this invariant schema
+   * @param fieldType fieldType
+   * @param invariantIdx the index of this invariant schema
    * @param userMetaField userMetaField
    * @param userDataField userDataField
    */
-  public DataInvariantRangeFieldRS(FieldType fieldType, int invariantIdx,
-      MetaUserFieldRS userMetaField, DataHashFieldRS userDataField) {
+  public DataInvariantRangeFieldRS(
+      FieldType fieldType,
+      int invariantIdx,
+      MetaUserFieldRS userMetaField,
+      DataHashFieldRS userDataField) {
     this.userMetaField = userMetaField;
     this.userDataField = userDataField;
     this.fieldType = fieldType;
@@ -74,5 +75,4 @@ public class DataInvariantRangeFieldRS implements FieldRS {
     // TODO Auto-generated method stub
 
   }
-
 }

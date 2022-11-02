@@ -19,44 +19,28 @@
 
 package com.nus.cool.core.schema;
 
-/**
- * FieldType defines the types of fields.
- */
+/** FieldType defines the types of fields. */
 public enum FieldType {
 
-  /**
-   * This field type used to distinguish platform for cohort query.
-   */
+  /** This field type used to distinguish platform for cohort query. */
   AppKey,
 
-  /**
-   * This field type used to distinguish user for cohort query.
-   */
+  /** This field type used to distinguish user for cohort query. */
   UserKey,
 
-  /**
-   * Date format data, store as numeric.
-   */
+  /** Date format data, store as numeric. */
   ActionTime,
 
-  /**
-   * String value.
-   */
+  /** String value. */
   Action,
 
-  /**
-   * String value.
-   */
+  /** String value. */
   Segment,
 
-  /**
-   * Numeric.
-   */
+  /** Numeric. */
   Metric;
 
-  /**
-   * Translate an integer to its corresponding field type.
-   */
+  /** Translate an integer to its corresponding field type. */
   public static FieldType fromInteger(int i) {
     switch (i) {
       case 0:

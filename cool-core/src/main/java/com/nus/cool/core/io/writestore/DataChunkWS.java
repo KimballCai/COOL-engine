@@ -34,41 +34,26 @@ import java.io.IOException;
 
 /**
  * DataChunk write store
- * <p>
- * DataChunk layout
- * ---------------------------------------------
- * | chunk data | chunk header | header offset |
- * ---------------------------------------------
- * <p>
- * chunk data layout
+ *
+ * <p>DataChunk layout --------------------------------------------- | chunk data | chunk header |
+ * header offset | ---------------------------------------------
+ *
+ * <p>chunk data layout ------------------------------------- | field 1 | field 2 | ... | field N |
  * -------------------------------------
- * | field 1 | field 2 | ... | field N |
- * -------------------------------------
- * <p>
- * chunk header layout
- * ---------------------------------------------------
- * | chunk type | #records | #fields | field offsets |
- * ---------------------------------------------------
- * where
- * ChunkType == ChunkType.DATA
- * #records == number of records
- * #fields == number of fields
+ *
+ * <p>chunk header layout --------------------------------------------------- | chunk type |
+ * #records | #fields | field offsets | --------------------------------------------------- where
+ * ChunkType == ChunkType.DATA #records == number of records #fields == number of fields
  */
 public class DataChunkWS implements Output {
 
-  /**
-   * Chunk beginning offset, don't update.
-   */
+  /** Chunk beginning offset, don't update. */
   private final int chunkBeginOffset;
 
-  /**
-   * Number of records.
-   */
+  /** Number of records. */
   private int recordCount;
 
-  /**
-   * Fields in data chunk.
-   */
+  /** Fields in data chunk. */
   private final DataFieldWS[] dataFields;
 
   /**
@@ -81,15 +66,14 @@ public class DataChunkWS implements Output {
     this.dataFields = checkNotNull(fields);
     checkArgument(offset >= 0 && fields.length > 0);
     this.chunkBeginOffset = offset;
-
   }
 
   /**
    * Data Chunk Builder.
    *
-   * @param schema     tableSchema
+   * @param schema tableSchema
    * @param metaFields MetaFields
-   * @param offset     Offset in out stream
+   * @param offset Offset in out stream
    * @return DataChunkWs instance
    */
   public static DataChunkWS newDataChunk(TableSchema schema, MetaFieldWS[] metaFields, int offset) {
@@ -110,8 +94,9 @@ public class DataChunkWS implements Output {
           if (schema.isInvariantField(i)) {
             fields[i] = new DataInvariantHashFieldWS(fieldType, metaFields[i]);
           } else {
-            fields[i] = new DataHashFieldWS(fieldType, metaFields[i],
-                compressor, schema.getField(i).isPreCal());
+            fields[i] =
+                new DataHashFieldWS(
+                    fieldType, metaFields[i], compressor, schema.getField(i).isPreCal());
           }
           break;
         case ActionTime:
@@ -143,9 +128,8 @@ public class DataChunkWS implements Output {
   }
 
   /**
-   * Write DataChunkWS to out stream and return bytes written
-   * 1. Write field
-   * 2. Write header [chunkType, #Records, #Fields]
+   * Write DataChunkWS to out stream and return bytes written 1. Write field 2. Write header
+   * [chunkType, #Records, #Fields]
    *
    * @param out stream can write data to output stream
    * @return bytes written

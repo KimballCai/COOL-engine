@@ -52,10 +52,8 @@ public class ZInt32Store implements ZIntStore, InputVector {
 
   @Override
   public int find(int key) {
-    if(this.sorted)
-      return IntBuffers.binarySearch(this.buffer, 0, this.buffer.limit(), key);
-    else
-      return IntBuffers.traverseSearch(this.buffer, 0, this.buffer.limit(), key);
+    if (this.sorted) return IntBuffers.binarySearch(this.buffer, 0, this.buffer.limit(), key);
+    else return IntBuffers.traverseSearch(this.buffer, 0, this.buffer.limit(), key);
   }
 
   @Override

@@ -3,9 +3,7 @@ package com.nus.cool.core.util.writer;
 import java.io.IOException;
 import java.util.Arrays;
 
-/**
- * Command line interface data writer.
- */
+/** Command line interface data writer. */
 public class CliDataWriter implements DataWriter {
 
   @Override
@@ -17,8 +15,7 @@ public class CliDataWriter implements DataWriter {
   @Override
   public boolean add(Object tuple) throws IOException {
     if (!(tuple instanceof String[])) {
-      System.out.println(
-          "Unexpected tuple type: tuple not in valid type for DataWriter");
+      System.out.println("Unexpected tuple type: tuple not in valid type for DataWriter");
       return false;
     }
     String[] fields = (String[]) tuple;

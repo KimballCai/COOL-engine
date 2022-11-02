@@ -23,23 +23,17 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-/**
- * structure representing a dimension (column).
- */
+/** structure representing a dimension (column). */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Dimension {
 
-  /**
-   * Type of a dimension.
-   */
+  /** Type of a dimension. */
   public static enum DimensionType {
-
     NORMAL,
 
     PROPERTY,
 
     CALC
-
   }
 
   private DimensionType type;

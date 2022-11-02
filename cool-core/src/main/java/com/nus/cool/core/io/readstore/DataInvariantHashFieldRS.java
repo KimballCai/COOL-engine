@@ -4,9 +4,7 @@ import com.nus.cool.core.io.storevector.InputVector;
 import com.nus.cool.core.schema.FieldType;
 import java.nio.ByteBuffer;
 
-/**
- * Invariant HashField ReadStore.
- */
+/** Invariant HashField ReadStore. */
 public class DataInvariantHashFieldRS implements FieldRS {
 
   private final MetaUserFieldRS userMetaField;
@@ -17,7 +15,10 @@ public class DataInvariantHashFieldRS implements FieldRS {
 
   private final int invariantIdx;
 
-  DataInvariantHashFieldRS(FieldType fieldType, int invariantIdx, MetaUserFieldRS userMetaField,
+  DataInvariantHashFieldRS(
+      FieldType fieldType,
+      int invariantIdx,
+      MetaUserFieldRS userMetaField,
       DataHashFieldRS userDataField) {
     this.fieldType = fieldType;
     this.userMetaField = userMetaField;
@@ -38,8 +39,7 @@ public class DataInvariantHashFieldRS implements FieldRS {
 
   // -------------- above method is no used in new Version -----------------
   @Override
-  public void readFrom(ByteBuffer buffer) {
-  }
+  public void readFrom(ByteBuffer buffer) {}
 
   @Override
   public InputVector getKeyVector() {
@@ -64,5 +64,4 @@ public class DataInvariantHashFieldRS implements FieldRS {
     // TODO Auto-generated method stub
     return 0;
   }
-
 }

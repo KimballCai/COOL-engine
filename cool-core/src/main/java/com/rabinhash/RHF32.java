@@ -20,7 +20,7 @@ import java.security.DigestException;
 import java.security.MessageDigestSpi;
 
 /**
- * <p>Provides a {@link java.security.MessageDigest} based on {@link RabinHashFunction32}.</p>
+ * Provides a {@link java.security.MessageDigest} based on {@link RabinHashFunction32}.
  *
  * @author Sean Owen
  * @version 2.0
@@ -39,7 +39,7 @@ public final class RHF32 extends MessageDigestSpi implements Cloneable {
   }
 
   protected void engineUpdate(final byte input) {
-    hash = rhf.hash(new byte[]{input}, 0, 1, hash);
+    hash = rhf.hash(new byte[] {input}, 0, 1, hash);
   }
 
   protected void engineUpdate(final byte[] input, final int offset, final int len) {
@@ -54,9 +54,9 @@ public final class RHF32 extends MessageDigestSpi implements Cloneable {
   }
 
   /**
-   * @param buf    buffer into which to write the digest
+   * @param buf buffer into which to write the digest
    * @param offset offset into buffer at which to start writing
-   * @param len    (not used)
+   * @param len (not used)
    * @return 4
    * @throws DigestException if len is less than 4
    */
@@ -80,6 +80,4 @@ public final class RHF32 extends MessageDigestSpi implements Cloneable {
     buf[offset + 2] = (byte) (hash >> 8);
     buf[offset + 3] = (byte) hash;
   }
-
 }
-

@@ -40,16 +40,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Hash-like indexed field, used to store chunk data for four fieldTypes.
- * including AppKey, UserKey,
+ * Hash-like indexed field, used to store chunk data for four fieldTypes. including AppKey, UserKey,
  * Action, Segment
- * <p>
- * Data Layout
- * -----------------
- * | keys | values |
- * -----------------
- * where
- * keys = globalIDs
+ *
+ * <p>Data Layout ----------------- | keys | values | ----------------- where keys = globalIDs
  * (compressed) values = column data, stored as localIDs (compressed)
  */
 public class DataHashFieldWS implements DataFieldWS {
@@ -60,11 +54,7 @@ public class DataHashFieldWS implements DataFieldWS {
 
   private final FieldType fieldType;
 
-  /**
-   * Convert globalID to localID.
-   * Key: globalID
-   * Value: localID
-   */
+  /** Convert globalID to localID. Key: globalID Value: localID */
   private final Map<Integer, Integer> idMap = Maps.newTreeMap();
 
   // buffer used to store global ID
@@ -82,8 +72,8 @@ public class DataHashFieldWS implements DataFieldWS {
    * @param compressor compressor
    * @param preCal is preCalculated
    */
-  public DataHashFieldWS(FieldType fieldType, MetaFieldWS metaField, OutputCompressor compressor,
-      boolean preCal) {
+  public DataHashFieldWS(
+      FieldType fieldType, MetaFieldWS metaField, OutputCompressor compressor, boolean preCal) {
     this.fieldType = fieldType;
     this.metaField = checkNotNull(metaField);
     this.compressor = checkNotNull(compressor);
@@ -151,14 +141,15 @@ public class DataHashFieldWS implements DataFieldWS {
     int max = ArrayUtil.max(key);
     int count = key.length;
     int rawSize = count * Ints.BYTES;
-    Histogram hist = Histogram.builder()
-        .sorted(true)
-        .min(min)
-        .max(max)
-        .numOfValues(count)
-        .rawSize(rawSize)
-        .type(CompressType.KeyHash)
-        .build();
+    Histogram hist =
+        Histogram.builder()
+            .sorted(true)
+            .min(min)
+            .max(max)
+            .numOfValues(count)
+            .rawSize(rawSize)
+            .type(CompressType.KeyHash)
+            .build();
     this.compressor.reset(hist, key, 0, key.length);
     bytesWritten += this.compressor.writeTo(out);
 
@@ -180,15 +171,16 @@ public class DataHashFieldWS implements DataFieldWS {
       max = ArrayUtil.max(value);
       count = value.length;
       rawSize = count * Ints.BYTES;
-      hist = Histogram.builder()
-          // .sorted(this.fieldType == FieldType.AppKey || this.fieldType ==
-          // FieldType.UserKey)
-          .min(min)
-          .max(max)
-          .numOfValues(count)
-          .rawSize(rawSize)
-          .type(CompressType.Value)
-          .build();
+      hist =
+          Histogram.builder()
+              // .sorted(this.fieldType == FieldType.AppKey || this.fieldType ==
+              // FieldType.UserKey)
+              .min(min)
+              .max(max)
+              .numOfValues(count)
+              .rawSize(rawSize)
+              .type(CompressType.Value)
+              .build();
       this.compressor.reset(hist, value, 0, value.length);
       bytesWritten += this.compressor.writeTo(out);
     }

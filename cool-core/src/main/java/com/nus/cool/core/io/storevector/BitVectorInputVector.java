@@ -22,9 +22,7 @@ package com.nus.cool.core.io.storevector;
 import java.nio.ByteBuffer;
 import java.util.BitSet;
 
-/**
- * Input vector of a bit vector structure.
- */
+/** Input vector of a bit vector structure. */
 public class BitVectorInputVector implements InputVector {
 
   private long[] words;

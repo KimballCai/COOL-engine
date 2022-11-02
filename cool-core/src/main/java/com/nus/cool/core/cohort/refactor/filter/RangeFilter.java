@@ -10,120 +10,113 @@ import com.nus.cool.core.io.readstore.MetaChunkRS;
 
 import lombok.Getter;
 
-/**
- * Range filter class
- */
+/** Range filter class */
 public class RangeFilter implements Filter {
 
-    // Some static defined parameter
-    private static final FilterType type = FilterType.Range;
-    private static final String MinLimit = "MIN";
-    private static final String MaxLimit = "MAX";
-    @Getter
-    private static final String splitChar = "-";
+  // Some static defined parameter
+  private static final FilterType type = FilterType.Range;
+  private static final String MinLimit = "MIN";
+  private static final String MaxLimit = "MAX";
+  @Getter private static final String splitChar = "-";
 
-    // accepted range
-    @Getter
-    private final List<Scope> acceptRangeList;
+  // accepted range
+  @Getter private final List<Scope> acceptRangeList;
 
-    // filter schema
-    private final String fieldSchema;
+  // filter schema
+  private final String fieldSchema;
 
-    public RangeFilter(String fieldSchema, String[] acceptValues) {
-        this.fieldSchema = fieldSchema;
-        this.acceptRangeList = new ArrayList<Scope>();
-        for (String acceptValue : acceptValues) {
-            acceptRangeList.add(RangeFilter.parse(acceptValue));
-        }
+  public RangeFilter(String fieldSchema, String[] acceptValues) {
+    this.fieldSchema = fieldSchema;
+    this.acceptRangeList = new ArrayList<Scope>();
+    for (String acceptValue : acceptValues) {
+      acceptRangeList.add(RangeFilter.parse(acceptValue));
     }
+  }
 
-    /**
-     * Need add Scope in the next steps
-     * 
-     * @param fieldSchema String
-     */
-    public RangeFilter(String fieldSchema, List<Scope> scopeList) {
-        this.fieldSchema = fieldSchema;
-        this.acceptRangeList = scopeList;
+  /**
+   * Need add Scope in the next steps
+   *
+   * @param fieldSchema String
+   */
+  public RangeFilter(String fieldSchema, List<Scope> scopeList) {
+    this.fieldSchema = fieldSchema;
+    this.acceptRangeList = scopeList;
+  }
+
+  @Override
+  public Boolean accept(Integer value) throws RuntimeException {
+    for (Scope u : acceptRangeList) {
+      if (u.isInScope(value)) {
+        return true;
+      }
     }
+    return false;
+  }
 
-    @Override
-    public Boolean accept(Integer value) throws RuntimeException {
-        for (Scope u : acceptRangeList) {
-            if (u.isInScope(value)) {
-                return true;
-            }
-        }
-        return false;
+  @Override
+  public BitSet accept(List<Integer> values) throws RuntimeException {
+    BitSet res = new BitSet(values.size());
+    for (int i = 0; i < values.size(); i++) {
+      if (accept(values.get(i))) {
+        res.set(i);
+      }
     }
+    return res;
+  }
 
-    @Override
-    public BitSet accept(List<Integer> values) throws RuntimeException {
-        BitSet res = new BitSet(values.size());
-        for (int i = 0; i < values.size(); i++) {
-            if (accept(values.get(i))) {
-                res.set(i);
-            }
-        }
-        return res;
+  @Override
+  public boolean accept(Scope scope) throws RuntimeException {
+    for (Scope u : acceptRangeList) {
+      if (u.isSubset(scope)) {
+        return true;
+      }
     }
+    return false;
+  }
 
-    @Override
-    public boolean accept(Scope scope) throws RuntimeException {
-        for (Scope u : acceptRangeList) {
-            if (u.isSubset(scope)) {
-                return true;
-            }
-        }
-        return false;
+  @Override
+  public FilterType getType() {
+    return type;
+  }
+
+  /**
+   * Parse string to RangeUnit Exmaple [145 - 199] = RangeUnit{left:145 , right:199}
+   *
+   * @param str string
+   * @return RangeUnit
+   */
+  private static Scope parse(String str) {
+    String[] part = str.split(splitChar);
+    Preconditions.checkArgument(part.length == 2, "Split RangeUnit failed");
+    Integer l = null, r = null;
+    if (!part[0].equals(MinLimit)) {
+      l = Integer.parseInt(part[0]);
     }
-
-    @Override
-    public FilterType getType() {
-        return type;
+    if (!part[1].equals(MaxLimit)) {
+      r = Integer.parseInt(part[1]);
     }
+    return new Scope(l, r);
+  }
 
-    /**
-     * Parse string to RangeUnit
-     * Exmaple [145 - 199] = RangeUnit{left:145 , right:199}
-     * 
-     * @param str string
-     * @return RangeUnit
-     */
-    private static Scope parse(String str) {
-        String[] part = str.split(splitChar);
-        Preconditions.checkArgument(part.length == 2,
-                "Split RangeUnit failed");
-        Integer l = null, r = null;
-        if (!part[0].equals(MinLimit)) {
-            l = Integer.parseInt(part[0]);
-        }
-        if (!part[1].equals(MaxLimit)) {
-            r = Integer.parseInt(part[1]);
-        }
-        return new Scope(l, r);
-    }
+  @Override
+  public String getFilterSchema() {
+    return this.fieldSchema;
+  }
 
-    @Override
-    public String getFilterSchema() {
-        return this.fieldSchema;
-    }
+  @Override
+  public void loadMetaInfo(MetaChunkRS metaChunkRS) {
+    // for range Filter, no need to load info
+  }
 
-    @Override
-    public void loadMetaInfo(MetaChunkRS metaChunkRS) {
-        // for range Filter, no need to load info
-    }
+  // --------------- compatable with old version -----------------
 
-    // --------------- compatable with old version -----------------
+  public Boolean accept(String value) throws RuntimeException {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
-    public Boolean accept(String value) throws RuntimeException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public BitSet accept(String[] values) throws RuntimeException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
+  public BitSet accept(String[] values) throws RuntimeException {
+    // TODO Auto-generated method stub
+    return null;
+  }
 }

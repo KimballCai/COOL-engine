@@ -36,18 +36,14 @@ import java.util.Map;
 
 /**
  * Hash MetaField write store.
- * <p>
- * Hash MetaField layout
- * ---------------------------------------
- * | finger codec | fingers | value data |
- * ---------------------------------------
- * <p>
- * if fieldType == AppId, we do NOT store values
- * <p>
- * value data layout
- * --------------------------------------------------
- * | #values | value codec | value offsets | values |
- * --------------------------------------------------
+ *
+ * <p>Hash MetaField layout --------------------------------------- | finger codec | fingers | value
+ * data | ---------------------------------------
+ *
+ * <p>if fieldType == AppId, we do NOT store values
+ *
+ * <p>value data layout -------------------------------------------------- | #values | value codec |
+ * value offsets | values | --------------------------------------------------
  */
 public class MetaHashFieldWS implements MetaFieldWS {
 
@@ -59,9 +55,7 @@ public class MetaHashFieldWS implements MetaFieldWS {
   protected Map<Integer, Integer> fingerToGid = Maps.newTreeMap();
   protected final List<String> valueList = new ArrayList<>();
 
-  /**
-   * Global hashToTerm, keys are hashed by the indexed string.
-   */
+  /** Global hashToTerm, keys are hashed by the indexed string. */
 
   // hash of one tuple field : Term {origin value of tuple filed, global ID. }
   // protected final Map<Integer, Term> hashToTerm = Maps.newTreeMap();
@@ -75,8 +69,8 @@ public class MetaHashFieldWS implements MetaFieldWS {
   /**
    * Constructor of MetaHashFieldWS.
    *
-   * @param type       type
-   * @param charset    charset
+   * @param type type
+   * @param charset charset
    * @param compressor compressor
    */
   public MetaHashFieldWS(FieldType type, Charset charset, OutputCompressor compressor) {
@@ -146,14 +140,15 @@ public class MetaHashFieldWS implements MetaFieldWS {
     }
 
     // generate finger bytes
-    Histogram hist = Histogram.builder()
-        .min(fingers[0])
-        .max(fingers[fingers.length - 1])
-        .numOfValues(fingers.length)
-        .rawSize(Ints.BYTES * fingers.length)
-        .type(CompressType.KeyFinger)
-        .sorted(true)
-        .build();
+    Histogram hist =
+        Histogram.builder()
+            .min(fingers[0])
+            .max(fingers[fingers.length - 1])
+            .numOfValues(fingers.length)
+            .rawSize(Ints.BYTES * fingers.length)
+            .type(CompressType.KeyFinger)
+            .sorted(true)
+            .build();
     this.compressor.reset(hist, fingers, 0, fingers.length);
     // Compress and write the fingers
     // Codec is written internal
@@ -161,13 +156,16 @@ public class MetaHashFieldWS implements MetaFieldWS {
     bytesWritten += this.compressor.writeTo(out);
 
     // generate globalID bytes
-    hist = Histogram.builder()
-        .min(0)
-        .max(this.fingerToGid.size())
-        .numOfValues(globalIDs.length)
-        .rawSize(Ints.BYTES * globalIDs.length)
-        .type(CompressType.Value)// choose value as it is used for hash field columns of global id.
-        .build();
+    hist =
+        Histogram.builder()
+            .min(0)
+            .max(this.fingerToGid.size())
+            .numOfValues(globalIDs.length)
+            .rawSize(Ints.BYTES * globalIDs.length)
+            .type(
+                CompressType
+                    .Value) // choose value as it is used for hash field columns of global id.
+            .build();
     this.compressor.reset(hist, globalIDs, 0, globalIDs.length);
     bytesWritten += this.compressor.writeTo(out);
 
@@ -199,10 +197,7 @@ public class MetaHashFieldWS implements MetaFieldWS {
 
       // Compress and write the buffer
       // The codec is written internal
-      hist = Histogram.builder()
-          .type(CompressType.KeyString)
-          .rawSize(buffer.size())
-          .build();
+      hist = Histogram.builder().type(CompressType.KeyString).rawSize(buffer.size()).build();
       this.compressor.reset(hist, buffer.getData(), 0, buffer.size());
       bytesWritten += this.compressor.writeTo(out);
     }
@@ -229,10 +224,8 @@ public class MetaHashFieldWS implements MetaFieldWS {
           buffer.write(s.getBytes(this.charset));
         }
 
-        Histogram hist = Histogram.builder()
-            .type(CompressType.KeyString)
-            .rawSize(buffer.size())
-            .build();
+        Histogram hist =
+            Histogram.builder().type(CompressType.KeyString).rawSize(buffer.size()).build();
         this.compressor.reset(hist, buffer.getData(), 0, buffer.size());
         bytesWritten = this.compressor.writeTo(out);
       }
@@ -242,13 +235,10 @@ public class MetaHashFieldWS implements MetaFieldWS {
 
   @Override
   public String toString() {
-    return "HashMetaField: "
-        + valueList.toString();
+    return "HashMetaField: " + valueList.toString();
   }
 
-  /**
-   * Convert string to globalIDs.
-   */
+  /** Convert string to globalIDs. */
   public static class Term implements Comparable<Term> {
 
     // the real value in each row of the csv file

@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -31,16 +30,13 @@ import com.nus.cool.core.io.storevector.InputVector;
 import com.nus.cool.model.CoolModel;
 import com.nus.cool.result.ExtendedResultTuple;
 
-/**
- * Cohort analysis operation.
- */
+/** Cohort analysis operation. */
 public class CohortAnalysis {
   /**
    * perform cohort query to conduct cohort analysis.
    *
-   * @param args [0] dataset path: the path to all datasets, e.g., datasetSource
-   *             args [1] query path: the path to the cohort query, e.g.,
-   *             health/query2.json
+   * @param args [0] dataset path: the path to all datasets, e.g., datasetSource args [1] query
+   *     path: the path to the cohort query, e.g., health/query2.json
    */
   public static void main(String[] args) {
     String datasetPath = args[0];
@@ -66,8 +62,8 @@ public class CohortAnalysis {
         System.out.println("Input cohort: " + inputCohort);
       }
       InputVector userVector = coolModel.getCohortUsers(inputCohort);
-      List<ExtendedResultTuple> result
-          = coolModel.cohortEngine.performCohortQuery(inputCube, userVector, query);
+      List<ExtendedResultTuple> result =
+          coolModel.cohortEngine.performCohortQuery(inputCube, userVector, query);
       System.out.println("Result for the query is  " + result);
       coolModel.close();
     } catch (IOException e) {

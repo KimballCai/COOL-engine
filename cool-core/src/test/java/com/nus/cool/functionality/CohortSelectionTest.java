@@ -17,9 +17,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-/**
- * Testing cohort selection.
- */
+/** Testing cohort selection. */
 public class CohortSelectionTest {
   static final Logger logger = LoggerFactory.getLogger(CohortSelectionTest.class);
 
@@ -30,13 +28,20 @@ public class CohortSelectionTest {
 
   @AfterTest
   public void tearDown() {
-    logger.info(String.format("Tear Down UnitTest %s\n",
-        CohortSelectionTest.class.getSimpleName()));
+    logger.info(
+        String.format("Tear Down UnitTest %s\n", CohortSelectionTest.class.getSimpleName()));
   }
 
-    @Test(dataProvider = "CohortSelectionTestDP", dependsOnMethods={"CsvLoaderUnitTest"}, enabled = false)
-    public void CohortSelectionUnitTest(String datasetPath, String queryPath, List<Integer> selectionGlobalIDs,
-                                        List<String> selectionActualIDs) throws IOException {
+  @Test(
+      dataProvider = "CohortSelectionTestDP",
+      dependsOnMethods = {"CsvLoaderUnitTest"},
+      enabled = false)
+  public void CohortSelectionUnitTest(
+      String datasetPath,
+      String queryPath,
+      List<Integer> selectionGlobalIDs,
+      List<String> selectionActualIDs)
+      throws IOException {
 
     ObjectMapper mapper = new ObjectMapper();
     ExtendedCohortQuery query = mapper.readValue(new File(queryPath), ExtendedCohortQuery.class);
@@ -69,22 +74,19 @@ public class CohortSelectionTest {
     coolModel.close();
   }
 
-  /**
-   * Data provider.
-   */
+  /** Data provider. */
   @DataProvider(name = "CohortSelectionTestDP")
   public Object[][] cohortSelectionTestDPArgObjects() {
     return new Object[][] {
-        {
-            Paths.get(System.getProperty("user.dir"), "..", "CubeRepo/TestCube").toString(),
-            Paths.get(
-                System.getProperty("user.dir"), "..", "datasets/health",
-                "query1-0.json").toString(),
-            // output global IDs
-            Arrays.asList(0, 2, 3, 4, 5, 7, 9, 11, 12),
-            // output actual IDs
-            Arrays.asList("P-0", "P-2", "P-3", "P-4", "P-5", "P-7", "P-9", "P-11", "P-12"),
-        }
+      {
+        Paths.get(System.getProperty("user.dir"), "..", "CubeRepo/TestCube").toString(),
+        Paths.get(System.getProperty("user.dir"), "..", "datasets/health", "query1-0.json")
+            .toString(),
+        // output global IDs
+        Arrays.asList(0, 2, 3, 4, 5, 7, 9, 11, 12),
+        // output actual IDs
+        Arrays.asList("P-0", "P-2", "P-3", "P-4", "P-5", "P-7", "P-9", "P-11", "P-12"),
+      }
     };
   }
 }

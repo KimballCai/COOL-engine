@@ -11,32 +11,31 @@ import com.nus.cool.core.cohort.refactor.filter.FilterLayout;
 import lombok.Getter;
 
 public class EventSelectionLayout {
-    @Getter
-    @JsonProperty("filters")
-    private List<FilterLayout> filters;
+  @Getter
+  @JsonProperty("filters")
+  private List<FilterLayout> filters;
 
-    @JsonIgnore
-    private List<String> schemaList;
+  @JsonIgnore private List<String> schemaList;
 
-    @Getter
-    @JsonProperty("frequency")
-    private int frequency;
+  @Getter
+  @JsonProperty("frequency")
+  private int frequency;
 
-    public EventSelection generate() {
-        ArrayList<Filter> filterList = new ArrayList<>();
-        for (FilterLayout layout : filters) {
-            filterList.add(layout.generateFilter());
-        }
-        return new EventSelection(filterList);
-    };
-
-    public List<String> getSchemaList() {
-        if (this.schemaList != null)
-            return this.schemaList;
-        this.schemaList = new ArrayList<>();
-        for (FilterLayout layout : filters) {
-            this.schemaList.add(layout.getFieldSchema());
-        }
-        return this.schemaList;
+  public EventSelection generate() {
+    ArrayList<Filter> filterList = new ArrayList<>();
+    for (FilterLayout layout : filters) {
+      filterList.add(layout.generateFilter());
     }
+    return new EventSelection(filterList);
+  }
+  ;
+
+  public List<String> getSchemaList() {
+    if (this.schemaList != null) return this.schemaList;
+    this.schemaList = new ArrayList<>();
+    for (FilterLayout layout : filters) {
+      this.schemaList.add(layout.getFieldSchema());
+    }
+    return this.schemaList;
+  }
 }

@@ -28,37 +28,23 @@ import lombok.Getter;
 
 /**
  * DataChunk read store
- * <p>
- * DataChunk layout
- * ---------------------------------------------
- * | chunk data | chunk header | header offset |
- * ---------------------------------------------
- * <p>
- * chunk data layout
+ *
+ * <p>DataChunk layout --------------------------------------------- | chunk data | chunk header |
+ * header offset | ---------------------------------------------
+ *
+ * <p>chunk data layout ------------------------------------- | field 1 | field 2 | ... | field N |
  * -------------------------------------
- * | field 1 | field 2 | ... | field N |
- * -------------------------------------
- * <p>
- * chunk header layout
- * ---------------------------------------------------
- * | chunk type | #records | #fields | field offsets |
- * ---------------------------------------------------
- * where
- * ChunkType == ChunkType.DATA
- * #records == number of records
- * #fields == number of fields
+ *
+ * <p>chunk header layout --------------------------------------------------- | chunk type |
+ * #records | #fields | field offsets | --------------------------------------------------- where
+ * ChunkType == ChunkType.DATA #records == number of records #fields == number of fields
  */
 public class ChunkRS implements Input {
 
-  /**
-   * number of record in this chunk.
-   */
-  @Getter
-  private int records;
+  /** number of record in this chunk. */
+  @Getter private int records;
 
-  /**
-   * field array in this chunk.
-   */
+  /** field array in this chunk. */
   private FieldRS[] fields;
 
   private int[] fieldOffsets;
@@ -97,8 +83,8 @@ public class ChunkRS implements Input {
 
     this.fields = new FieldRS[fields];
 
-    MetaUserFieldRS userMetaField = (MetaUserFieldRS) this.metaChunkRS.getMetaField(
-        tableSchema.getUserKeyFieldName());
+    MetaUserFieldRS userMetaField =
+        (MetaUserFieldRS) this.metaChunkRS.getMetaField(tableSchema.getUserKeyFieldName());
 
     // initialized UserDataField first, it will become args for invariant field
     DataHashFieldRS userDataField = new DataHashFieldRS();
@@ -118,16 +104,16 @@ public class ChunkRS implements Input {
         if (tableSchema.isInvariantField(i)) {
           int invariantIdx = tableSchema.getInvariantFieldFlagMap()[i];
           // invariant_idx != -1;
-          this.fields[i] = new DataInvariantHashFieldRS(
-              fieldType, invariantIdx, userMetaField, userDataField);
+          this.fields[i] =
+              new DataInvariantHashFieldRS(fieldType, invariantIdx, userMetaField, userDataField);
         } else {
           this.fields[i] = DataHashFieldRS.readFrom(buffer, fieldType);
         }
       } else {
         if (tableSchema.isInvariantField(i)) {
           int invariantIdx = tableSchema.getInvariantFieldFlagMap()[i];
-          this.fields[i] = new DataInvariantRangeFieldRS(
-              fieldType, invariantIdx, userMetaField, userDataField);
+          this.fields[i] =
+              new DataInvariantRangeFieldRS(fieldType, invariantIdx, userMetaField, userDataField);
         } else {
           this.fields[i] = DataRangeFieldRS.readFrom(buffer, fieldType);
         }
@@ -147,5 +133,4 @@ public class ChunkRS implements Input {
   public FieldRS getField(String fieldName) {
     return getField(tableSchema.getFieldID(fieldName));
   }
-
 }

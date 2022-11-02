@@ -25,19 +25,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.nio.IntBuffer;
 
 /**
- * IntBuffers represents an int buffer. With IntBuffers and a key of int,
- * ByteBuffers could find the key in buffer and return the result with binary
- * research
+ * IntBuffers represents an int buffer. With IntBuffers and a key of int, ByteBuffers could find the
+ * key in buffer and return the result with binary research
  */
 public class IntBuffers {
 
   /**
    * Search index of key by binary search.
    *
-   * @param buffer    data of int
+   * @param buffer data of int
    * @param fromIndex from index in buffer
-   * @param toIndex   to index in buffer
-   * @param key       search param
+   * @param toIndex to index in buffer
+   * @param key search param
    * @return index of key in buffer
    */
   public static int binarySearch(IntBuffer buffer, int fromIndex, int toIndex, int key) {
@@ -64,8 +63,7 @@ public class IntBuffers {
     checkArgument(fromIndex < buffer.limit() && toIndex <= buffer.limit());
     for (int i = fromIndex; i < toIndex; i++) {
       int e = buffer.get(i);
-      if (e == key)
-        return i;
+      if (e == key) return i;
     }
     return -1;
   }

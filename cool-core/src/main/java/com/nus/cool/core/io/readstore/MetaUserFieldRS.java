@@ -10,9 +10,7 @@ import com.rabinhash.RabinHashFunction32;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
-/**
- * Meta UserField ReadStore.
- */
+/** Meta UserField ReadStore. */
 public class MetaUserFieldRS implements MetaFieldRS {
 
   protected static final RabinHashFunction32 rhash = RabinHashFunction32.DEFAULT_HASH_FUNCTION;
@@ -99,11 +97,10 @@ public class MetaUserFieldRS implements MetaFieldRS {
    * Get invariant Value.
    *
    * @param invariantIdx the index of invariant field in all invariant fields
-   * @param gid          the according gloablId of UserKey
+   * @param gid the according gloablId of UserKey
    * @return int globalId
    */
   public int getInvaraintValue(int invariantIdx, int gid) {
     return this.invarantMaps[invariantIdx].get(gid);
   }
-
 }

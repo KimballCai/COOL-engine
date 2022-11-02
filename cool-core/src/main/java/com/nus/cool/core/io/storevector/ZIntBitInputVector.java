@@ -22,9 +22,7 @@ package com.nus.cool.core.io.storevector;
 import java.nio.ByteBuffer;
 import java.nio.LongBuffer;
 
-/**
- * Input vector of ZIntBit compressed structure.
- */
+/** Input vector of ZIntBit compressed structure. */
 public class ZIntBitInputVector implements ZIntStore, InputVector {
 
   private final LongBuffer bitPack;
@@ -46,9 +44,7 @@ public class ZIntBitInputVector implements ZIntStore, InputVector {
     this.bitPack = buffer;
   }
 
-  /**
-   * Create input vector on a buffer that is ZIntBit encoded.
-   */
+  /** Create input vector on a buffer that is ZIntBit encoded. */
   public static ZIntBitInputVector load(ByteBuffer buffer) {
     int capacity = buffer.getInt();
     int width = buffer.getInt();

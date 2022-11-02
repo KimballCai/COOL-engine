@@ -27,9 +27,7 @@ import org.joda.time.Days;
 import com.nus.cool.core.io.storevector.InputVector;
 import com.nus.cool.core.util.converter.DateBase;
 
-/**
- * Utility class to manage time representation in cool.
- */
+/** Utility class to manage time representation in cool. */
 public class TimeUtils {
   /**
    * Skip to the offset which corresponds to the first activity after the given date.
@@ -57,9 +55,7 @@ public class TimeUtils {
     return days;
   }
 
-  /**
-   * Calculate the time N time units after a start time.ssssssssssssssssss
-   */
+  /** Calculate the time N time units after a start time.ssssssssssssssssss */
   public static int getDateofNextTimeUnitN(int startDate, TimeUnit unit, int nextN) {
     checkArgument(nextN >= 0);
     switch (unit) {
@@ -76,9 +72,9 @@ public class TimeUtils {
     }
   }
 
-  public static int skipToNextTimeUnitN(InputVector vector, TimeUnit unit, int fromOffset,
-      int endOffset, int startDate, int nextN) {
-    return skipToDate(vector, fromOffset, endOffset,
-        getDateofNextTimeUnitN(startDate, unit, nextN));
+  public static int skipToNextTimeUnitN(
+      InputVector vector, TimeUnit unit, int fromOffset, int endOffset, int startDate, int nextN) {
+    return skipToDate(
+        vector, fromOffset, endOffset, getDateofNextTimeUnitN(startDate, unit, nextN));
   }
 }

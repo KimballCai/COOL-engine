@@ -25,19 +25,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.nio.ByteBuffer;
 
 /**
- * ByteBuffers represents a byte buffer. With ByteBuffers and a key of byte,
- * ByteBuffers could find the key in buffer and return the result with binary
- * research
+ * ByteBuffers represents a byte buffer. With ByteBuffers and a key of byte, ByteBuffers could find
+ * the key in buffer and return the result with binary research
  */
 public class ByteBuffers {
 
   /**
    * Search index of key by binary search.
    *
-   * @param buffer    data of byte
+   * @param buffer data of byte
    * @param fromIndex from index in buffer
-   * @param toIndex   to index in buffer
-   * @param key       search param
+   * @param toIndex to index in buffer
+   * @param key search param
    * @return index of key in buffer
    */
   public static int binarySearchUnsigned(ByteBuffer buffer, int fromIndex, int toIndex, byte key) {
@@ -67,8 +66,7 @@ public class ByteBuffers {
     int ikey = key & 0xFF;
     for (int i = fromIndex; i < toIndex; i++) {
       int e = buffer.get(i) & 0xFF;
-      if (e == ikey)
-        return i;
+      if (e == ikey) return i;
     }
     return -1;
   }

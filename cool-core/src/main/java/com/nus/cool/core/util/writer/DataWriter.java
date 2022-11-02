@@ -3,9 +3,7 @@ package com.nus.cool.core.util.writer;
 import java.io.Closeable;
 import java.io.IOException;
 
-/**
- * Interface for data writers.
- */
+/** Interface for data writers. */
 public interface DataWriter extends Closeable {
 
   /**
@@ -23,8 +21,6 @@ public interface DataWriter extends Closeable {
    */
   boolean add(Object tuple) throws IOException;
 
-  /**
-   * Finish writing at the end.
-   */
+  /** Finish writing at the end. */
   void finish() throws IOException;
 }

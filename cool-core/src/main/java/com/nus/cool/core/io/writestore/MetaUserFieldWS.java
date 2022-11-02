@@ -17,9 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * MetaField WriteStore for UserKey.
- */
+/** MetaField WriteStore for UserKey. */
 public class MetaUserFieldWS extends MetaHashFieldWS {
 
   protected MetaChunkWS metaChunkWS;
@@ -30,13 +28,13 @@ public class MetaUserFieldWS extends MetaHashFieldWS {
   /**
    * Constructor for MetaUserFieldWS.
    *
-   * @param type        type
-   * @param charset     charset
-   * @param compressor  compressor
+   * @param type type
+   * @param charset charset
+   * @param compressor compressor
    * @param metaChunkWS metaChunkWS
    */
-  public MetaUserFieldWS(FieldType type, Charset charset,
-      OutputCompressor compressor, MetaChunkWS metaChunkWS) {
+  public MetaUserFieldWS(
+      FieldType type, Charset charset, OutputCompressor compressor, MetaChunkWS metaChunkWS) {
     super(type, charset, compressor);
     this.metaChunkWS = metaChunkWS;
     for (int invariantIdx : metaChunkWS.getTableSchema().getInvariantFieldIdxs()) {
@@ -108,26 +106,28 @@ public class MetaUserFieldWS extends MetaHashFieldWS {
     }
 
     // store fingers
-    Histogram hist = Histogram.builder()
-        .min(fingers[0])
-        .max(fingers[fingers.length - 1])
-        .sorted(true)
-        .numOfValues(fingers.length)
-        .rawSize(Ints.BYTES * fingers.length)
-        .type(CompressType.KeyFinger)
-        .build();
+    Histogram hist =
+        Histogram.builder()
+            .min(fingers[0])
+            .max(fingers[fingers.length - 1])
+            .sorted(true)
+            .numOfValues(fingers.length)
+            .rawSize(Ints.BYTES * fingers.length)
+            .type(CompressType.KeyFinger)
+            .build();
     this.compressor.reset(hist, fingers, 0, fingers.length);
 
     bytesWritten += this.compressor.writeTo(out);
 
     // save globalIds
-    hist = Histogram.builder()
-        .min(0)
-        .max(this.fingerToGid.size())
-        .numOfValues(globalIds.length)
-        .rawSize(Ints.BYTES * globalIds.length)
-        .type(CompressType.Value)
-        .build();
+    hist =
+        Histogram.builder()
+            .min(0)
+            .max(this.fingerToGid.size())
+            .numOfValues(globalIds.length)
+            .rawSize(Ints.BYTES * globalIds.length)
+            .type(CompressType.Value)
+            .build();
     this.compressor.reset(hist, globalIds, 0, globalIds.length);
     bytesWritten += this.compressor.writeTo(out);
 
@@ -145,14 +145,15 @@ public class MetaUserFieldWS extends MetaHashFieldWS {
         max = ms.getMax();
       }
 
-      hist = Histogram.builder()
-          .min(0)
-          .max(max)
-          .numOfValues(values.size())
-          .rawSize(Ints.BYTES * globalIds.length)
-          .sorted(false)
-          .type(CompressType.Value)
-          .build();
+      hist =
+          Histogram.builder()
+              .min(0)
+              .max(max)
+              .numOfValues(values.size())
+              .rawSize(Ints.BYTES * globalIds.length)
+              .sorted(false)
+              .type(CompressType.Value)
+              .build();
       int[] valueArray = Ints.toArray(values);
       this.compressor.reset(hist, valueArray, 0, values.size());
       bytesWritten += this.compressor.writeTo(out);
@@ -172,10 +173,7 @@ public class MetaUserFieldWS extends MetaHashFieldWS {
         buffer.write(value.getBytes(this.charset));
       }
 
-      hist = Histogram.builder()
-          .type(CompressType.KeyString)
-          .rawSize(buffer.size())
-          .build();
+      hist = Histogram.builder().type(CompressType.KeyString).rawSize(buffer.size()).build();
 
       this.compressor.reset(hist, buffer.getData(), 0, buffer.size());
       bytesWritten += this.compressor.writeTo(out);
@@ -183,5 +181,4 @@ public class MetaUserFieldWS extends MetaHashFieldWS {
 
     return bytesWritten;
   }
-
 }

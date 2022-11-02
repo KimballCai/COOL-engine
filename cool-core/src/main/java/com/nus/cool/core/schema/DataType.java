@@ -19,14 +19,12 @@
 
 package com.nus.cool.core.schema;
 
-/**
- * Data type.
- */
+/** Data type. */
 public enum DataType {
   String,
-  
+
   Int32,
-  
+
   DateIndex,
 
   Aggregate

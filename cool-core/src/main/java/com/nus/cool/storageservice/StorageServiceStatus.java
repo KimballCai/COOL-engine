@@ -23,45 +23,34 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Storage service status is returned after interaction with
- * storage service, indicating the operation status and retrieve
- * additional information passed by storage service.
+ * Storage service status is returned after interaction with storage service, indicating the
+ * operation status and retrieve additional information passed by storage service.
  */
 public class StorageServiceStatus {
   /**
-   * status code indicates the status of a storage service
-   * after an operation. It is used to determine if we can continue
-   * use the service.
+   * status code indicates the status of a storage service after an operation. It is used to
+   * determine if we can continue use the service.
    */
   public static enum StatusCode {
-    /**
-     * Storage service is unavailable.
-     */
+    /** Storage service is unavailable. */
     UNAVAILABLE,
-    /**
-     * Storage service is ok.
-     */
+    /** Storage service is ok. */
     OK,
-    /**
-     * Errors occurred in storage service.
-     */
+    /** Errors occurred in storage service. */
     ERROR
   }
 
   // status of the storage service
-  @Getter
-  final StatusCode code;
+  @Getter final StatusCode code;
 
   // auxiliary message from storage service
-  @Setter
-  @Getter
-  String msg;
+  @Setter @Getter String msg;
 
   /**
    * Construct a storage service status with status code and message.
    *
    * @param code status code
-   * @param msg  customized message
+   * @param msg customized message
    */
   public StorageServiceStatus(StatusCode code, String msg) {
     this.code = code;
@@ -79,12 +68,11 @@ public class StorageServiceStatus {
   }
 
   /**
-   * output a string representation of the storage service status
-   * including the status code and message assigned.
+   * output a string representation of the storage service status including the status code and
+   * message assigned.
    */
   @Override
   public String toString() {
-    return "Storage service status: " + code
-        + (msg.isEmpty() ? "" : msg);
+    return "Storage service status: " + code + (msg.isEmpty() ? "" : msg);
   }
 }

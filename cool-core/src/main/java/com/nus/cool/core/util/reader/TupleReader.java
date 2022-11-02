@@ -22,9 +22,7 @@ package com.nus.cool.core.util.reader;
 import java.io.Closeable;
 import java.io.IOException;
 
-/**
- * TupleReader is a data loader to read tuple from source.
- */
+/** TupleReader is a data loader to read tuple from source. */
 public interface TupleReader extends Closeable {
 
   /**

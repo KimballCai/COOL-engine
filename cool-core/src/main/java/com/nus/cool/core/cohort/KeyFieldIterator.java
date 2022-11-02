@@ -7,9 +7,7 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
-/**
- * Iterator class of a key field. (used for UserKey)
- */
+/** Iterator class of a key field. (used for UserKey) */
 @AllArgsConstructor
 public class KeyFieldIterator {
   private final RLEInputVector input;
@@ -18,9 +16,7 @@ public class KeyFieldIterator {
 
   private RLEInputVector.Block block;
 
-  /**
-   * Iterate to the next item.
-   */
+  /** Iterate to the next item. */
   public boolean next() {
     if (!input.hasNext()) {
       return false;
@@ -42,22 +38,20 @@ public class KeyFieldIterator {
     return block.off + block.len;
   }
 
-  /**
-   * Builder class of KeyFieldIterator.
-   */
+  /** Builder class of KeyFieldIterator. */
   @AllArgsConstructor
   public static class Builder {
-    @NonNull
-    private final FieldRS keyField;
+    @NonNull private final FieldRS keyField;
 
-    /**
-     * Build and iterator over key field.
-     */
+    /** Build and iterator over key field. */
     public Optional<KeyFieldIterator> build() {
-      return Optional.ofNullable((keyField.getValueVector() instanceof RLEInputVector)
-          ? new KeyFieldIterator((RLEInputVector) keyField.getValueVector(),
-              keyField.getKeyVector(), new RLEInputVector.Block())
-          : null);
+      return Optional.ofNullable(
+          (keyField.getValueVector() instanceof RLEInputVector)
+              ? new KeyFieldIterator(
+                  (RLEInputVector) keyField.getValueVector(),
+                  keyField.getKeyVector(),
+                  new RLEInputVector.Block())
+              : null);
     }
   }
 }

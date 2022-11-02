@@ -27,35 +27,24 @@ import java.util.BitSet;
 import com.nus.cool.core.io.storevector.InputVector;
 
 /**
- * UserCountAggregator is used to aggregate the results of users at different time
- * when the metric is retention.
+ * UserCountAggregator is used to aggregate the results of users at different time when the metric
+ * is retention.
  */
 public class UserCountAggregator implements Aggregator {
 
-  /**
-   * The field of action time.
-   */
+  /** The field of action time. */
   private InputVector eventDayVec;
 
-  /**
-   * Indicates whether the user contain the corresponding result at each age.
-   */
+  /** Indicates whether the user contain the corresponding result at each age. */
   private BitSet mask;
 
-  /**
-   * Regard how many days or weeks or others as an age.
-   */
+  /** Regard how many days or weeks or others as an age. */
   private int ageDivider;
 
-  /**
-   * The start position of the user in the table.
-   */
+  /** The start position of the user in the table. */
   private int from;
 
-
-  /**
-   * The end position of the user in the table.
-   */
+  /** The end position of the user in the table. */
   private int to;
 
   /**
@@ -65,10 +54,15 @@ public class UserCountAggregator implements Aggregator {
    * @param maxAges the number of ages we set up
    * @param from the start position of the user in the table
    * @param to the end position of the user in the table
-   * @param ageDivider how many days or weeks or others as an age 
+   * @param ageDivider how many days or weeks or others as an age
    */
   @Override
-  public void init(InputVector metricVec, InputVector eventDayVec, int maxAges, int from, int to,
+  public void init(
+      InputVector metricVec,
+      InputVector eventDayVec,
+      int maxAges,
+      int from,
+      int to,
       int ageDivider) {
     checkArgument(from >= 0 && from <= to);
     this.eventDayVec = checkNotNull(eventDayVec);
@@ -80,7 +74,7 @@ public class UserCountAggregator implements Aggregator {
 
   /**
    * Get the Bitset to indicate whether the user contain the corresponding result at each age.
-
+   *
    * @param hitBv the bitset that indicates which record in the table is effective
    * @param sinceDay the birth time of the user
    * @param start the position for the first age tuple of the user

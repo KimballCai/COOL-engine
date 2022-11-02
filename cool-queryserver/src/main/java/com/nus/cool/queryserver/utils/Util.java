@@ -23,9 +23,7 @@ import java.util.Date;
 
 public class Util {
 
-    public static void getTimeClock(){
-        System.out.println("======================== " + new Date() + " ========================");
-    }
-
-
+  public static void getTimeClock() {
+    System.out.println("======================== " + new Date() + " ========================");
+  }
 }

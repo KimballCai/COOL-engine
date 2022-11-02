@@ -24,9 +24,9 @@ import com.nus.cool.core.io.Input;
 /**
  * An ordered collection(sequence) of integers. Implementation of this interface should at least
  * implements sequential access method(i.e., hasNext() and next()).
- * <p>
- * If random access method(i.e., find() and get()) is implemented. The find() should be completed at
- * O(log(n)) and the get() should be completed at O(1).
+ *
+ * <p>If random access method(i.e., find() and get()) is implemented. The find() should be completed
+ * at O(log(n)) and the get() should be completed at O(1).
  */
 public interface InputVector extends Input {
 

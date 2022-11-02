@@ -27,20 +27,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * FieldSchema defines the schema for field.
- */
+/** FieldSchema defines the schema for field. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FieldSchema {
 
-  @NotNull
-  private String name;
+  @NotNull private String name;
 
-  @NotNull
-  private FieldType fieldType;
+  @NotNull private FieldType fieldType;
 
   // @NotNull
   private DataType dataType; // not used for now

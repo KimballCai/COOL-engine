@@ -22,9 +22,7 @@ package com.nus.cool.core.io.storevector;
 import com.nus.cool.core.schema.Codec;
 import java.nio.ByteBuffer;
 
-/**
- * FoRInputVector.
- */
+/** FoRInputVector. */
 public class FoRInputVector implements InputVector {
 
   private int min;

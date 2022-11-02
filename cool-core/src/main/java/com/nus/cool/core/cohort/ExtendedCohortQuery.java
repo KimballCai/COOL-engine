@@ -30,15 +30,11 @@ import lombok.Data;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/**
- * Extended cohort query.
- */
+/** Extended cohort query. */
 @Data
 public class ExtendedCohortQuery {
 
-  /**
-   * Age field.
-   */
+  /** Age field. */
   @Data
   public static class AgeField {
 
@@ -85,13 +81,14 @@ public class ExtendedCohortQuery {
 
   private String userId;
 
-  /**
-   * Check the validity of query.
-   */
+  /** Check the validity of query. */
   @JsonIgnore
   public boolean isValid() throws IOException {
-    if ((birthSequence != null) && (birthSequence.isValid()) && (dataSource != null)
-        && (ageField != null) && (measure != null)) {
+    if ((birthSequence != null)
+        && (birthSequence.isValid())
+        && (dataSource != null)
+        && (ageField != null)
+        && (measure != null)) {
       return true;
     } else {
       throw new IOException("[x] Invalid cohort query.");
@@ -109,9 +106,7 @@ public class ExtendedCohortQuery {
     return null;
   }
 
-  /**
-   * More readable serialization.
-   */
+  /** More readable serialization. */
   public String toPrettyString() {
     ObjectMapper mapper = new ObjectMapper();
     try {
@@ -124,7 +119,7 @@ public class ExtendedCohortQuery {
 
   /**
    * Read query from InputStream.
-
+   *
    * @param in InputStream
    * @return query instance
    */

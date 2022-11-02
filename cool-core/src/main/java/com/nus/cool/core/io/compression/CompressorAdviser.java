@@ -25,18 +25,13 @@ import com.nus.cool.core.util.IntegerUtil;
 
 /**
  * Advise codec according to compress type.
- * 
- * <p>
- * KeyFinger -> LZ4
- * KeyString -> INT32
- * KeyHash -> { BitVector, INT8, INT16, INT32 }
- * Value -> { RLE, INT8, INT16, INT32, INTBit }
+ *
+ * <p>KeyFinger -> LZ4 KeyString -> INT32 KeyHash -> { BitVector, INT8, INT16, INT32 } Value -> {
+ * RLE, INT8, INT16, INT32, INTBit }
  */
 public class CompressorAdviser {
 
-  /**
-   * Advise the type of compressor to use.
-   */
+  /** Advise the type of compressor to use. */
   public static Codec advise(Histogram hist) {
     CompressType type = hist.getType();
     switch (type) {
@@ -93,7 +88,7 @@ public class CompressorAdviser {
   // this does not implicit assume the values are being sorted.
   // RLE and INtBit readstore does not support find.
   private static Codec adviseForValue(Histogram hist) {
-    
+
     // if (hist.isSorted()) {
     //   return Codec.RLE;
     // }
@@ -115,5 +110,4 @@ public class CompressorAdviser {
     }
     return Codec.INTBit;
   }
-
 }

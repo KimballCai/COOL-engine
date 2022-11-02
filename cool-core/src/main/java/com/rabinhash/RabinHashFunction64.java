@@ -30,17 +30,14 @@ import java.nio.ByteBuffer;
 import java.nio.LongBuffer;
 
 /**
- * <p>
  * This class provides an implementation of a hash function based on Rabin fingerprints, one which
  * can efficiently produce a 64-bit hash value for a sequence of bytes. Its services and
  * characteristics are entirely analogous to that of {@link RabinHashFunction32}, except that hash
  * values are 64 bits and the implementation works in terms of degree 64 polynomials represented as
  * <code>long</code>s.
- * </p>
  *
- * <p>
- * Please see the documentation and comments for {@link RabinHashFunction32} for more information.
- * </p>
+ * <p>Please see the documentation and comments for {@link RabinHashFunction32} for more
+ * information.
  *
  * @author Sean Owen
  * @version 2.0
@@ -51,38 +48,28 @@ public final class RabinHashFunction64 implements Serializable, Cloneable {
 
   private static final long serialVersionUID = 3537433736549974570L;
 
-  /**
-   * Represents x<sup>64</sup> + x<sup>4</sup> + x<sup>3</sup> + x + 1.
-   */
+  /** Represents x<sup>64</sup> + x<sup>4</sup> + x<sup>3</sup> + x + 1. */
   private static final long DEFAULT_IRREDUCIBLE_POLY = 0x000000000000001BL;
 
-  /**
-   * Default hash function, provided for convenience.
-   */
-  public static final RabinHashFunction64 DEFAULT_HASH_FUNCTION = new RabinHashFunction64(
-      DEFAULT_IRREDUCIBLE_POLY);
+  /** Default hash function, provided for convenience. */
+  public static final RabinHashFunction64 DEFAULT_HASH_FUNCTION =
+      new RabinHashFunction64(DEFAULT_IRREDUCIBLE_POLY);
 
   private static final int P_DEGREE = 64;
   private static final long X_P_DEGREE = 1L << (P_DEGREE - 1);
   private static final int READ_BUFFER_SIZE = 1024;
 
   private final long P;
-  private transient long[] table32, table40, table48, table56, table64,
-      table72, table80, table88;
+  private transient long[] table32, table40, table48, table56, table64, table72, table80, table88;
 
   /**
-   * <p>
    * Creates a RabinHashFunction64 based on the specified polynomial.
-   * </p>
    *
-   * <p>
-   * This class does not test the polynomial for irreducibility; therefore this constructor should
-   * only be used with polynomials that are already known to be irreducible, or else the hash
+   * <p>This class does not test the polynomial for irreducibility; therefore this constructor
+   * should only be used with polynomials that are already known to be irreducible, or else the hash
    * function will not perform optimally.
-   * </p>
    *
-   * @param P a degree 64 polynomial over GF(2), represented as a
-   *          <code>long</code>
+   * @param P a degree 64 polynomial over GF(2), represented as a <code>long</code>
    */
   public RabinHashFunction64(final long P) {
     this.P = P;
@@ -142,19 +129,18 @@ public final class RabinHashFunction64 implements Serializable, Cloneable {
         c >>>= 1;
       }
     }
-
   }
 
   /**
-   * @return irreducible polynomial used in this hash function, represented as a
-   * <code>long</code>
+   * @return irreducible polynomial used in this hash function, represented as a <code>long</code>
    */
   public long getP() {
     return P;
   }
 
   private long computeWShifted(final long w) {
-    return table32[(int) (w & 0xFF)] ^ table40[(int) ((w >>> 8) & 0xFF)]
+    return table32[(int) (w & 0xFF)]
+        ^ table40[(int) ((w >>> 8) & 0xFF)]
         ^ table48[(int) ((w >>> 16) & 0xFF)]
         ^ table56[(int) ((w >>> 24) & 0xFF)]
         ^ table64[(int) ((w >>> 32) & 0xFF)]
@@ -164,9 +150,7 @@ public final class RabinHashFunction64 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Return the Rabin hash value of an array of bytes.
-   * </p>
    *
    * @param A the array of bytes
    * @return the hash value
@@ -194,10 +178,16 @@ public final class RabinHashFunction64 implements Serializable, Cloneable {
 
     final int max = offset + length;
     while (s < max) {
-      w = computeWShifted(w) ^ (A[s] << 56) ^ ((A[s + 1] & 0xFF) << 48)
-          ^ ((A[s + 2] & 0xFF) << 40) ^ ((A[s + 3] & 0xFF) << 32)
-          ^ ((A[s + 4] & 0xFF) << 24) ^ ((A[s + 5] & 0xFF) << 16)
-          ^ ((A[s + 6] & 0xFF) << 8) ^ (A[s + 7] & 0xFF);
+      w =
+          computeWShifted(w)
+              ^ (A[s] << 56)
+              ^ ((A[s + 1] & 0xFF) << 48)
+              ^ ((A[s + 2] & 0xFF) << 40)
+              ^ ((A[s + 3] & 0xFF) << 32)
+              ^ ((A[s + 4] & 0xFF) << 24)
+              ^ ((A[s + 5] & 0xFF) << 16)
+              ^ ((A[s + 6] & 0xFF) << 8)
+              ^ (A[s + 7] & 0xFF);
       s += 8;
     }
 
@@ -205,9 +195,7 @@ public final class RabinHashFunction64 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Return the Rabin hash value of an array of chars.
-   * </p>
    *
    * @param A the array of chars
    * @return the hash value
@@ -228,9 +216,12 @@ public final class RabinHashFunction64 implements Serializable, Cloneable {
     }
 
     while (s < A.length) {
-      w = computeWShifted(w) ^ ((A[s] & 0xFFFF) << 48)
-          ^ ((A[s + 1] & 0xFFFF) << 32) ^ ((A[s + 2] & 0xFFFF) << 16)
-          ^ (A[s + 3] & 0xFFFF);
+      w =
+          computeWShifted(w)
+              ^ ((A[s] & 0xFFFF) << 48)
+              ^ ((A[s + 1] & 0xFFFF) << 32)
+              ^ ((A[s + 2] & 0xFFFF) << 16)
+              ^ (A[s + 3] & 0xFFFF);
       s += 4;
     }
 
@@ -238,10 +229,8 @@ public final class RabinHashFunction64 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Returns the Rabin hash value of an array of <code>long</code>s. This method is the most
    * efficient of all the hash methods, so it should be used when possible.
-   * </p>
    *
    * @param A array of <code>long</code>s
    * @return the hash value
@@ -259,9 +248,7 @@ public final class RabinHashFunction64 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Returns the Rabin hash value of a ByteBuffer.
-   * </p>
    *
    * @param A ByteBuffer
    * @return the hash value
@@ -272,9 +259,7 @@ public final class RabinHashFunction64 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Returns the Rabin hash value of an LongBuffer.
-   * </p>
    *
    * @param A LongBuffer
    * @return the hash value
@@ -292,9 +277,7 @@ public final class RabinHashFunction64 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Returns the Rabin hash value of a serializable object.
-   * </p>
    *
    * @param obj the object to be hashed
    * @return the hash value
@@ -315,9 +298,7 @@ public final class RabinHashFunction64 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Computes the Rabin hash value of a String.
-   * </p>
    *
    * @param s the string to be hashed
    * @return the hash value
@@ -328,15 +309,13 @@ public final class RabinHashFunction64 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Computes the Rabin hash value of the contents of a file.
-   * </p>
    *
    * @param f the file to be hashed
    * @return the hash value of the file
    * @throws FileNotFoundException if the file cannot be found
-   * @throws IOException           if an error occurs while reading the file
-   * @throws NullPointerException  if f is null
+   * @throws IOException if an error occurs while reading the file
+   * @throws NullPointerException if f is null
    */
   public long hash(final File f) throws FileNotFoundException, IOException {
     if (f == null) {
@@ -351,13 +330,11 @@ public final class RabinHashFunction64 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Computes the Rabin hash value of the contents of a file, specified by URL.
-   * </p>
    *
    * @param url the URL of the file to be hashed
    * @return the hash value of the file
-   * @throws IOException          if an error occurs while reading from the URL
+   * @throws IOException if an error occurs while reading from the URL
    * @throws NullPointerException if url is null
    */
   public long hash(final URL url) throws IOException {
@@ -370,13 +347,11 @@ public final class RabinHashFunction64 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Computes the Rabin hash value of the data from an <code>InputStream</code>.
-   * </p>
    *
    * @param is the InputStream to hash
    * @return the hash value of the data from the InputStream
-   * @throws IOException          if an error occurs while reading from the InputStream
+   * @throws IOException if an error occurs while reading from the InputStream
    * @throws NullPointerException if stream is null
    */
   public long hash(final InputStream is) throws IOException {
@@ -402,12 +377,11 @@ public final class RabinHashFunction64 implements Serializable, Cloneable {
   }
 
   public String toString() {
-    return "RabinHashFunction64[P: "
-        + RabinHashFunctionUtils.polynomialToString(P) + "]";
+    return "RabinHashFunction64[P: " + RabinHashFunctionUtils.polynomialToString(P) + "]";
   }
 
-  private void readObject(final ObjectInputStream stream) throws IOException,
-      ClassNotFoundException {
+  private void readObject(final ObjectInputStream stream)
+      throws IOException, ClassNotFoundException {
     stream.defaultReadObject();
     initializeTables();
   }

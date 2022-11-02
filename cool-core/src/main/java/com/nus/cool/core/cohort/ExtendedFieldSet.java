@@ -22,17 +22,11 @@ package com.nus.cool.core.cohort;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Field is mainly used to represent the conditions we set up for extended queries.
- *
- */
+/** Field is mainly used to represent the conditions we set up for extended queries. */
 public class ExtendedFieldSet {
 
-  /**
-   * Field value types.
-   */
+  /** Field value types. */
   public static enum FieldValueType {
-
     AbsoluteValue,
 
     IncreaseByAbsoluteValue,
@@ -42,23 +36,16 @@ public class ExtendedFieldSet {
     Equal,
 
     Inequal
-
   }
 
-  /**
-   * Field types.
-   */
+  /** Field types. */
   public static enum FieldSetType {
-
     Set,
 
     Range
-
   }
 
-  /**
-   * Field value.
-   */
+  /** Field value. */
   public static class FieldValue {
 
     private FieldValueType type = FieldValueType.AbsoluteValue;

@@ -25,14 +25,10 @@ import com.nus.cool.core.iceberg.query.IcebergQuery;
 import com.nus.cool.core.iceberg.result.BaseResult;
 import com.nus.cool.model.CoolModel;
 
-/**
- * Relational algebra operation.
- */
+/** Relational algebra operation. */
 public class RelationalAlgebra {
 
-  /**
-   * Execute relational query.
-   */
+  /** Execute relational query. */
   public static void main(String[] args) throws Exception {
     // the path of dz file eg "COOL/cube"
     String datasetPath = args[0]; // e.g., "../datasetSource";=
@@ -50,8 +46,8 @@ public class RelationalAlgebra {
     }
 
     // execute query
-    List<BaseResult> result = coolModel.olapEngine.performOlapQuery(
-        coolModel.getCube(cubeName), query);
+    List<BaseResult> result =
+        coolModel.olapEngine.performOlapQuery(coolModel.getCube(cubeName), query);
     System.out.println(result.toString());
     coolModel.close();
   }

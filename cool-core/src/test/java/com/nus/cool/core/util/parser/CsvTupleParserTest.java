@@ -10,28 +10,27 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-/**
- * Testing csv tuple parser.
- */
+/** Testing csv tuple parser. */
 public class CsvTupleParserTest {
 
   private String sourcePath;
 
-  /**
-   * setup.
-   */
+  /** setup. */
   @BeforeTest
   public void setUp() {
     System.out.println("Start To Test CvsTupleParser");
-    sourcePath = Paths.get(System.getProperty("user.dir"),
-        "src",
-        "test",
-        "java",
-        "com",
-        "nus",
-        "cool",
-        "core",
-        "resources").toString();
+    sourcePath =
+        Paths.get(
+                System.getProperty("user.dir"),
+                "src",
+                "test",
+                "java",
+                "com",
+                "nus",
+                "cool",
+                "core",
+                "resources")
+            .toString();
   }
 
   @Test
@@ -45,8 +44,8 @@ public class CsvTupleParserTest {
     String line;
     while ((line = br.readLine()) != null) {
       String[] vs = csvParser.parse(line);
-      String expected
-          = Arrays.toString(vs).trim().replaceAll("\\s+", "").replace("[", "").replace("]", "");
+      String expected =
+          Arrays.toString(vs).trim().replaceAll("\\s+", "").replace("[", "").replace("]", "");
       // System.out.println("expected="+expected);
       Assert.assertEquals(line, expected);
     }

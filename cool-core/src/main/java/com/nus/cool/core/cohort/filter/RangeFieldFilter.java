@@ -35,40 +35,28 @@ import com.nus.cool.core.util.parser.VerticalTupleParser;
 import java.util.List;
 
 /**
- * RangeFieldFilter is used to get the range of the values of the field and
- * check whether the input is eligible Usage: first check whether the metafield
- * is eligible Then find the eligible tuples of the field.
+ * RangeFieldFilter is used to get the range of the values of the field and check whether the input
+ * is eligible Usage: first check whether the metafield is eligible Then find the eligible tuples of
+ * the field.
  */
 public class RangeFieldFilter implements FieldFilter {
 
-  /**
-   * The array stores the local minimum of the conditions.
-   */
+  /** The array stores the local minimum of the conditions. */
   private int[] minValues;
 
-  /**
-   * The array stores the local maximum of the conditions.
-   */
+  /** The array stores the local maximum of the conditions. */
   private int[] maxValues;
 
-  /**
-   * The global minimum of the conditions.
-   */
+  /** The global minimum of the conditions. */
   private int min;
 
-  /**
-   * The global maximum of the conditions.
-   */
+  /** The global maximum of the conditions. */
   private int max;
 
-  /**
-   * Chunk value vector for hash field.
-   */
+  /** Chunk value vector for hash field. */
   private InputVector chunkValues;
 
-  /**
-   * the configuration of the field set.
-   */
+  /** the configuration of the field set. */
   private ExtendedFieldSet fieldSet;
 
   private FieldType fieldType;
@@ -76,11 +64,14 @@ public class RangeFieldFilter implements FieldFilter {
   /**
    * Get the range of the field.
    *
-   * @param values    the values of the conditions
+   * @param values the values of the conditions
    * @param converter the converter to convert the values to integer
    */
-  public RangeFieldFilter(ExtendedFieldSet fieldSet, List<String> values,
-      NumericConverter converter, FieldType fieldType) {
+  public RangeFieldFilter(
+      ExtendedFieldSet fieldSet,
+      List<String> values,
+      NumericConverter converter,
+      FieldType fieldType) {
     this.fieldSet = fieldSet;
     checkNotNull(values);
     checkArgument(!values.isEmpty());
@@ -101,7 +92,7 @@ public class RangeFieldFilter implements FieldFilter {
 
   /**
    * Get the global minimum of the conditions.
-
+   *
    * @return the global minimum
    */
   @Override
@@ -111,7 +102,7 @@ public class RangeFieldFilter implements FieldFilter {
 
   /**
    * Get the global maximum of the conditions.
-
+   *
    * @return the global maximum
    */
   @Override
@@ -120,12 +111,12 @@ public class RangeFieldFilter implements FieldFilter {
   }
 
   /**
-   * Indicate whether the metafield is eligible i.e. whether we can find eligible
-   * values in the metafield
-
+   * Indicate whether the metafield is eligible i.e. whether we can find eligible values in the
+   * metafield
+   *
    * @param metaField the metafield to be checked
-   * @return false indicates the metafield is not eligible and true indicates the
-   *         metafield is eligible
+   * @return false indicates the metafield is not eligible and true indicates the metafield is
+   *     eligible
    */
   @Override
   public boolean accept(MetaFieldRS metaField) {
@@ -133,12 +124,10 @@ public class RangeFieldFilter implements FieldFilter {
   }
 
   /**
-   * Indicate whether the field is eligible i.e. whether we can find eligible
-   * values in the field
-
+   * Indicate whether the field is eligible i.e. whether we can find eligible values in the field
+   *
    * @param field the field to be checked
-   * @return false indicates the field is not eligible and true indicates the
-   *         field is eligible
+   * @return false indicates the field is not eligible and true indicates the field is eligible
    */
   @Override
   public boolean accept(FieldRS field) {
@@ -147,12 +136,12 @@ public class RangeFieldFilter implements FieldFilter {
   }
 
   /**
-   * Indicate whether the invariant field is eligible i.e. whether we can find
-   * eligible values in the invariant field
-
+   * Indicate whether the invariant field is eligible i.e. whether we can find eligible values in
+   * the invariant field
+   *
    * @param inputVector the vector of invariant data to be checked
-   * @return false indicates the invariant field is not eligible and true
-   *         indicates the invariant field is eligible
+   * @return false indicates the invariant field is not eligible and true indicates the invariant
+   *     field is eligible
    */
   @Override
   public boolean accept(InputVector inputVector) {
@@ -166,10 +155,9 @@ public class RangeFieldFilter implements FieldFilter {
 
   /**
    * Indicate whether the integer v is eligible.
-
+   *
    * @param v the integer to be checked
-   * @return false indicates the integer is not eligible and true indicates the
-   *         integer is eligible
+   * @return false indicates the integer is not eligible and true indicates the integer is eligible
    */
   @Override
   public boolean accept(int v) {
@@ -184,7 +172,7 @@ public class RangeFieldFilter implements FieldFilter {
 
   /**
    * Get the conditions set up before.
-
+   *
    * @return the conditions and the minimum and maximum are separated by '|'
    */
   @Override

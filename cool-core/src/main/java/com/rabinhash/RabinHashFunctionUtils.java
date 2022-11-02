@@ -17,7 +17,7 @@
 package com.rabinhash;
 
 /**
- * <p>A collection of utility methods used throughout this package.</p>
+ * A collection of utility methods used throughout this package.
  *
  * @author Sean Owen
  * @version 2.0
@@ -28,11 +28,8 @@ final class RabinHashFunctionUtils {
   private static final int BIT_32 = 0x80000000;
   private static final long BIT_64 = 0x8000000000000000L;
 
-  /**
-   * Private constructor.
-   */
-  private RabinHashFunctionUtils() {
-  }
+  /** Private constructor. */
+  private RabinHashFunctionUtils() {}
 
   static String polynomialToString(final int P) {
     final StringBuffer result = new StringBuffer();

@@ -26,32 +26,21 @@ import java.util.BitSet;
 import com.nus.cool.core.util.IntegerUtil;
 
 /**
- * Compress a list of integers with BitVector encoding. The final BitSet is
- * encoded in native byte
+ * Compress a list of integers with BitVector encoding. The final BitSet is encoded in native byte
  * order format.
- * 
- * <p>
- * Data layout
- * ---------------
- * | len | words |
- * ---------------
- * where len is the number of words. Each word is a 64bit computer word
+ *
+ * <p>Data layout --------------- | len | words | --------------- where len is the number of words.
+ * Each word is a 64bit computer word
  */
 public class BitVectorCompressor implements Compressor {
 
-  /**
-   * Bit vector.
-   */
+  /** Bit vector. */
   private BitSet bitSet;
 
-  /**
-   * Maximum size of compressed data.
-   */
+  /** Maximum size of compressed data. */
   private int maxLength;
 
-  /**
-   * Compression operator for bit vector.
-   */
+  /** Compression operator for bit vector. */
   public BitVectorCompressor(int max) {
     int bitLength = IntegerUtil.numOfBits(max);
     this.bitSet = new BitSet(bitLength);
@@ -68,8 +57,8 @@ public class BitVectorCompressor implements Compressor {
   }
 
   @Override
-  public int compress(byte[] src, int srcOff, int srcLen, byte[] dest, int destOff,
-      int maxDestLen) {
+  public int compress(
+      byte[] src, int srcOff, int srcLen, byte[] dest, int destOff, int maxDestLen) {
     throw new UnsupportedOperationException();
   }
 

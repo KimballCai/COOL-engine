@@ -22,14 +22,10 @@ package com.nus.cool.core.iceberg.query;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Selection query class.
- */
+/** Selection query class. */
 public class SelectionQuery {
 
-  /**
-   * Type of selection type.
-   */
+  /** Type of selection type. */
   public enum SelectionType {
     and,
     or,

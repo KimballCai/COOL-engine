@@ -30,21 +30,14 @@ import java.util.List;
 
 /**
  * Compress BitSet using rle schema, prefer sorted BitSet.
- * 
- * <p>
- * Data layout
- * ------------------------------------
- * | sign | blk1 | blk2 | ... | blk n |
- * ------------------------------------
- * where
- * sign = bit, the first bit of BitSet
- * blk = number of bits for the same bit
+ *
+ * <p>Data layout ------------------------------------ | sign | blk1 | blk2 | ... | blk n |
+ * ------------------------------------ where sign = bit, the first bit of BitSet blk = number of
+ * bits for the same bit
  */
 public class SimpleBitSetCompressor {
 
-  /**
-   * Compress biset.
-   */
+  /** Compress biset. */
   public static int compress(BitSet bs, DataOutput out) throws IOException {
     int pos1 = 0;
     int pos2;
@@ -75,9 +68,7 @@ public class SimpleBitSetCompressor {
     return bytesWritten;
   }
 
-  /**
-   * Decompress a compressed biset buffer.
-   */
+  /** Decompress a compressed biset buffer. */
   public static BitSet read(ByteBuffer buff) {
     boolean sign = buff.get() != 0;
     int blks = buff.getInt();
@@ -94,5 +85,4 @@ public class SimpleBitSetCompressor {
     }
     return bs;
   }
-
 }

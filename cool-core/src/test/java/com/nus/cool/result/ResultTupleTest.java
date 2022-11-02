@@ -6,9 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-/**
- * Testing result tuple.
- */
+/** Testing result tuple. */
 public class ResultTupleTest {
   @Test(dataProvider = "ResultTupleDP")
   public void mergeTest(ResultTuple[] resTuples) {
@@ -28,16 +26,12 @@ public class ResultTupleTest {
     Assert.assertEquals(output2.size(), 1);
   }
 
-  /**
-   * Data provider.
-   */
+  /** Data provider. */
   @DataProvider(name = "ResultTupleDP")
   public Object[][] dpArgs() {
     ResultTuple res1 = new ResultTuple("ab", 7, 76L);
     ResultTuple res2 = new ResultTuple("bc", 8, 26L);
     ResultTuple res4 = new ResultTuple("bc", 8, 6L);
-    return new Object[][] {
-        { new ResultTuple[] { res1, res2, res4 } }
-    };
+    return new Object[][] {{new ResultTuple[] {res1, res2, res4}}};
   }
 }

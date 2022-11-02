@@ -22,11 +22,9 @@ package com.nus.cool.core.util;
 import java.nio.ByteOrder;
 
 /**
- * IntegerUtil contains a set of common functions for interger.
- * IntegerUtil could be used to find the minimum number of bits of the interger,
- * to find the minimum number of bytes of the interger and to convert the
- * interger
- * into OS's native byte order
+ * IntegerUtil contains a set of common functions for interger. IntegerUtil could be used to find
+ * the minimum number of bits of the interger, to find the minimum number of bytes of the interger
+ * and to convert the interger into OS's native byte order
  */
 public class IntegerUtil {
 
@@ -42,8 +40,7 @@ public class IntegerUtil {
   }
 
   /**
-   * Find the minimum number of bytes to represent the integer. Notes: the number
-   * of bytes can be 1,
+   * Find the minimum number of bytes to represent the integer. Notes: the number of bytes can be 1,
    * 2, 4 correspond to Byte, Short, Int
    *
    * @param i the integer
@@ -55,8 +52,8 @@ public class IntegerUtil {
   }
 
   /**
-   * Convert the input value into BIG_ENDIAN byte order.
-   * The current platform only support read/write with BIG_ENDIAN order
+   * Convert the input value into BIG_ENDIAN byte order. The current platform only support
+   * read/write with BIG_ENDIAN order
    *
    * @param i the integer
    * @return the @param i in native order
@@ -67,8 +64,7 @@ public class IntegerUtil {
   }
 
   /**
-   * Get number of bits to store, due to BitSet store as long array, so the number
-   * of bits should be
+   * Get number of bits to store, due to BitSet store as long array, so the number of bits should be
    * multiple of 64 bits.
    *
    * @param i the integer
@@ -77,5 +73,4 @@ public class IntegerUtil {
   public static int numOfBits(int i) {
     return (((i) >>> 6) + 1) << 6;
   }
-
 }

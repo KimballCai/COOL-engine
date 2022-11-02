@@ -12,9 +12,7 @@ import java.util.HashSet;
 
 import lombok.Getter;
 
-/**
- * Layout class to facilitate json serialization of cohort query.
- */
+/** Layout class to facilitate json serialization of cohort query. */
 @Getter
 public class CohortQueryLayout {
 
@@ -33,9 +31,7 @@ public class CohortQueryLayout {
   @JsonProperty("dataSource")
   private String dataSource;
 
-  /**
-   * Read the cohort query in a json.
-   */
+  /** Read the cohort query in a json. */
   public static CohortQueryLayout readFromJson(File in) throws IOException {
     ObjectMapper mapper = new ObjectMapper();
     CohortQueryLayout instance = mapper.readValue(in, CohortQueryLayout.class);
@@ -46,9 +42,7 @@ public class CohortQueryLayout {
     return readFromJson(new File(path));
   }
 
-  /**
-   * Return the schema set.
-   */
+  /** Return the schema set. */
   public HashSet<String> getSchemaSet() {
     HashSet<String> ret = new HashSet<>();
     ret.addAll(this.birthSelectionLayout.getRelatedSchemas());

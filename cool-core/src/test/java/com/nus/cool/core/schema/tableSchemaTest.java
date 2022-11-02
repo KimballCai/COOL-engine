@@ -4,9 +4,6 @@ import org.testng.annotations.Test;
 
 public class tableSchemaTest {
 
-    @Test
-    public void checkTableSchemaTest(){
-        
-    }
-    
+  @Test
+  public void checkTableSchemaTest() {}
 }

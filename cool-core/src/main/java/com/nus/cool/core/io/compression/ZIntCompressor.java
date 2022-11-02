@@ -25,32 +25,22 @@ import java.nio.ByteOrder;
 /**
  * Compress integers using the leading zero suppressed schema. Each compressed integer is formatted
  * to align to byte boundary and stored in native byte order
- * <p>
- * The data layout is as follows
- * ------------------------------------
- * | count | ZInt compressed integers |
- * ------------------------------------
+ *
+ * <p>The data layout is as follows ------------------------------------ | count | ZInt compressed
+ * integers | ------------------------------------
  */
 public class ZIntCompressor implements Compressor {
 
-  /**
-   * Bytes number for count and sorted
-   */
+  /** Bytes number for count and sorted */
   public static final int HEADACC = 5;
 
-  /**
-   * Bytes number for compressed integer
-   */
+  /** Bytes number for compressed integer */
   private final int width;
-  
-  /**
-   *  Whether these value are sorted
-   */
+
+  /** Whether these value are sorted */
   private final boolean sorted;
 
-  /**
-   * Maximum size of compressed data
-   */
+  /** Maximum size of compressed data */
   private final int maxCompressedLength;
 
   public ZIntCompressor(Codec codec, int numValues, boolean sorted) {
@@ -81,8 +71,8 @@ public class ZIntCompressor implements Compressor {
   }
 
   @Override
-  public int compress(byte[] src, int srcOff, int srcLen, byte[] dest, int destOff,
-      int maxDestLen) {
+  public int compress(
+      byte[] src, int srcOff, int srcLen, byte[] dest, int destOff, int maxDestLen) {
     throw new UnsupportedOperationException();
   }
 
@@ -110,5 +100,4 @@ public class ZIntCompressor implements Compressor {
     }
     return buffer.position() - destOff;
   }
-
 }

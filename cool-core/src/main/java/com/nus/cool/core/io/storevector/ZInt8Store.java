@@ -23,26 +23,18 @@ import java.nio.ByteBuffer;
 
 /**
  * Decompress data which stores integers in one byte
- * <p>
- * The data layout is as follows
- * ------------------------------------
- * | count | ZInt compressed integers |
- * ------------------------------------
+ *
+ * <p>The data layout is as follows ------------------------------------ | count | ZInt compressed
+ * integers | ------------------------------------
  */
 public class ZInt8Store implements InputVector, ZIntStore {
 
-  /**
-   * number of values
-   */
+  /** number of values */
   private final int count;
 
-  /**
-   * 
-   */
+  /** */
   private final boolean sorted;
-  /**
-   * compressed data
-   */
+  /** compressed data */
   private ByteBuffer buffer;
 
   public ZInt8Store(int count, boolean sorted) {
@@ -67,12 +59,11 @@ public class ZInt8Store implements InputVector, ZIntStore {
   @Override
   public int find(int key) {
     if (key > Byte.MAX_VALUE || key < 0) {
-        return -1;
+      return -1;
     }
-    if(this.sorted)
+    if (this.sorted)
       return ByteBuffers.binarySearchUnsigned(this.buffer, 0, this.buffer.limit(), (byte) key);
-    else
-      return ByteBuffers.traverseSearch(this.buffer, 0, this.buffer.limit(), (byte)key);
+    else return ByteBuffers.traverseSearch(this.buffer, 0, this.buffer.limit(), (byte) key);
   }
 
   @Override

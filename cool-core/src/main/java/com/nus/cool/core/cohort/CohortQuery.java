@@ -25,9 +25,7 @@ import com.google.common.collect.Lists;
 
 import lombok.Data;
 
-/**
- * The class for cohort queries.
- */
+/** The class for cohort queries. */
 @Data
 public class CohortQuery {
 

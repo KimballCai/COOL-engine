@@ -1,6 +1,5 @@
 package com.nus.cool.core.io.store;
 
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -18,7 +17,6 @@ import com.nus.cool.core.io.readstore.CubeMetaRS;
 import com.nus.cool.core.io.writestore.MetaChunkWS;
 import com.nus.cool.core.schema.FieldSchema;
 import com.nus.cool.core.schema.TableSchema;
-
 
 public class CubeMetaTest {
   static final Logger logger = LoggerFactory.getLogger(CubeMetaTest.class);
@@ -40,15 +38,18 @@ public class CubeMetaTest {
   @BeforeTest
   public void setup() throws IOException {
     logger.info("Start UnitTest " + CubeMetaTest.class.getSimpleName());
-    String sourcePath = Paths.get(System.getProperty("user.dir"),
-      "src",
-      "test",
-      "java",
-      "com",
-      "nus",
-      "cool",
-      "core",
-      "resources").toString();
+    String sourcePath =
+        Paths.get(
+                System.getProperty("user.dir"),
+                "src",
+                "test",
+                "java",
+                "com",
+                "nus",
+                "cool",
+                "core",
+                "resources")
+            .toString();
 
     String dirPath = Paths.get(sourcePath, "health").toString();
     this.schema = utils.loadSchema(dirPath);
@@ -64,17 +65,16 @@ public class CubeMetaTest {
 
   @Test(enabled = false)
   public void CubeMetaUnitTest() throws IOException {
-    for(int i = 0; i < this.table.getRowCounts(); i++){
+    for (int i = 0; i < this.table.getRowCounts(); i++) {
       metaws.put(this.table.getTuple(i));
     }
-    
+
     DataOutputBuffer out = new DataOutputBuffer();
     metaws.complete();
     int written = metaws.writeCubeMeta(out);
     out.close();
 
-    ByteBuffer buffer = ByteBuffer.wrap(out.getData())
-      .order(ByteOrder.nativeOrder());
+    ByteBuffer buffer = ByteBuffer.wrap(out.getData()).order(ByteOrder.nativeOrder());
     buffer.limit(written);
 
     CubeMetaRS cubemeta = new CubeMetaRS(this.schema);

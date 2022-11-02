@@ -37,9 +37,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/**
- * Extended cohort aggregation operator.
- */
+/** Extended cohort aggregation operator. */
 public class ExtendedCohortAggregation implements CohortOperator {
 
   private static Log LOG = LogFactory.getLog(ExtendedCohortAggregation.class);
@@ -82,13 +80,15 @@ public class ExtendedCohortAggregation implements CohortOperator {
   @Override
   public void close() throws IOException {
     sigma.close();
-    LOG.info(String.format(
-        "(birth selection time = %d, age by time = %d, age selection time = %d, "
-        + "aggregation time = %d)", this.birthSelectionTime, this.ageByTime, this.ageSelectionTime,
-        this.aggregationTime));
-    LOG.info(String.format(
-        "(totalChunks = %d, totalSkippedChunks = %d, totalUsers = %d, totalSkippedUsers = %d)",
-        totalDataChunks, totalSkippedDataChunks, totalUsers, totalSkippedUsers));
+    LOG.info(
+        String.format(
+            "(birth selection time = %d, age by time = %d, age selection time = %d, "
+                + "aggregation time = %d)",
+            this.birthSelectionTime, this.ageByTime, this.ageSelectionTime, this.aggregationTime));
+    LOG.info(
+        String.format(
+            "(totalChunks = %d, totalSkippedChunks = %d, totalUsers = %d, totalSkippedUsers = %d)",
+            totalDataChunks, totalSkippedDataChunks, totalUsers, totalSkippedUsers));
   }
 
   @Override
@@ -105,9 +105,7 @@ public class ExtendedCohortAggregation implements CohortOperator {
   }
 
   @Override
-  public void init(TableSchema schema, CohortQuery query) {
-
-  }
+  public void init(TableSchema schema, CohortQuery query) {}
 
   @Override
   public boolean isCohortsInCublet() {
@@ -191,8 +189,8 @@ public class ExtendedCohortAggregation implements CohortOperator {
         continue;
       }
 
-      Map<Integer, List<Double>> cohortCells = (Map<Integer, List<Double>>) cubletResults
-          .get(cohort);
+      Map<Integer, List<Double>> cohortCells =
+          (Map<Integer, List<Double>>) cubletResults.get(cohort);
 
       // init a new cohort cell
       if (cohortCells == null) {
@@ -213,23 +211,44 @@ public class ExtendedCohortAggregation implements CohortOperator {
         // updateStats(sigma.selectAgeActivities(ageOff, end, bv, ageDelimiter),
         // cohortCells.get(0));
 
-        EventAggregator aggr = BirthAggregatorFactory
-            .getAggregator(query.getMeasure().toUpperCase());
+        EventAggregator aggr =
+            BirthAggregatorFactory.getAggregator(query.getMeasure().toUpperCase());
         aggr.init(metricField.getValueVector());
-        if (tableSchema.getFieldID(query.getAgeField().getField()) != tableSchema
-            .getActionTimeFieldIdx()) {
-          aggr.ageAggregate(bv, ageDelimiter, ageOff, end,
-              this.query.getAgeField().getAgeInterval(), sigma.getAgeFieldFilter(), cohortCells);
+        if (tableSchema.getFieldID(query.getAgeField().getField())
+            != tableSchema.getActionTimeFieldIdx()) {
+          aggr.ageAggregate(
+              bv,
+              ageDelimiter,
+              ageOff,
+              end,
+              this.query.getAgeField().getAgeInterval(),
+              sigma.getAgeFieldFilter(),
+              cohortCells);
           ageDelimiter.clear(ageOff, end + 1);
         } else if (metricAgeFilterName != null) {
           InputVector fieldIn = chunk.getField(metricAgeFilterName).getValueVector();
-          aggr.ageAggregateMetirc(bv, actionTimeField.getValueVector(), cohort.getBirthDate(),
-              ageOff, end, query.getAgeField().getAgeInterval(), query.getAgeField().getUnit(),
-              sigma.getAgeFieldFilter(), fieldIn, cohortCells);
+          aggr.ageAggregateMetirc(
+              bv,
+              actionTimeField.getValueVector(),
+              cohort.getBirthDate(),
+              ageOff,
+              end,
+              query.getAgeField().getAgeInterval(),
+              query.getAgeField().getUnit(),
+              sigma.getAgeFieldFilter(),
+              fieldIn,
+              cohortCells);
         } else {
-          aggr.ageAggregate(bv, actionTimeField.getValueVector(), cohort.getBirthDate(), ageOff,
-              end, query.getAgeField().getAgeInterval(), query.getAgeField().getUnit(),
-              sigma.getAgeFieldFilter(), cohortCells);
+          aggr.ageAggregate(
+              bv,
+              actionTimeField.getValueVector(),
+              cohort.getBirthDate(),
+              ageOff,
+              end,
+              query.getAgeField().getAgeInterval(),
+              query.getAgeField().getUnit(),
+              sigma.getAgeFieldFilter(),
+              cohortCells);
         }
 
         bv.clear(ageOff, end + 1);

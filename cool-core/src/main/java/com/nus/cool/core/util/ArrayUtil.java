@@ -20,8 +20,8 @@
 package com.nus.cool.core.util;
 
 /**
- * ArrayUtil contains the missing functions we need to use in java Array.
- * The class contains the function to get the max and min value of an Array
+ * ArrayUtil contains the missing functions we need to use in java Array. The class contains the
+ * function to get the max and min value of an Array
  */
 public class ArrayUtil {
 

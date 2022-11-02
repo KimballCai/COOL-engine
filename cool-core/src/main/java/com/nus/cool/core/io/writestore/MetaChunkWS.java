@@ -38,24 +38,16 @@ import lombok.Getter;
 
 /**
  * MetaChunk write store
- * <p>
- * MetaChunk layout
- * ------------------------------------------
- * | MetaChunkData | header | header offset |
- * ------------------------------------------
- * <p>
- * MetaChunkData layout
- * -------------------------------------
- * | field 1 | field 2 | ... | field N |
- * -------------------------------------
- * <p>
- * header layout
- * ---------------------------------------
- * | ChunkType | #fields | field offsets |
- * ---------------------------------------
- * where
- * ChunkType = ChunkType.META
- * #fields = number of fields
+ *
+ * <p>MetaChunk layout ------------------------------------------ | MetaChunkData | header | header
+ * offset | ------------------------------------------
+ *
+ * <p>MetaChunkData layout ------------------------------------- | field 1 | field 2 | ... | field N
+ * | -------------------------------------
+ *
+ * <p>header layout --------------------------------------- | ChunkType | #fields | field offsets |
+ * --------------------------------------- where ChunkType = ChunkType.META #fields = number of
+ * fields
  */
 public class MetaChunkWS implements Output {
 
@@ -66,16 +58,14 @@ public class MetaChunkWS implements Output {
   // @Getter
   // private List<Integer> invariantFieldIndex = new ArrayList<>();
 
-  @Getter
-  private final MetaFieldWS[] metaFields;
+  @Getter private final MetaFieldWS[] metaFields;
 
-  @Getter
-  private TableSchema tableSchema;
+  @Getter private TableSchema tableSchema;
 
   /**
    * Constructor.
    *
-   * @param offset     Offset in out stream
+   * @param offset Offset in out stream
    * @param metaFields fields type for each file of the meta chunk
    */
   public MetaChunkWS(int offset, MetaFieldWS[] metaFields, TableSchema schema) {
@@ -131,7 +121,8 @@ public class MetaChunkWS implements Output {
    */
   public void put(String[] tuple) {
     checkNotNull(tuple);
-    checkArgument(tuple.length == this.tableSchema.getFields().size(),
+    checkArgument(
+        tuple.length == this.tableSchema.getFields().size(),
         "input tuple's size is not equal to table schema's size");
     int userKeyIdx = this.tableSchema.getUserKeyFieldIdx();
     for (int i = 0; i < tuple.length; i++) {
@@ -145,9 +136,7 @@ public class MetaChunkWS implements Output {
     this.metaFields[userKeyIdx].put(tuple, userKeyIdx);
   }
 
-  /**
-   * Complete MetaFields.
-   */
+  /** Complete MetaFields. */
   public void complete() {
     for (MetaFieldWS metaField : this.metaFields) {
       metaField.complete();
@@ -195,9 +184,7 @@ public class MetaChunkWS implements Output {
     return bytesWritten;
   }
 
-  /**
-   * reuse metaField for nextCublet.
-   */
+  /** reuse metaField for nextCublet. */
   public void cleanForNextCublet() {
     for (MetaFieldWS metaField : this.metaFields) {
       metaField.cleanForNextCublet();
@@ -209,7 +196,6 @@ public class MetaChunkWS implements Output {
    *
    * @param out dataoutput
    * @return success or fail
-   *
    * @throws IOException write error
    */
   public int writeCubeMeta(DataOutput out) throws IOException {
@@ -248,8 +234,8 @@ public class MetaChunkWS implements Output {
 
   @Override
   public String toString() {
-    return "MetaChunk: " + Arrays.asList(metaFields).stream()
-        .map(Object::toString).reduce((x, y) -> x + ", " + y);
+    return "MetaChunk: "
+        + Arrays.asList(metaFields).stream().map(Object::toString).reduce((x, y) -> x + ", " + y);
   }
 
   /**

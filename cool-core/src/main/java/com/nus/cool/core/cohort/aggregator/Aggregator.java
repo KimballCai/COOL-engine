@@ -23,13 +23,17 @@ import com.nus.cool.core.io.storevector.InputVector;
 import java.util.BitSet;
 
 /**
- * Calculate the users behavior metric after they are born. The 
- * interface is special designed for cohort query. Each iteration
- * processes events of a single user after he/she is born.
+ * Calculate the users behavior metric after they are born. The interface is special designed for
+ * cohort query. Each iteration processes events of a single user after he/she is born.
  */
 public interface Aggregator {
 
-  void init(InputVector metricVec, InputVector eventDayVec, int maxAges, int from, int to,
+  void init(
+      InputVector metricVec,
+      InputVector eventDayVec,
+      int maxAges,
+      int from,
+      int to,
       int ageDivider);
 
   void processUser(BitSet hitBv, int sinceDay, int start, int end, long[] row);

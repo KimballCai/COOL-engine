@@ -29,22 +29,13 @@ import java.util.BitSet;
 
 /**
  * Cool field read store, both hash field and range field.
- * <p>
- * hash field Layout
- * -----------------
- * | keys | values |
- * -----------------
- * where keys = globalIDs
+ *
+ * <p>hash field Layout ----------------- | keys | values | ----------------- where keys = globalIDs
  * (compressed) values = column data, stored as localIDs (compressed)
- * <p>
- * range field layout
- * ------------------------------
- * | codec | min | max | values |
- * ------------------------------
- * where
- * min = min of the values
- * max = max of the values
- * values = column data (compressed)
+ *
+ * <p>range field layout ------------------------------ | codec | min | max | values |
+ * ------------------------------ where min = min of the values max = max of the values values =
+ * column data (compressed)
  */
 public class CoolFieldRS implements FieldRS {
 
@@ -56,19 +47,13 @@ public class CoolFieldRS implements FieldRS {
 
   private int maxKey;
 
-  /**
-   * key vector for hash field, store globalIDs.
-   */
+  /** key vector for hash field, store globalIDs. */
   private InputVector keyVec = null;
 
-  /**
-   * value vector for hash field.
-   */
+  /** value vector for hash field. */
   private InputVector valueVec = null;
 
-  /**
-   * BitSet array if this field has been pre-calculated.
-   */
+  /** BitSet array if this field has been pre-calculated. */
   private BitSet[] bitSets = null;
 
   @Override
@@ -110,7 +95,7 @@ public class CoolFieldRS implements FieldRS {
   /**
    * IO interface.
    *
-   * @param buffer input 
+   * @param buffer input
    * @param fieldType fieldtype
    */
   public void readFromWithFieldType(ByteBuffer buffer, FieldType fieldType) {
@@ -151,5 +136,4 @@ public class CoolFieldRS implements FieldRS {
     // TODO Auto-generated method stub
     return 0;
   }
-
 }

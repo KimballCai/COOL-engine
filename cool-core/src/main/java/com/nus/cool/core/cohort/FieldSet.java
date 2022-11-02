@@ -24,16 +24,13 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-/**
- * Field is mainly used to represent the conditions we set up.
- */
+/** Field is mainly used to represent the conditions we set up. */
 @Data
 @AllArgsConstructor
 public class FieldSet {
 
   // default constructor
-  public FieldSet() {
-  }
+  public FieldSet() {}
 
   private FieldSetType fieldSetType;
 
@@ -41,11 +38,8 @@ public class FieldSet {
 
   private List<String> values;
 
-  /**
-   * Field types.
-   */
+  /** Field types. */
   public enum FieldSetType {
-
     Set,
 
     Range

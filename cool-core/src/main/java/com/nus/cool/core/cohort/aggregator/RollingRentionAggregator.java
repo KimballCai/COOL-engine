@@ -28,25 +28,20 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Rolling rention aggregator.
- */
+/** Rolling rention aggregator. */
 public class RollingRentionAggregator implements EventAggregator {
 
   @Override
-  public void init(InputVector vec) {
-  }
+  public void init(InputVector vec) {}
 
   @Override
   public Double birthAggregate(List<Integer> offset) {
     throw new UnsupportedOperationException();
   }
 
-  /**
-   * Aggregate over @param ageOffset with age defined by @param ageDelimiter.
-   */
-  public void ageAggregate(BitSet ageOffset, List<Integer> ageDelimiter,
-      Map<Integer, List<Double>> ageMetrics) {
+  /** Aggregate over @param ageOffset with age defined by @param ageDelimiter. */
+  public void ageAggregate(
+      BitSet ageOffset, List<Integer> ageDelimiter, Map<Integer, List<Double>> ageMetrics) {
 
     int offset = ageOffset.nextSetBit(ageDelimiter.get(0));
     int age = 1;
@@ -80,8 +75,14 @@ public class RollingRentionAggregator implements EventAggregator {
   }
 
   @Override
-  public void ageAggregate(BitSet ageOffset, BitSet ageDelimiter, int ageOff, int ageEnd,
-      int ageInterval, FieldFilter ageFilter, Map<Integer, List<Double>> ageMetrics) {
+  public void ageAggregate(
+      BitSet ageOffset,
+      BitSet ageDelimiter,
+      int ageOff,
+      int ageEnd,
+      int ageInterval,
+      FieldFilter ageFilter,
+      Map<Integer, List<Double>> ageMetrics) {
 
     int offset = ageOffset.nextSetBit(ageOff);
     int age = 1;
@@ -115,8 +116,15 @@ public class RollingRentionAggregator implements EventAggregator {
   }
 
   @Override
-  public void ageAggregate(BitSet ageOffset, InputVector time, int birthDay, int ageOff, int ageEnd,
-      int ageInterval, TimeUnit unit, FieldFilter ageFilter,
+  public void ageAggregate(
+      BitSet ageOffset,
+      InputVector time,
+      int birthDay,
+      int ageOff,
+      int ageEnd,
+      int ageInterval,
+      TimeUnit unit,
+      FieldFilter ageFilter,
       Map<Integer, List<Double>> ageMetrics) {
     // skip to the first day
     int ageDate = TimeUtils.getDateofNextTimeUnitN(birthDay, unit, 1);
@@ -149,8 +157,16 @@ public class RollingRentionAggregator implements EventAggregator {
   }
 
   @Override
-  public void ageAggregateMetirc(BitSet ageOffset, InputVector time, int birthDay, int ageOff,
-      int ageEnd, int ageInterval, TimeUnit unit, FieldFilter ageFilter, InputVector fieldValue,
+  public void ageAggregateMetirc(
+      BitSet ageOffset,
+      InputVector time,
+      int birthDay,
+      int ageOff,
+      int ageEnd,
+      int ageInterval,
+      TimeUnit unit,
+      FieldFilter ageFilter,
+      InputVector fieldValue,
       Map<Integer, List<Double>> ageMetrics) {
     // TODO Auto-generated method stub
   }

@@ -5,8 +5,8 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 /**
- * whether to record the meta data of field in this chunk.
- * Through filter to speed up the cohort processing
+ * whether to record the meta data of field in this chunk. Through filter to speed up the cohort
+ * processing
  */
 public class DataInvariantHashFieldWS implements DataFieldWS {
 
@@ -33,5 +33,4 @@ public class DataInvariantHashFieldWS implements DataFieldWS {
   public void put(String value) throws IOException {
     // // for invariant data field, no need to write data
   }
-
 }

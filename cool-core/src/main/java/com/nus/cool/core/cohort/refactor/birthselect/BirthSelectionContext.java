@@ -8,13 +8,11 @@ import java.util.Set;
 
 /**
  * Class BirthSelectionContext is a control and manage layer for birthSelector
- * 
- * <p>
- * for every user, we maintain a queue (BirthContextWindow) to record chosen
- * event's frequency in a time sliding window. If the events frequency of one
- * user's BirthContextWindow satisfied the requirement (eventMinFrequency), this
- * user is selected. and no longer needed to maintain BirthContextWindow for
- * this user.
+ *
+ * <p>for every user, we maintain a queue (BirthContextWindow) to record chosen event's frequency in
+ * a time sliding window. If the events frequency of one user's BirthContextWindow satisfied the
+ * requirement (eventMinFrequency), this user is selected. and no longer needed to maintain
+ * BirthContextWindow for this user.
  */
 public class BirthSelectionContext {
 
@@ -32,9 +30,7 @@ public class BirthSelectionContext {
   // EventId (index) -> Frequency (value)
   private final int[] eventMinFrequency;
 
-  /**
-   * Create a BirthSelectionContext.
-   */
+  /** Create a BirthSelectionContext. */
   public BirthSelectionContext(TimeWindow maxTimeWindow, int[] freq) {
     this.maxTimeWindow = maxTimeWindow;
     this.userSelected = new HashMap<>();
@@ -44,19 +40,19 @@ public class BirthSelectionContext {
 
   /**
    * Add a event into event queue
-   * 
-   * <p>
-   * get the corresponding BirthContextWindow, and push new eventId into it. the
-   * BirthContextWindow will automatically adjust the inner event queue when new
-   * event is pushed check whether the state of birthContextWindow satisfied the
-   * requirement. if satisfied, mark the corresponding user's birthAction
+   *
+   * <p>get the corresponding BirthContextWindow, and push new eventId into it. the
+   * BirthContextWindow will automatically adjust the inner event queue when new event is pushed
+   * check whether the state of birthContextWindow satisfied the requirement. if satisfied, mark the
+   * corresponding user's birthAction
    */
   public void add(String userId, Integer eventId, LocalDateTime date) {
-    Preconditions.checkArgument(userSelected.containsKey(userId) == false,
+    Preconditions.checkArgument(
+        userSelected.containsKey(userId) == false,
         "Before Invoke Add, the userId should be unselected state");
     if (!userBirthTime.containsKey(userId)) {
-      this.userBirthTime.put(userId,
-          new BirthContextWindow(maxTimeWindow, this.eventMinFrequency.length));
+      this.userBirthTime.put(
+          userId, new BirthContextWindow(maxTimeWindow, this.eventMinFrequency.length));
     }
     // Initialize a BirthContextWindow
     BirthContextWindow contextWindow = this.userBirthTime.get(userId);
@@ -75,16 +71,14 @@ public class BirthSelectionContext {
     }
   }
 
-  /**
-   * whether the user's birthEvent is selected.
-   */
+  /** whether the user's birthEvent is selected. */
   public boolean isUserSelected(String userId) {
     return userSelected.containsKey(userId);
   }
 
   /**
-   * Directly set user's Action time Skip to record the frequency of events (this
-   * method will invoked when the birthEvents is Null).
+   * Directly set user's Action time Skip to record the frequency of events (this method will
+   * invoked when the birthEvents is Null).
    */
   public void setUserSelected(String userId, LocalDateTime date) {
     if (!userSelected.containsKey(userId)) {
@@ -94,16 +88,14 @@ public class BirthSelectionContext {
 
   /**
    * Get the birthEvent's datetime of certain user.
-   * 
+   *
    * @return null if user is not selected
    */
   public LocalDateTime getUserBirthEventDate(String userId) {
     return userSelected.get(userId);
   }
 
-  /**
-   * Check whether in ContextWindow the birthEvent requirement is satisfied.
-   */
+  /** Check whether in ContextWindow the birthEvent requirement is satisfied. */
   private boolean isSatisfied(int[] eventState) {
     for (int i = 0; i < eventMinFrequency.length; i++) {
       if (eventState[i] < eventMinFrequency[i]) {
@@ -113,9 +105,7 @@ public class BirthSelectionContext {
     return true;
   }
 
-  /**
-   * Get the set of selecetd User Id.
-   */
+  /** Get the set of selecetd User Id. */
   public Set<String> getSelectedUserId() {
     return this.userSelected.keySet();
   }

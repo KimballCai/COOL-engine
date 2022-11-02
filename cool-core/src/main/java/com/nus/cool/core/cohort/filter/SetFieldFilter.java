@@ -32,40 +32,28 @@ import java.util.BitSet;
 import java.util.List;
 
 /**
- * SetFieldFilter is used to check whether the input is eligible If the
- * condition does not exist, then all the input are eligible Usage: first check
- * whether the metafield is eligible Then find the eligible tuples of the field.
+ * SetFieldFilter is used to check whether the input is eligible If the condition does not exist,
+ * then all the input are eligible Usage: first check whether the metafield is eligible Then find
+ * the eligible tuples of the field.
  */
 public class SetFieldFilter implements FieldFilter {
 
-  /**
-   * The conditions we set up.
-   */
+  /** The conditions we set up. */
   private List<String> values;
 
-  /**
-   * whether the condition means all the tuples.
-   */
+  /** whether the condition means all the tuples. */
   private boolean isAll;
 
-  /**
-   * Which condition it contains.
-   */
+  /** Which condition it contains. */
   private int[] contentIds;
 
-  /**
-   * Indicate which tuple in the table is eligible.
-   */
+  /** Indicate which tuple in the table is eligible. */
   private BitSet filter;
 
-  /**
-   * Chunk value vector for hash field.
-   */
+  /** Chunk value vector for hash field. */
   private InputVector chunkValues;
 
-  /**
-   * the configuration of the field set.
-   */
+  /** the configuration of the field set. */
   private ExtendedFieldSet fieldSet;
 
   private FieldType fieldType;
@@ -74,7 +62,7 @@ public class SetFieldFilter implements FieldFilter {
 
   /**
    * construct a filter on a set field.
-
+   *
    * @param values accepted values
    */
   public SetFieldFilter(ExtendedFieldSet set, List<String> values, FieldType fieldType) {
@@ -87,7 +75,7 @@ public class SetFieldFilter implements FieldFilter {
 
   /**
    * Get the minimum cube id of the field.
-
+   *
    * @return the minimum cube id
    */
   @Override
@@ -97,7 +85,7 @@ public class SetFieldFilter implements FieldFilter {
 
   /**
    * Get the maximum cube id of the field.
-
+   *
    * @return the maximum cube id
    */
   @Override
@@ -106,12 +94,12 @@ public class SetFieldFilter implements FieldFilter {
   }
 
   /**
-   * Indicate whether the metafield is eligible i.e. whether we can find eligible
-   * values in the metafield.
-
+   * Indicate whether the metafield is eligible i.e. whether we can find eligible values in the
+   * metafield.
+   *
    * @param metaField the metafield to be checked
-   * @return false indicates the metafield is not eligible and true indicates the
-   *         metafield is eligible
+   * @return false indicates the metafield is not eligible and true indicates the metafield is
+   *     eligible
    */
   @Override
   public boolean accept(MetaFieldRS metaField) {
@@ -131,12 +119,10 @@ public class SetFieldFilter implements FieldFilter {
   }
 
   /**
-   * Indicate whether the field is eligible i.e. whether we can find eligible
-   * values in the field.
-
+   * Indicate whether the field is eligible i.e. whether we can find eligible values in the field.
+   *
    * @param field the field to be checked
-   * @return false indicates the field is not eligible and true indicates the
-   *         field is eligible
+   * @return false indicates the field is not eligible and true indicates the field is eligible
    */
   @Override
   public boolean accept(FieldRS field) {
@@ -148,7 +134,7 @@ public class SetFieldFilter implements FieldFilter {
     this.filter = new BitSet(keyVec.size());
     this.chunkValues = field.getValueVector();
 
-    boolean  hit = false;
+    boolean hit = false;
     // build a hitset for the filters to check records
     for (int contentId : this.contentIds) {
       if (contentId >= 0) {
@@ -159,16 +145,16 @@ public class SetFieldFilter implements FieldFilter {
         }
       }
     }
-    return  hit || (this.values.isEmpty());
+    return hit || (this.values.isEmpty());
   }
 
   /**
-   * Indicate whether the invariant field is eligible i.e. whether we can find
-   * eligible values in the invariant field.
-
+   * Indicate whether the invariant field is eligible i.e. whether we can find eligible values in
+   * the invariant field.
+   *
    * @param inputVector the vector of invariant data to be checked
-   * @return false indicates the invariant field is not eligible and true
-   *         indicates the invariant field is eligible
+   * @return false indicates the invariant field is not eligible and true indicates the invariant
+   *     field is eligible
    */
   @Override
   public boolean accept(InputVector inputVector) {
@@ -185,10 +171,9 @@ public class SetFieldFilter implements FieldFilter {
 
   /**
    * Indicate whether the integer is eligible.
-
+   *
    * @param v the integer to be checked
-   * @return false indicates the integer is not eligible and true indicates the
-   *         integer is eligible
+   * @return false indicates the integer is not eligible and true indicates the integer is eligible
    */
   @Override
   public boolean accept(int v) {
@@ -200,7 +185,7 @@ public class SetFieldFilter implements FieldFilter {
 
   /**
    * Get the conditions set up before.
-
+   *
    * @return the string conditions we set up
    */
   @Override

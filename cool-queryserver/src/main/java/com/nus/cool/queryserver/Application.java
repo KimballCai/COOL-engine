@@ -36,83 +36,87 @@ import java.util.Collections;
 @SpringBootApplication
 public class Application {
 
-    public enum Role { STANDALONE, WORKER, BROKER }
+  public enum Role {
+    STANDALONE,
+    WORKER,
+    BROKER
+  }
 
-    /**
-     * Run server
-     * @param args args[0]: data source path
-     *             args[1]: port
-     *             args[2]: role, WORKER or BROKER,
-     * @throws InterruptedException  ZKConnection
-     * @throws KeeperException ZKConnection
-     * @throws IOException HDFSConnection
-     * @throws URISyntaxException HDFSConnection
-     */
-    public static void main(String[] args) throws InterruptedException, KeeperException, IOException, URISyntaxException {
+  /**
+   * Run server
+   *
+   * @param args args[0]: data source path args[1]: port args[2]: role, WORKER or BROKER,
+   * @throws InterruptedException ZKConnection
+   * @throws KeeperException ZKConnection
+   * @throws IOException HDFSConnection
+   * @throws URISyntaxException HDFSConnection
+   */
+  public static void main(String[] args)
+      throws InterruptedException, KeeperException, IOException, URISyntaxException {
 
-        String rawDataSource = args[0];
-        String rawPort = args[1];
-        String rawRole = args[2];
+    String rawDataSource = args[0];
+    String rawPort = args[1];
+    String rawRole = args[2];
 
-        Role role = Role.valueOf(rawRole);
-        ModelPathCfg.dataSourcePath = rawDataSource;
+    Role role = Role.valueOf(rawRole);
+    ModelPathCfg.dataSourcePath = rawDataSource;
 
-        System.out.printf("Query server version0.0.1, input DataSource=%s, port=%s, role=%s\n", rawDataSource, rawPort, rawRole);
+    System.out.printf(
+        "Query server version0.0.1, input DataSource=%s, port=%s, role=%s\n",
+        rawDataSource, rawPort, rawRole);
 
-        ZKConnection zk;
+    ZKConnection zk;
 
-        // get local address.
-        String host = InetAddress.getLocalHost().getHostAddress();
+    // get local address.
+    String host = InetAddress.getLocalHost().getHostAddress();
 
-        switch (role) {
-            case STANDALONE:
-                break;
-            case BROKER:
-                // 1. connect to HDFS and zookeeper
-                HDFSConnection.getInstance();
-                zk = ZKConnection.getInstance();
-                // 2. add address to broker
-                zk.createBroker(host + ":"+rawPort);
-                // 3. run zookeeper watcher.
-                WorkerWatcher workerWatcher = new WorkerWatcher(zk);
-                // 4. init singleton
-                TaskQueue.getInstance();
-                WorkerIndex.getInstance();
-                QueryIndex.getInstance();
+    switch (role) {
+      case STANDALONE:
+        break;
+      case BROKER:
+        // 1. connect to HDFS and zookeeper
+        HDFSConnection.getInstance();
+        zk = ZKConnection.getInstance();
+        // 2. add address to broker
+        zk.createBroker(host + ":" + rawPort);
+        // 3. run zookeeper watcher.
+        WorkerWatcher workerWatcher = new WorkerWatcher(zk);
+        // 4. init singleton
+        TaskQueue.getInstance();
+        WorkerIndex.getInstance();
+        QueryIndex.getInstance();
 
-                Thread consumer = new BrokerConsumerThread();
-                consumer.start();
-                break;
-            case WORKER:
-                // 1. connect to HDFS and zookeeper
-                HDFSConnection.getInstance();
-                zk = ZKConnection.getInstance();
-                // 2. register worker to zookeeper
-                zk.addWorker(host + ":"+rawPort);
-                break;
+        Thread consumer = new BrokerConsumerThread();
+        consumer.start();
+        break;
+      case WORKER:
+        // 1. connect to HDFS and zookeeper
+        HDFSConnection.getInstance();
+        zk = ZKConnection.getInstance();
+        // 2. register worker to zookeeper
+        zk.addWorker(host + ":" + rawPort);
+        break;
 
-            default:
-                throw new IllegalArgumentException();
-        }
-
-        // Start service
-        SpringApplication app = new SpringApplication(Application.class);
-        app.setDefaultProperties(Collections.singletonMap("server.port", rawPort));
-        app.run();
+      default:
+        throw new IllegalArgumentException();
     }
 
-    @Bean
-    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-        return args -> {
+    // Start service
+    SpringApplication app = new SpringApplication(Application.class);
+    app.setDefaultProperties(Collections.singletonMap("server.port", rawPort));
+    app.run();
+  }
 
-            System.out.println("Let's inspect the beans provided by Spring Boot:");
+  @Bean
+  public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
+    return args -> {
+      System.out.println("Let's inspect the beans provided by Spring Boot:");
 
-            String[] beanNames = ctx.getBeanDefinitionNames();
-            Arrays.sort(beanNames);
-            for (String beanName : beanNames) {
-                System.out.println(beanName);
-            }
-        };
-    }
-
+      String[] beanNames = ctx.getBeanDefinitionNames();
+      Arrays.sort(beanNames);
+      for (String beanName : beanNames) {
+        System.out.println(beanName);
+      }
+    };
+  }
 }

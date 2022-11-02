@@ -1,4 +1,3 @@
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,16 +19,11 @@
 
 package com.nus.cool.core.iceberg.aggregator;
 
-/**
- * Factory class of OLAP aggregators.
- */
+/** Factory class of OLAP aggregators. */
 public class AggregatorFactory {
 
-  /**
-   * OLAP Aggregator types.
-   */
+  /** OLAP Aggregator types. */
   public enum AggregatorType {
-
     COUNT,
 
     SUM,
@@ -45,7 +39,7 @@ public class AggregatorFactory {
 
   /**
    * Create an OLAP aggregator of a type.
-
+   *
    * @param operator type of aggregator
    * @return constructed aggregagtor
    */

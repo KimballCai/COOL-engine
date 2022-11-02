@@ -27,14 +27,10 @@ import com.nus.cool.core.util.writer.CliDataWriter;
 import com.nus.cool.core.util.writer.DataWriter;
 import com.nus.cool.model.CoolModel;
 
-/**
- * Cohort exploration operation.
- */
+/** Cohort exploration operation. */
 public class CohortExploration {
 
-  /**
-   * perform cohort exploration.
-   */
+  /** perform cohort exploration. */
   public static void main(String[] args) {
     String datasetPath = args[0];
     String cubeName = args[1];

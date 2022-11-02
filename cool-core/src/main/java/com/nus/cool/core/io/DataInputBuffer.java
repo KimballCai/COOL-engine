@@ -21,9 +21,7 @@ package com.nus.cool.core.io;
 
 import java.io.DataInputStream;
 
-/**
- * Input buffer abstraction.
- */
+/** Input buffer abstraction. */
 public class DataInputBuffer extends DataInputStream {
 
   private Buffer buffer;
@@ -40,7 +38,7 @@ public class DataInputBuffer extends DataInputStream {
   /**
    * Resets te data that the buffer reads.
    *
-   * @param input  the input stream
+   * @param input the input stream
    * @param length number of bytes to read
    */
   public void reset(byte[] input, int length) {
@@ -65,10 +63,7 @@ public class DataInputBuffer extends DataInputStream {
     return this.buffer.getPosition();
   }
 
-  /**
-   * Returns the index one greater than the last valid character in the input
-   * stream buffer.
-   */
+  /** Returns the index one greater than the last valid character in the input stream buffer. */
   public int getLength() {
     return this.buffer.getLength();
   }

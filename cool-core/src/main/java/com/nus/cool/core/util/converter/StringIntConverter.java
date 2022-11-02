@@ -19,10 +19,7 @@
 
 package com.nus.cool.core.util.converter;
 
-/**
- * StringIntConverter could convert string to interger or
- * convert interger to string.
- */
+/** StringIntConverter could convert string to interger or convert interger to string. */
 public class StringIntConverter implements NumericConverter {
 
   /**

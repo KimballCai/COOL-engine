@@ -14,28 +14,18 @@ import org.apache.arrow.vector.ipc.ArrowFileReader;
 import org.apache.arrow.vector.ipc.ArrowReader;
 
 public class ArrowIPCFileTupleReader implements TupleReader {
-  
+
   private final ArrowReader reader;
   private final boolean empty;
   private VectorSchemaRoot root;
   private ArrowBatchIterator itr;
-  
-  public ArrowIPCFileTupleReader(FileInputStream fileInputStream,
-    BufferAllocator allocator,
-    CompressionCodec.Factory compressionFactory)
-    throws IOException {
-    this.reader = new ArrowFileReader(fileInputStream.getChannel(),
-      allocator, compressionFactory);
-    this.empty = !reader.loadNextBatch();
-    if (!this.empty) {
-      this.root = this.reader.getVectorSchemaRoot();
-      this.itr = new ArrowBatchIterator(root);
-    }
-  }
-  
-  public ArrowIPCFileTupleReader(FileInputStream fileInputStream,
-  BufferAllocator allocator) throws IOException {
-    this.reader = new ArrowFileReader(fileInputStream.getChannel(), allocator);
+
+  public ArrowIPCFileTupleReader(
+      FileInputStream fileInputStream,
+      BufferAllocator allocator,
+      CompressionCodec.Factory compressionFactory)
+      throws IOException {
+    this.reader = new ArrowFileReader(fileInputStream.getChannel(), allocator, compressionFactory);
     this.empty = !reader.loadNextBatch();
     if (!this.empty) {
       this.root = this.reader.getVectorSchemaRoot();
@@ -43,6 +33,15 @@ public class ArrowIPCFileTupleReader implements TupleReader {
     }
   }
 
+  public ArrowIPCFileTupleReader(FileInputStream fileInputStream, BufferAllocator allocator)
+      throws IOException {
+    this.reader = new ArrowFileReader(fileInputStream.getChannel(), allocator);
+    this.empty = !reader.loadNextBatch();
+    if (!this.empty) {
+      this.root = this.reader.getVectorSchemaRoot();
+      this.itr = new ArrowBatchIterator(root);
+    }
+  }
 
   @Override
   public boolean hasNext() {

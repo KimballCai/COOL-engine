@@ -26,28 +26,19 @@ import net.jpountz.lz4.LZ4Factory;
 
 /**
  * LZ4Compressor for compressing string values.
- * 
- * <p>
- * The compressed data layout
- * ---------------------------------------
- * | z len | raw len | compressed values |
- * ---------------------------------------
+ *
+ * <p>The compressed data layout --------------------------------------- | z len | raw len |
+ * compressed values | ---------------------------------------
  */
 public class LZ4JavaCompressor implements Compressor {
 
-  /**
-   * Bytes number for z len and raw len.
-   */
+  /** Bytes number for z len and raw len. */
   public static final int HEADACC = 4 + 4;
 
-  /**
-   * Maximum size of compressed data.
-   */
+  /** Maximum size of compressed data. */
   private final int maxLen;
 
-  /**
-   * LZ4 compressor.
-   */
+  /** LZ4 compressor. */
   private final LZ4Compressor lz4;
 
   public LZ4JavaCompressor(Histogram hist) {
@@ -60,15 +51,13 @@ public class LZ4JavaCompressor implements Compressor {
     return this.maxLen;
   }
 
-  /**
-   * Compress the data structure in buffer to a byte array.
-   */
+  /** Compress the data structure in buffer to a byte array. */
   @Override
-  public int compress(byte[] src, int srcOff, int srcLen, byte[] dest, int destOff,
-      int maxDestLen) {
+  public int compress(
+      byte[] src, int srcOff, int srcLen, byte[] dest, int destOff, int maxDestLen) {
     ByteBuffer buffer = ByteBuffer.wrap(dest, destOff, maxDestLen).order(ByteOrder.nativeOrder());
-    int zlen = this.lz4.compress(src, srcOff, srcLen, dest, destOff + HEADACC,
-        maxDestLen - HEADACC);
+    int zlen =
+        this.lz4.compress(src, srcOff, srcLen, dest, destOff + HEADACC, maxDestLen - HEADACC);
     // write z len and raw len for decompressing
     buffer.putInt(zlen);
     buffer.putInt(srcLen);

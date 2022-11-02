@@ -3,9 +3,7 @@ package com.nus.cool.core.cohort.refactor.storage;
 import java.util.HashSet;
 import lombok.Data;
 
-/**
- * RetUnit to bind value and count. Provide get and set interface
- */
+/** RetUnit to bind value and count. Provide get and set interface */
 @Data
 public class RetUnit {
   // intermediate value for cohort analysis
@@ -19,9 +17,7 @@ public class RetUnit {
 
   private HashSet<Integer> userIdSet;
 
-  /**
-   * Create a RetUnit with initial value and count.
-   */
+  /** Create a RetUnit with initial value and count. */
   public RetUnit(float value, int count) {
     this.value = value;
     this.count = count;
@@ -34,5 +30,4 @@ public class RetUnit {
     Integer i = (int) this.value;
     return i.toString();
   }
-
 }

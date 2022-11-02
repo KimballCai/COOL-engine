@@ -3,11 +3,10 @@ package com.nus.cool.core.cohort.refactor.filter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Enum class for filtertype.
- */
+/** Enum class for filtertype. */
 public enum FilterType {
-  Range("RANGE"), Set("SET");
+  Range("RANGE"),
+  Set("SET");
 
   private final String text;
 
@@ -21,9 +20,7 @@ public enum FilterType {
     return text;
   }
 
-  /**
-   * return FilterType named by string.
-   */
+  /** return FilterType named by string. */
   @JsonCreator
   public static FilterType forValue(String value) {
     switch (value) {

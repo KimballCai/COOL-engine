@@ -24,14 +24,10 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/**
- * Birth sequence.
- */
+/** Birth sequence. */
 public class BirthSequence {
 
-  /**
-   * Cohort field.
-   */
+  /** Cohort field. */
   public static class CohortField {
 
     private String field;
@@ -70,20 +66,16 @@ public class BirthSequence {
     }
   }
 
-  /**
-   * Anchor class.
-   */
+  /** Anchor class. */
   public static class Anchor {
 
     private int anchor;
 
     // private String offset;
 
-    @JsonIgnore
-    private int low = 0;
+    @JsonIgnore private int low = 0;
 
-    @JsonIgnore
-    private int high = 0;
+    @JsonIgnore private int high = 0;
 
     public int getAnchor() {
       return anchor;
@@ -100,16 +92,14 @@ public class BirthSequence {
     }
   }
 
-  /**
-   * Time window unit.
-   */
+  /** Time window unit. */
   public static enum TimeWindowUnit {
-    DAY, WEEK, MONTH
+    DAY,
+    WEEK,
+    MONTH
   }
 
-  /**
-   * Time window.
-   */
+  /** Time window. */
   public static class TimeWindow {
 
     private int length;
@@ -137,9 +127,7 @@ public class BirthSequence {
     }
   }
 
-  /**
-   * Birth event.
-   */
+  /** Birth event. */
   public static class BirthEvent {
     private int minTrigger = 0;
     private int maxTrigger = -1;
@@ -182,16 +170,13 @@ public class BirthSequence {
 
   private List<BirthEvent> birthEvents = new ArrayList<>();
 
-  @JsonIgnore
-  List<Integer> sortedEvents = new ArrayList<Integer>();
+  @JsonIgnore List<Integer> sortedEvents = new ArrayList<Integer>();
 
   public List<BirthEvent> getBirthEvents() {
     return birthEvents;
   }
 
-  /**
-   * Set birth events.
-   */
+  /** Set birth events. */
   public void setBirthEvents(List<BirthEvent> list) {
     birthEvents = list;
 

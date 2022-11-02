@@ -20,29 +20,19 @@ import java.util.List;
 import java.util.Map;
 import lombok.Data;
 
-/**
- * CubeMeta describes the possible values of each field in a cube.
- */
+/** CubeMeta describes the possible values of each field in a cube. */
 public class CubeMetaRS implements Input {
 
-  /**
-   * TableSchema for this meta chunk.
-   */
+  /** TableSchema for this meta chunk. */
   private TableSchema schema;
 
-  /**
-   * Charset defined in table schema.
-   */
+  /** Charset defined in table schema. */
   private Charset charset;
 
-  /**
-   * Stored data byte buffer.
-   */
+  /** Stored data byte buffer. */
   private ByteBuffer buffer;
 
-  /**
-   * Offsets for fields in this meta chunk.
-   */
+  /** Offsets for fields in this meta chunk. */
   private int[] fieldOffsets;
 
   private interface FieldMeta extends Input {
@@ -151,9 +141,7 @@ public class CubeMetaRS implements Input {
     // Fields are loaded only if they are called
   }
 
-  /**
-   * Return a json string that describes the possible values of a field.
-   */
+  /** Return a json string that describes the possible values of a field. */
   public synchronized String getFieldMeta(String fieldName) {
     int id = this.schema.getFieldID(fieldName);
     if (id < 0 || id >= this.fieldOffsets.length) {

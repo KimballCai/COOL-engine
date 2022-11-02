@@ -29,78 +29,81 @@ import org.testng.annotations.Test;
 
 public class ChunkTest {
 
-    static final Logger logger = LoggerFactory.getLogger(ChunkTest.class);
+  static final Logger logger = LoggerFactory.getLogger(ChunkTest.class);
 
-    @BeforeTest
-    public void setUp() {
-        logger.info("Start UnitTest " + ChunkTest.class.getSimpleName());
+  @BeforeTest
+  public void setUp() {
+    logger.info("Start UnitTest " + ChunkTest.class.getSimpleName());
+  }
+
+  @AfterTest
+  public void tearDown() {
+    logger.info(String.format("Tear down UnitTest %s\n", ChunkTest.class.getSimpleName()));
+  }
+
+  @Test(dataProvider = "ChunkUnitTestDP")
+  public void ChunkUnitTest(String dirPath) throws IOException {
+    logger.info("Input Chunk UnitTest Data: DataPath " + dirPath);
+
+    TestTable table = utils.loadTable(dirPath);
+    TableSchema schemas = utils.loadSchema(dirPath);
+
+    // Generate MetaChunkWS
+    MetaChunkWS metaChunkWS = MetaChunkWS.newMetaChunkWS(schemas, 0);
+    DataChunkWS chunkWS = DataChunkWS.newDataChunk(schemas, metaChunkWS.getMetaFields(), 0);
+
+    for (int i = 0; i < table.getRowCounts(); i++) {
+      // You have to update meta first,
+      // you have to update globalId first
+      String[] tuple = table.getTuple(i);
+      metaChunkWS.put(tuple);
+      chunkWS.put(tuple);
     }
 
-    @AfterTest
-    public void tearDown() {
-        logger.info(String.format("Tear down UnitTest %s\n", ChunkTest.class.getSimpleName()));
+    // We create two Buffer, one for chunkWS, another for metaChunkWS
+    DataOutputBuffer chunkDOB = new DataOutputBuffer();
+    DataOutputBuffer metaDOB = new DataOutputBuffer();
+    int chunkPOS = chunkWS.writeTo(chunkDOB);
+    int metaPOS = metaChunkWS.writeTo(metaDOB);
+
+    // ReadFrom
+    ByteBuffer metaBF = ByteBuffer.wrap(metaDOB.getData());
+    ByteBuffer chunkBF = ByteBuffer.wrap(chunkDOB.getData());
+    metaBF.order(ByteOrder.nativeOrder());
+    chunkBF.order(ByteOrder.nativeOrder());
+
+    // decode these data
+    MetaChunkRS metaChunkRS = new MetaChunkRS(schemas);
+    ChunkRS chunkRS = new ChunkRS(schemas, metaChunkRS);
+    // Note: we should decode the headerOffset first
+    metaBF.position(metaPOS - Ints.BYTES);
+    int metaHeaderOffset = metaBF.getInt();
+    metaBF.position(metaHeaderOffset);
+    metaChunkRS.readFrom(metaBF);
+    chunkBF.position(chunkPOS - Ints.BYTES);
+    int chunkHeaderOffset = chunkBF.getInt();
+    chunkBF.position(chunkHeaderOffset);
+    chunkRS.readFrom(chunkBF);
+
+    // Check Record Size
+    Assert.assertEquals(chunkRS.getRecords(), table.getRowCounts(), "Field Record Size");
+
+    for (int i = 0; i < table.getColCounts(); i++) {
+      ArrayList<String> fieldValue = table.getCols().get(i);
+      FieldSchema fschema = schemas.getField(i);
+      FieldRS fieldRS = chunkRS.getField(fschema.getName());
+      MetaFieldRS metaFieldRS = metaChunkRS.getMetaField(fschema.getName());
+      Assert.assertTrue(
+          isFieldCorrect(metaFieldRS, fieldRS, fieldValue),
+          String.format("Field %s Failed", fschema.getName()));
     }
+  }
 
-    @Test(dataProvider = "ChunkUnitTestDP")
-    public void ChunkUnitTest(String dirPath) throws IOException {
-        logger.info("Input Chunk UnitTest Data: DataPath " + dirPath);
-
-        TestTable table = utils.loadTable(dirPath);
-        TableSchema schemas = utils.loadSchema(dirPath);
-
-        // Generate MetaChunkWS
-        MetaChunkWS metaChunkWS = MetaChunkWS.newMetaChunkWS(schemas, 0);
-        DataChunkWS chunkWS = DataChunkWS.newDataChunk(schemas, metaChunkWS.getMetaFields(), 0);
-
-        for (int i = 0; i < table.getRowCounts(); i++) {
-            // You have to update meta first,
-            // you have to update globalId first
-            String[] tuple = table.getTuple(i);
-            metaChunkWS.put(tuple);
-            chunkWS.put(tuple);
-        }
-
-        // We create two Buffer, one for chunkWS, another for metaChunkWS
-        DataOutputBuffer chunkDOB = new DataOutputBuffer();
-        DataOutputBuffer metaDOB = new DataOutputBuffer();
-        int chunkPOS = chunkWS.writeTo(chunkDOB);
-        int metaPOS = metaChunkWS.writeTo(metaDOB);
-
-        // ReadFrom
-        ByteBuffer metaBF = ByteBuffer.wrap(metaDOB.getData());
-        ByteBuffer chunkBF = ByteBuffer.wrap(chunkDOB.getData());
-        metaBF.order(ByteOrder.nativeOrder());
-        chunkBF.order(ByteOrder.nativeOrder());
-
-        // decode these data
-        MetaChunkRS metaChunkRS = new MetaChunkRS(schemas);
-        ChunkRS chunkRS = new ChunkRS(schemas, metaChunkRS);
-        // Note: we should decode the headerOffset first
-        metaBF.position(metaPOS - Ints.BYTES);
-        int metaHeaderOffset = metaBF.getInt();
-        metaBF.position(metaHeaderOffset);
-        metaChunkRS.readFrom(metaBF);
-        chunkBF.position(chunkPOS - Ints.BYTES);
-        int chunkHeaderOffset = chunkBF.getInt();
-        chunkBF.position(chunkHeaderOffset);
-        chunkRS.readFrom(chunkBF);
-        
-        // Check Record Size
-        Assert.assertEquals(chunkRS.getRecords(), table.getRowCounts(), "Field Record Size");
-
-        for (int i = 0; i < table.getColCounts(); i++) {
-            ArrayList<String> fieldValue = table.getCols().get(i);
-            FieldSchema fschema = schemas.getField(i);
-            FieldRS fieldRS = chunkRS.getField(fschema.getName());
-            MetaFieldRS metaFieldRS = metaChunkRS.getMetaField(fschema.getName());
-            Assert.assertTrue(isFieldCorrect(metaFieldRS, fieldRS, fieldValue),
-                    String.format("Field %s Failed", fschema.getName()));
-        }
-    }
-
-    @DataProvider(name = "ChunkUnitTestDP")
-    public Object[][] chunkUnitTestDP() {
-        String sourcePath = Paths.get(System.getProperty("user.dir"),
+  @DataProvider(name = "ChunkUnitTestDP")
+  public Object[][] chunkUnitTestDP() {
+    String sourcePath =
+        Paths.get(
+                System.getProperty("user.dir"),
                 "src",
                 "test",
                 "java",
@@ -108,54 +111,53 @@ public class ChunkTest {
                 "nus",
                 "cool",
                 "core",
-                "resources").toString();
-        String HealthPath = Paths.get(sourcePath, "health").toString();
-        String TPCHPath = Paths.get(sourcePath, "olap-tpch").toString();
-        String SogamoPath = Paths.get(sourcePath, "sogamo").toString();
+                "resources")
+            .toString();
+    String HealthPath = Paths.get(sourcePath, "health").toString();
+    String TPCHPath = Paths.get(sourcePath, "olap-tpch").toString();
+    String SogamoPath = Paths.get(sourcePath, "sogamo").toString();
 
-        return new Object[][] {
-                { HealthPath },
-                { TPCHPath },
-                { SogamoPath },
-        };
-    }
+    return new Object[][] {
+      {HealthPath}, {TPCHPath}, {SogamoPath},
+    };
+  }
 
-    // ------------------------------ Helper Function -----------------------------
+  // ------------------------------ Helper Function -----------------------------
 
-    /**
-     * Check Weather the decoded Field is correct
-     * 
-     * @param metaFieldRS
-     * @param fieldRS
-     * @param fieldValue
-     * @return True, correct Field or False something wrong
-     */
-    private Boolean isFieldCorrect(MetaFieldRS metaFieldRS, FieldRS fieldRS, ArrayList<String> valueList) {
-        if (FieldType.isHashType(fieldRS.getFieldType())){
-            // HashField
-            for (int i = 0; i < valueList.size(); i++) {
-                int gid = fieldRS.getValueByIndex(i);
-                String actual = metaFieldRS.getString(gid);
-                if (!actual.equals(valueList.get(i))) {
-                    return false;
-                }
-            }
-        } else {
-            // RangeField
-            
-            DayIntConverter convertor = DayIntConverter.getInstance();
-            for (int i = 0; i < valueList.size(); i++) {
-                String expect = valueList.get(i);
-                if (fieldRS.getFieldType() == FieldType.ActionTime) {
-                    expect = Integer.toString(convertor.toInt(expect));
-                }
-                String actual = Integer.toString(fieldRS.getValueByIndex(i));
-                if (!actual.equals(expect)) {
-                    return false;
-                }
-            }
+  /**
+   * Check Weather the decoded Field is correct
+   *
+   * @param metaFieldRS
+   * @param fieldRS
+   * @param fieldValue
+   * @return True, correct Field or False something wrong
+   */
+  private Boolean isFieldCorrect(
+      MetaFieldRS metaFieldRS, FieldRS fieldRS, ArrayList<String> valueList) {
+    if (FieldType.isHashType(fieldRS.getFieldType())) {
+      // HashField
+      for (int i = 0; i < valueList.size(); i++) {
+        int gid = fieldRS.getValueByIndex(i);
+        String actual = metaFieldRS.getString(gid);
+        if (!actual.equals(valueList.get(i))) {
+          return false;
         }
-        return true;
-    }
+      }
+    } else {
+      // RangeField
 
+      DayIntConverter convertor = DayIntConverter.getInstance();
+      for (int i = 0; i < valueList.size(); i++) {
+        String expect = valueList.get(i);
+        if (fieldRS.getFieldType() == FieldType.ActionTime) {
+          expect = Integer.toString(convertor.toInt(expect));
+        }
+        String actual = Integer.toString(fieldRS.getValueByIndex(i));
+        if (!actual.equals(expect)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
 }

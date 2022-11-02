@@ -18,36 +18,24 @@ import com.nus.cool.core.io.Input;
 import com.nus.cool.core.schema.FieldType;
 import java.nio.ByteBuffer;
 
-/**
- * For the moment, we only support Hash based meta field.
- */
+/** For the moment, we only support Hash based meta field. */
 public interface MetaFieldRS extends Input {
 
   FieldType getFieldType();
 
-  /**
-   * Return the id of the given value.
-   */
+  /** Return the id of the given value. */
   int find(String key);
 
-  /**
-   * Return number of values in the field.
-   */
+  /** Return number of values in the field. */
   int count();
 
-  /**
-   * Return the value for the given id.
-   */
+  /** Return the value for the given id. */
   String getString(int i);
 
-  /**
-   * Return the max value of the field.
-   */
+  /** Return the max value of the field. */
   int getMaxValue();
 
-  /**
-   * Return the min value of the field.
-   */
+  /** Return the min value of the field. */
   int getMinValue();
 
   void readFromWithFieldType(ByteBuffer buffer, FieldType fieldType);

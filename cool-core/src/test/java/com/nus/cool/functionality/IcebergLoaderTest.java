@@ -17,9 +17,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-/**
- * Testing iceberg loader.
- */
+/** Testing iceberg loader. */
 public class IcebergLoaderTest {
   static final Logger logger = LoggerFactory.getLogger(IcebergLoaderTest.class);
 
@@ -33,8 +31,10 @@ public class IcebergLoaderTest {
     logger.info(String.format("Tear down UnitTest %s\n", IcebergLoaderTest.class.getSimpleName()));
   }
 
-  @Test(dataProvider = "IceBergUnitTestDP", dependsOnMethods = {
-      "com.nus.cool.functionality.CsvLoaderTest.CsvLoaderUnitTest" }, enabled = false)
+  @Test(
+      dataProvider = "IceBergUnitTestDP",
+      dependsOnMethods = {"com.nus.cool.functionality.CsvLoaderTest.CsvLoaderUnitTest"},
+      enabled = false)
   public void iceBergTest(String datasetPath, String queryPath, List<BaseResult> out)
       throws Exception {
     // load query
@@ -47,35 +47,49 @@ public class IcebergLoaderTest {
     coolModel.reload(dataSourceName);
 
     // execute query
-    List<BaseResult> results = coolModel.olapEngine.performOlapQuery(
-        coolModel.getCube(dataSourceName), query);
+    List<BaseResult> results =
+        coolModel.olapEngine.performOlapQuery(coolModel.getCube(dataSourceName), query);
 
     Assert.assertEquals(results, out);
     coolModel.close();
   }
 
-  /**
-   * Data provider.
-   */
+  /** Data provider. */
   @DataProvider(name = "IceBergUnitTestDP")
   public Object[][] iceBergUnitTestDPArgObjects() {
     List<BaseResult> out = new ArrayList<>();
-    out.add(new BaseResult("1993-01-01|1994-01-01", "RUSSIA|EUROPE", "O_TOTALPRICE",
-        new AggregatorResult(2, (long) 312855, null, null, null, null, null)));
-    out.add(new BaseResult("1993-01-01|1994-01-01", "GERMANY|EUROPE", "O_TOTALPRICE",
-        new AggregatorResult(1, (long) 4820, null, null, null, null, null)));
-    out.add(new BaseResult("1993-01-01|1994-01-01", "ROMANIA|EUROPE", "O_TOTALPRICE",
-        new AggregatorResult(2, (long) 190137, null, null, null, null, null)));
-    out.add(new BaseResult("1993-01-01|1994-01-01", "UNITED KINGDOM|EUROPE", "O_TOTALPRICE",
-        new AggregatorResult(1, (long) 33248, null, null, null, null, null)));
+    out.add(
+        new BaseResult(
+            "1993-01-01|1994-01-01",
+            "RUSSIA|EUROPE",
+            "O_TOTALPRICE",
+            new AggregatorResult(2, (long) 312855, null, null, null, null, null)));
+    out.add(
+        new BaseResult(
+            "1993-01-01|1994-01-01",
+            "GERMANY|EUROPE",
+            "O_TOTALPRICE",
+            new AggregatorResult(1, (long) 4820, null, null, null, null, null)));
+    out.add(
+        new BaseResult(
+            "1993-01-01|1994-01-01",
+            "ROMANIA|EUROPE",
+            "O_TOTALPRICE",
+            new AggregatorResult(2, (long) 190137, null, null, null, null, null)));
+    out.add(
+        new BaseResult(
+            "1993-01-01|1994-01-01",
+            "UNITED KINGDOM|EUROPE",
+            "O_TOTALPRICE",
+            new AggregatorResult(1, (long) 33248, null, null, null, null, null)));
 
     return new Object[][] {
-        {
-            Paths.get(System.getProperty("user.dir"), "..", "CubeRepo/TestCube").toString(),
-            Paths.get(System.getProperty("user.dir"), "..", "datasets/olap-tpch", "query.json")
-                .toString(),
-            out
-        }
+      {
+        Paths.get(System.getProperty("user.dir"), "..", "CubeRepo/TestCube").toString(),
+        Paths.get(System.getProperty("user.dir"), "..", "datasets/olap-tpch", "query.json")
+            .toString(),
+        out
+      }
     };
   }
 }

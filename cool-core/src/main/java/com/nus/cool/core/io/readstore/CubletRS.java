@@ -34,52 +34,36 @@ import lombok.Setter;
 
 /**
  * Read cublet store
- * <p>
- * cublet layout
- * ---------------------------------------------------------------------------
+ *
+ * <p>cublet layout ---------------------------------------------------------------------------
  * |data chunk 1 | ... | data chunk n | meta chunk ｜ header | header offset |
  * ---------------------------------------------------------------------------
- * <p>
- * header layout
- * ----------------------------------
- * | #chunks | chunk header offsets |
- * ----------------------------------
- * where
- * #chunks = number of chunk, including meta chunk
- * chunk header offsets record the position of the chunk's header
+ *
+ * <p>header layout ---------------------------------- | #chunks | chunk header offsets |
+ * ---------------------------------- where #chunks = number of chunk, including meta chunk chunk
+ * header offsets record the position of the chunk's header
  */
 public class CubletRS implements Input {
 
-  /**
-   * MetaChunk for this cublet.
-   */
-  @Getter
-  private MetaChunkRS metaChunk;
+  /** MetaChunk for this cublet. */
+  @Getter private MetaChunkRS metaChunk;
 
-  /**
-   * BitSet list for query result.
-   */
+  /** BitSet list for query result. */
   private List<BitSet> bitSets = Lists.newArrayList();
 
-  @Getter
-  private List<ChunkRS> dataChunks = Lists.newArrayList();
+  @Getter private List<ChunkRS> dataChunks = Lists.newArrayList();
 
   private TableSchema schema;
 
-  @Getter
-  @Setter
-  private String file;
+  @Getter @Setter private String file;
 
-  @Getter
-  private int limit;
+  @Getter private int limit;
 
   public CubletRS(TableSchema schema) {
     this.schema = checkNotNull(schema);
   }
 
-  /**
-   * deserialize a cublet from a byte buffer.
-   */
+  /** deserialize a cublet from a byte buffer. */
   @Override
   public void readFrom(ByteBuffer buffer) {
     // Read header offset
@@ -129,6 +113,5 @@ public class CubletRS implements Input {
       chunk.readFrom(buffer);
       this.dataChunks.add(chunk);
     }
-
   }
 }

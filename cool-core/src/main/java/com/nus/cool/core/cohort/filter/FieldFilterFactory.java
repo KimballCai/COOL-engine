@@ -26,8 +26,8 @@ import com.nus.cool.core.util.converter.StringIntConverter;
 import java.util.List;
 
 /**
- * FieldFilterFactory is used to create a filter when the field type is action, actiontime
- *  or metric.
+ * FieldFilterFactory is used to create a filter when the field type is action, actiontime or
+ * metric.
  */
 public class FieldFilterFactory {
   /**
@@ -36,8 +36,8 @@ public class FieldFilterFactory {
    * @param schema the schema of the field
    * @param values the values of the field
    */
-  public static FieldFilter create(FieldSchema schema, ExtendedFieldSet fieldSet,
-      List<String> values) {
+  public static FieldFilter create(
+      FieldSchema schema, ExtendedFieldSet fieldSet, List<String> values) {
     switch (schema.getFieldType()) {
       case AppKey:
       case UserKey:
@@ -45,10 +45,11 @@ public class FieldFilterFactory {
       case Action:
         return new SetFieldFilter(fieldSet, values, schema.getFieldType());
       case ActionTime:
-        return new RangeFieldFilter(fieldSet, values, DayIntConverter.getInstance(),schema.getFieldType());
+        return new RangeFieldFilter(
+            fieldSet, values, DayIntConverter.getInstance(), schema.getFieldType());
       case Metric:
-        return new RangeFieldFilter(fieldSet, values, new StringIntConverter(),
-          schema.getFieldType());
+        return new RangeFieldFilter(
+            fieldSet, values, new StringIntConverter(), schema.getFieldType());
       default:
         throw new IllegalArgumentException("Unsupported field type: " + schema.getFieldType());
     }

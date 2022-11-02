@@ -26,8 +26,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * ListDataWriter write the serialized representation of the records to a list.
- *  (It is currently used to generate the responses of cohort exploration in query server) 
+ * ListDataWriter write the serialized representation of the records to a list. (It is currently
+ * used to generate the responses of cohort exploration in query server)
  */
 public class ListDataWriter implements DataWriter {
 
@@ -37,7 +37,7 @@ public class ListDataWriter implements DataWriter {
   public ListDataWriter(List<String> out) {
     this.out = checkNotNull(out);
   }
-  
+
   @Override
   public boolean initialize() throws IOException {
     return true;
@@ -46,8 +46,7 @@ public class ListDataWriter implements DataWriter {
   @Override
   public boolean add(Object tuple) throws IOException {
     if (!(tuple instanceof String[])) {
-      System.out.println(
-          "Unexpected tuple type: tuple not in valid type for DataWriter");
+      System.out.println("Unexpected tuple type: tuple not in valid type for DataWriter");
       return false;
     }
     String[] fields = (String[]) tuple;
@@ -62,6 +61,6 @@ public class ListDataWriter implements DataWriter {
 
   @Override
   public void close() throws IOException {
-    // no-op    
+    // no-op
   }
 }

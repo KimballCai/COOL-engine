@@ -32,72 +32,44 @@ import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * TableSchema defines the schema for data table
- */
+/** TableSchema defines the schema for data table */
 public class TableSchema {
 
-  @Getter
-  @Setter
-  private String charset;
-  
-  /**
-   * fields is a set of field.
-   */
-  @Getter
-  private List<FieldSchema> fields;
-  
-  /**
-   * name2Id is the mapping of field name and the corresponding id
-   */
+  @Getter @Setter private String charset;
+
+  /** fields is a set of field. */
+  @Getter private List<FieldSchema> fields;
+
+  /** name2Id is the mapping of field name and the corresponding id */
   private Map<String, Integer> name2Id = Maps.newHashMap();
 
   /**
-   * invariantField is to record the invaraint fields
-   * Key: Index of invariant field in all field
+   * invariantField is to record the invaraint fields Key: Index of invariant field in all field
    * Value: Index of invariant field in all invariant field
    */
   // @Getter
-  // private Map<Integer, Integer> invariantFieldIdxToOrder = Maps.newLinkedHashMap(); 
-  
-  /**
-   * a list of flag to record the invariant fields
-   * index: the index order of all field
-   * value: 
-   *  if the fields is invariant Field, value is idx order in all invariant field
-   *  if the fields is not invariant field, value is -1.
-   */
-  @Getter
-  private int[] invariantFieldFlagMap;
-
-  @Getter
-  private int invariantFieldNumber;
+  // private Map<Integer, Integer> invariantFieldIdxToOrder = Maps.newLinkedHashMap();
 
   /**
-   * UserKeyField index, assign -1 if this field type not exist.
+   * a list of flag to record the invariant fields index: the index order of all field value: if the
+   * fields is invariant Field, value is idx order in all invariant field if the fields is not
+   * invariant field, value is -1.
    */
-  @Getter
-  private int userKeyFieldIdx = -1;
+  @Getter private int[] invariantFieldFlagMap;
 
+  @Getter private int invariantFieldNumber;
 
-  /**
-   * AppKeyField index, assign -1 if this field type not exist.
-   */
-  @Getter
-  private int appKeyFieldIdx = -1;
+  /** UserKeyField index, assign -1 if this field type not exist. */
+  @Getter private int userKeyFieldIdx = -1;
 
-  /**
-   * ActionField index, assign -1 if this field type not exist.
-   */
-  @Getter
-  private int actionFieldIdx = -1;
+  /** AppKeyField index, assign -1 if this field type not exist. */
+  @Getter private int appKeyFieldIdx = -1;
 
-  /**
-   * ActionTimeField index, assign -1 if this field type not exist.
-   */
-  @Getter
-  private int actionTimeFieldIdx = -1;
+  /** ActionField index, assign -1 if this field type not exist. */
+  @Getter private int actionFieldIdx = -1;
 
+  /** ActionTimeField index, assign -1 if this field type not exist. */
+  @Getter private int actionTimeFieldIdx = -1;
 
   /**
    * Obtain the content of a table from input stream
@@ -107,7 +79,7 @@ public class TableSchema {
    */
   public static TableSchema read(InputStream in) throws IOException {
     ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-    TableSchema schema =  mapper.readValue(in, TableSchema.class);
+    TableSchema schema = mapper.readValue(in, TableSchema.class);
     // schema.setFields(schema.getFields());
     return schema;
   }
@@ -121,7 +93,7 @@ public class TableSchema {
   public static TableSchema read(File inputFile) throws IOException {
     return read(new FileInputStream(inputFile));
   }
-  
+
   // Automatically update the fields according to the input data
   public void setFields(List<FieldSchema> fields) {
     this.fields = fields;
@@ -133,8 +105,8 @@ public class TableSchema {
       FieldSchema field = fields.get(i);
       FieldType fieldType = field.getFieldType();
       this.name2Id.put(field.getName(), i);
-      
-      if(field.isInvariantField()){
+
+      if (field.isInvariantField()) {
         // this.invariantFieldIdxToOrder.put(i, invariant_idx++);
         this.invariantFieldFlagMap[i] = invariant_idx++;
       } else {
@@ -152,7 +124,7 @@ public class TableSchema {
           this.actionFieldIdx = i;
           break;
         case ActionTime:
-          this.actionTimeFieldIdx= i;
+          this.actionTimeFieldIdx = i;
           break;
         default:
           break;
@@ -160,7 +132,6 @@ public class TableSchema {
     }
     this.invariantFieldNumber = invariant_idx;
   }
-
 
   /**
    * Get the field by its id
@@ -192,7 +163,7 @@ public class TableSchema {
     return this.getField(name).getFieldType();
   }
 
-  public FieldType getFieldType(int idx){
+  public FieldType getFieldType(int idx) {
     return this.getField(idx).getFieldType();
   }
 
@@ -203,8 +174,9 @@ public class TableSchema {
    * @return the corresponding field id of the name
    */
   public int getFieldID(String name) {
-    if (!this.name2Id.containsKey(name)){
-      throw new IllegalArgumentException("name="+name+" is not in name2Id mapper="+this.name2Id);
+    if (!this.name2Id.containsKey(name)) {
+      throw new IllegalArgumentException(
+          "name=" + name + " is not in name2Id mapper=" + this.name2Id);
     }
     Integer id = this.name2Id.get(name);
     return id;
@@ -219,7 +191,7 @@ public class TableSchema {
     return this.fields.get(this.getActionTimeFieldIdx()).getName();
   }
 
-  public String getUserKeyFieldName(){
+  public String getUserKeyFieldName() {
     return this.fields.get(this.getUserKeyFieldIdx()).getName();
   }
 
@@ -231,31 +203,28 @@ public class TableSchema {
     return getFieldSchema(getFieldID(name));
   }
 
-  public boolean isInvariantField(String name){
+  public boolean isInvariantField(String name) {
     return this.getField(name).isInvariantField();
   }
 
-  public boolean isInvariantField(int idx){
+  public boolean isInvariantField(int idx) {
     return this.invariantFieldFlagMap[idx] != -1;
   }
 
-  public int[] getInvariantFieldIdxs(){
+  public int[] getInvariantFieldIdxs() {
     int[] ret = new int[this.invariantFieldNumber];
-    for(int i=0;i< this.fields.size(); i++){
-        if(this.invariantFieldFlagMap[i] == -1)
-        continue;
+    for (int i = 0; i < this.fields.size(); i++) {
+      if (this.invariantFieldFlagMap[i] == -1) continue;
 
-        ret[this.invariantFieldFlagMap[i]] = i;
+      ret[this.invariantFieldFlagMap[i]] = i;
     }
     return ret;
   }
 
   /**
-   * 
    * @return the number of fields
    */
-  public int count(){
-      return this.fields.size();
+  public int count() {
+    return this.fields.size();
   }
-
 }

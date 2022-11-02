@@ -22,15 +22,10 @@ package com.nus.cool.core.io.storevector;
 import com.nus.cool.core.schema.Codec;
 import java.nio.ByteBuffer;
 
-/**
- * Decompress stored data.
- */
+/** Decompress stored data. */
 public class InputVectorFactory {
 
-
-  /**
-   * Create an input vector for a buffer.
-   */
+  /** Create an input vector for a buffer. */
   public static InputVector readFrom(ByteBuffer buffer) {
     Codec codec = Codec.fromInteger(buffer.get());
     InputVector result = null;

@@ -2,21 +2,17 @@ package com.nus.cool.core.cohort.refactor.aggregate;
 
 /**
  * Generate different aggregators according to cohort query.
- * 
- * <p>
- * AverageAggregate: calculate average value of selected schema for all
- * traversed eligitable tuple COUNT: calculate the number for all traversed
- * eligiable tuple MAX: keep the max value of selected schema in all traversed
- * eligiable tuple MIN: keep the min value of selected schema in all traversed
- * eligiable tuple SUM: sum up all value of selected schema for all traversed
- * eligiable tuple DISTINCT: count the distinct value of selected schema for all
- * traversed eligiable tuple
+ *
+ * <p>AverageAggregate: calculate average value of selected schema for all traversed eligitable
+ * tuple COUNT: calculate the number for all traversed eligiable tuple MAX: keep the max value of
+ * selected schema in all traversed eligiable tuple MIN: keep the min value of selected schema in
+ * all traversed eligiable tuple SUM: sum up all value of selected schema for all traversed
+ * eligiable tuple DISTINCT: count the distinct value of selected schema for all traversed eligiable
+ * tuple
  */
 public class AggregateFactory {
 
-  /**
-   * deserialize AggregateFunc.
-   */
+  /** deserialize AggregateFunc. */
   public static AggregateFunc generateAggregate(AggregateType type, String schema) {
     switch (type) {
       case AVERAGE:

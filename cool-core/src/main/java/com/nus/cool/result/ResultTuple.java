@@ -27,26 +27,18 @@ import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-/**
- * ResultTuple is used to store the result, including cohort name and age.
- */
+/** ResultTuple is used to store the result, including cohort name and age. */
 @Data
 @AllArgsConstructor
 public class ResultTuple {
 
-  /**
-   * cohort name.
-   */
+  /** cohort name. */
   private String cohort;
 
-  /**
-   * age of the cohort.
-   */
+  /** age of the cohort. */
   private int age;
 
-  /**
-   * measure of interest.
-   */
+  /** measure of interest. */
   private long measure;
 
   /**

@@ -11,9 +11,7 @@ import com.nus.cool.core.util.reader.TupleReader;
 
 import lombok.Getter;
 
-/**
- * Configuration for csv file loader.
- */
+/** Configuration for csv file loader. */
 public class CsvDataLoaderConfig extends DataLoaderConfig {
 
   public CsvDataLoaderConfig() {
@@ -24,8 +22,7 @@ public class CsvDataLoaderConfig extends DataLoaderConfig {
     super(chunkSize, cubletSize);
   }
 
-  @Getter
-  private String[] dataFieldName;
+  @Getter private String[] dataFieldName;
 
   @Override
   public TupleReader createTupleReader(File dataFile) throws IOException {

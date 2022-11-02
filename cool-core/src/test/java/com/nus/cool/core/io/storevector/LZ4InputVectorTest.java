@@ -16,9 +16,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-/**
- * Testing LZ4 input vector.
- */
+/** Testing LZ4 input vector. */
 public class LZ4InputVectorTest {
 
   static final Logger logger = LoggerFactory.getLogger(LZ4InputVectorTest.class);
@@ -36,8 +34,8 @@ public class LZ4InputVectorTest {
 
   @Test(dataProvider = "LZ4InputVectorDP", enabled = true)
   public void lz4InputVectorUnitTest(String[] valueList) throws IOException {
-    logger.info(String.format("Input LZ4InputVector UnitTest Data: ValueList Size %d",
-        valueList.length));
+    logger.info(
+        String.format("Input LZ4InputVector UnitTest Data: ValueList Size %d", valueList.length));
 
     DataOutputBuffer buf = new DataOutputBuffer();
     // Write Size
@@ -79,15 +77,13 @@ public class LZ4InputVectorTest {
     }
   }
 
-  /**
-   * Data provider.
-   */
+  /** Data provider. */
   @DataProvider(name = "LZ4InputVectorDP", parallel = false)
   public Object[][] lz4InputVectorDP() {
     return new Object[][] {
-        { generateValueList(10) },
-        { generateValueList(100) },
-        { new String[] { "111", "222", "333", "555", "KKK", "111" } },
+      {generateValueList(10)},
+      {generateValueList(100)},
+      {new String[] {"111", "222", "333", "555", "KKK", "111"}},
     };
   }
 

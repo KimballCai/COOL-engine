@@ -41,8 +41,7 @@ import com.nus.cool.core.schema.TableSchema;
 import lombok.Getter;
 
 /**
- * CohortAggregation, for each chunk, divide the users into cohorts. and then
- * aggregate the results
+ * CohortAggregation, for each chunk, divide the users into cohorts. and then aggregate the results
  */
 public class CohortAggregation implements Operator {
 
@@ -58,19 +57,15 @@ public class CohortAggregation implements Operator {
 
   private int[] birthActionChunkIds;
 
-  @Getter
-  private BitSet bs;
+  @Getter private BitSet bs;
 
-  @Getter
-  private Map<CohortKey, Long> cubletResults = Maps.newLinkedHashMap();
+  @Getter private Map<CohortKey, Long> cubletResults = Maps.newLinkedHashMap();
 
   public CohortAggregation(CohortSelection sigma) {
     this.sigma = checkNotNull(sigma);
   }
 
-  /**
-   * Initiate with table and query.
-   */
+  /** Initiate with table and query. */
   @Override
   public void init(TableSchema schema, CohortQuery query) {
     this.schema = checkNotNull(schema);
@@ -81,7 +76,7 @@ public class CohortAggregation implements Operator {
 
   /**
    * metachunk dictionary for birth action.
-   * 
+   *
    * @param metaChunk the metachunk to process
    */
   @Override
@@ -101,11 +96,9 @@ public class CohortAggregation implements Operator {
   }
 
   /**
-   * Check whether the chunk has the corresponding birth actions according to the
-   * metachunk
-   * dictionary, then divide the users into different cohorts and compute the
-   * results of cohorts.
-   * 
+   * Check whether the chunk has the corresponding birth actions according to the metachunk
+   * dictionary, then divide the users into different cohorts and compute the results of cohorts.
+   *
    * @param chunk the chunk to process
    */
   @Override
@@ -140,7 +133,12 @@ public class CohortAggregation implements Operator {
     Aggregator aggregator = newAggregator();
     int minAllowedAge = 0;
     int maxAllowedAge = cohortSize - 1;
-    aggregator.init(metricInput, actionTimeInput, cohortSize, minAllowedAge, maxAllowedAge,
+    aggregator.init(
+        metricInput,
+        actionTimeInput,
+        cohortSize,
+        minAllowedAge,
+        maxAllowedAge,
         this.query.getAgeInterval());
 
     FieldRS appField = loadField(chunk, this.schema.getAppKeyFieldIdx());
@@ -220,16 +218,12 @@ public class CohortAggregation implements Operator {
     }
   }
 
-  /**
-   * Load the field in the chunk according to fieldId.
-   */
+  /** Load the field in the chunk according to fieldId. */
   private synchronized FieldRS loadField(ChunkRS chunk, int fieldId) {
     return chunk.getField(fieldId);
   }
 
-  /**
-   * Load the field in the chunk according to fieldname.
-   */
+  /** Load the field in the chunk according to fieldname. */
   private FieldRS loadField(ChunkRS chunk, String fieldName) {
     if ("Retention".equals(fieldName)) {
       return null;
@@ -249,9 +243,9 @@ public class CohortAggregation implements Operator {
 
   /**
    * Find the birth tuple.
-   * 
-   * @param begin       the start position to search
-   * @param end         the end position to search
+   *
+   * @param begin the start position to search
+   * @param end the end position to search
    * @param actionInput The birth action
    */
   private int seekToBirthTuple(int begin, int end, InputVector actionInput) {

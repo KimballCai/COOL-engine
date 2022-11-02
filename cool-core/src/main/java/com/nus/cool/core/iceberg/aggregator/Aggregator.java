@@ -26,11 +26,12 @@ import com.nus.cool.core.iceberg.result.AggregatorResult;
 import com.nus.cool.core.io.readstore.FieldRS;
 import com.nus.cool.core.io.readstore.MetaFieldRS;
 
-/**
- * Interface for Aggregator.
- */
+/** Interface for Aggregator. */
 public interface Aggregator {
 
-  void process(Map<String, BitSet> groups, FieldRS field, Map<String, AggregatorResult> resultMap,
+  void process(
+      Map<String, BitSet> groups,
+      FieldRS field,
+      Map<String, AggregatorResult> resultMap,
       MetaFieldRS metaField);
 }

@@ -6,9 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Funnel query.
- */
+/** Funnel query. */
 public class FunnelQuery {
 
   private String dataSource;
@@ -51,9 +49,7 @@ public class FunnelQuery {
     this.inputCohort = inputCohort;
   }
 
-  /**
-   * Check validity of the funnel query.
-   */
+  /** Check validity of the funnel query. */
   @JsonIgnore
   public boolean isValid() throws IOException {
     if ((stages != null) && (dataSource != null)) {

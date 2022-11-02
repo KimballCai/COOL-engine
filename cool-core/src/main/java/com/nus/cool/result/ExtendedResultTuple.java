@@ -22,26 +22,18 @@ package com.nus.cool.result;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-/**
- * ResultTuple is used to store the result, including cohort name and age.
- */
+/** ResultTuple is used to store the result, including cohort name and age. */
 @Data
 @AllArgsConstructor
 public class ExtendedResultTuple {
 
-  /**
-   * cohort name.
-   */
+  /** cohort name. */
   private String cohort;
 
-  /**
-   * age of the cohort.
-   */
+  /** age of the cohort. */
   private int age;
 
-  /**
-   * measure of interest.
-   */
+  /** measure of interest. */
   private double measure;
 
   private double min;
@@ -52,12 +44,12 @@ public class ExtendedResultTuple {
 
   private double num;
 
-  public ExtendedResultTuple() {
-  }
+  public ExtendedResultTuple() {}
 
   @Override
   public String toString() {
-    return String.format("cohort=%s, age=%s, measure=%s, min=%s, max=%s, sum=%s, num=%s,",
+    return String.format(
+        "cohort=%s, age=%s, measure=%s, min=%s, max=%s, sum=%s, num=%s,",
         cohort, age, measure, min, max, sum, num);
   }
 }

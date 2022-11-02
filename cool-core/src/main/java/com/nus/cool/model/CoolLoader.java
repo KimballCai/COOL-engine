@@ -32,9 +32,7 @@ import com.nus.cool.core.schema.TableSchema;
 import com.nus.cool.core.util.config.DataLoaderConfig;
 import com.nus.cool.loader.DataLoader;
 
-/**
- * Loader.
- */
+/** Loader. */
 public class CoolLoader {
 
   static final Logger logger = LoggerFactory.getLogger(CoolLoader.class);
@@ -53,14 +51,14 @@ public class CoolLoader {
   /**
    * Load data.
    *
-   * @param dataSourceName output cube name. Need to be specified when loading
-   *                       from the repository
+   * @param dataSourceName output cube name. Need to be specified when loading from the repository
    * @param schemaFileName path to the table.yaml
-   * @param dataFileName   path to the data.csv
-   * @param cubeRepo       the name of the output cube repository
+   * @param dataFileName path to the data.csv
+   * @param cubeRepo the name of the output cube repository
    */
-  public synchronized void load(String dataSourceName, String schemaFileName, String dataFileName,
-      String cubeRepo) throws IOException {
+  public synchronized void load(
+      String dataSourceName, String schemaFileName, String dataFileName, String cubeRepo)
+      throws IOException {
     // check the existence of the data repository
     File root = new File(cubeRepo);
     if (!root.getParentFile().exists()) {
@@ -94,16 +92,18 @@ public class CoolLoader {
     }
 
     // create a new folder to this new version
-    File outputCubeVersionDir = new File(cubeRoot,
-        String.format("v%0" + 8 + "d", (currentVersion + 1)));
+    File outputCubeVersionDir =
+        new File(cubeRoot, String.format("v%0" + 8 + "d", (currentVersion + 1)));
     if (outputCubeVersionDir.mkdir()) {
       logger.info("[*] New version " + outputCubeVersionDir.getName() + " is created!");
     }
     File dataFile = new File(dataFileName);
     File schemaFile = new File(schemaFileName);
     TableSchema schema = TableSchema.read(new FileInputStream(schemaFile));
-    DataLoader loader = DataLoader.builder(dataSourceName, schema, dataFile, outputCubeVersionDir,
-        this.loaderConfig).build();
+    DataLoader loader =
+        DataLoader.builder(
+                dataSourceName, schema, dataFile, outputCubeVersionDir, this.loaderConfig)
+            .build();
     loader.load();
     // copy the table.yaml to new version folder
     Files.copy(schemaFile, new File(outputCubeVersionDir, "table.yaml"));

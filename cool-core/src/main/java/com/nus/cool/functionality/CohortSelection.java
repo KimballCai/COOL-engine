@@ -28,16 +28,13 @@ import com.nus.cool.core.cohort.ExtendedCohortQuery;
 import com.nus.cool.core.io.readstore.CubeRS;
 import com.nus.cool.model.CoolModel;
 
-/**
- * Cohort selection operation.
- */
+/** Cohort selection operation. */
 public class CohortSelection {
   /**
    * perform the cohort query to select users into a cohort.
    *
-   * @param args [0] dataset path: the path to all datasets, e.g., datasetSource
-   *             args [1] query path: the path to the cohort query, e.g.,
-   *             health/query2.json
+   * @param args [0] dataset path: the path to all datasets, e.g., datasetSource args [1] query
+   *     path: the path to the cohort query, e.g., health/query2.json
    */
   public static void main(String[] args) throws IOException {
     String datasetPath = args[0];

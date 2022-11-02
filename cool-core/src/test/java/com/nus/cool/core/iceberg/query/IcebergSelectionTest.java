@@ -13,13 +13,13 @@ import java.util.List;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-/**
- * Testing iceberg selection.
- */
+/** Testing iceberg selection. */
 public class IcebergSelectionTest {
 
-  @Test(dataProvider = "IcebergQuerySelectionTestDP", dependsOnMethods = {
-      "com.nus.cool.functionality.CsvLoaderTest.CsvLoaderUnitTest" }, enabled = false)
+  @Test(
+      dataProvider = "IcebergQuerySelectionTestDP",
+      dependsOnMethods = {"com.nus.cool.functionality.CsvLoaderTest.CsvLoaderUnitTest"},
+      enabled = false)
   public void dataChunkProceesTest(String dzPath, String queryPath)
       throws IOException, ParseException {
     System.out.println("===================== Process Data ChunkRS Test =====================");
@@ -47,13 +47,9 @@ public class IcebergSelectionTest {
     coolModel.close();
   }
 
-  /**
-   * Data provider.
-   */
+  /** Data provider. */
   @DataProvider(name = "IcebergQuerySelectionTestDP")
   public Object[][] dpArgs() {
-    return new Object[][] {
-        { "../CubeRepo/TestCube", "../datasets/olap-tpch/query.json" }
-    };
+    return new Object[][] {{"../CubeRepo/TestCube", "../datasets/olap-tpch/query.json"}};
   }
 }

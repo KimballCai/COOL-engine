@@ -25,24 +25,22 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.nio.ShortBuffer;
 
 /**
- * ShortBuffers represents a short interger buffer. With ShortBuffers and a key
- * of short,
- * ShortBuffers could find the key in buffer and return the result with binary
- * research
+ * ShortBuffers represents a short interger buffer. With ShortBuffers and a key of short,
+ * ShortBuffers could find the key in buffer and return the result with binary research
  */
 public class ShortBuffers {
 
   /**
    * Search index of key by binary search.
    *
-   * @param buffer    data of short
+   * @param buffer data of short
    * @param fromIndex from index in buffer
-   * @param toIndex   to index in buffer
-   * @param key       search param
+   * @param toIndex to index in buffer
+   * @param key search param
    * @return index of key in buffer
    */
-  public static int binarySearchUnsigned(ShortBuffer buffer, int fromIndex, int toIndex,
-      short key) {
+  public static int binarySearchUnsigned(
+      ShortBuffer buffer, int fromIndex, int toIndex, short key) {
     checkNotNull(buffer);
     checkArgument(fromIndex < buffer.limit() && toIndex <= buffer.limit());
 
@@ -68,8 +66,7 @@ public class ShortBuffers {
     int ikey = key & 0xFFFF;
     for (int i = fromIndex; i < toIndex; i++) {
       int e = buffer.get(i) & 0xFFFF;
-      if (ikey == e)
-        return i;
+      if (ikey == e) return i;
     }
 
     return -1;

@@ -28,14 +28,15 @@ import com.nus.cool.core.io.readstore.MetaFieldRS;
 import com.nus.cool.core.io.storevector.InputVector;
 import com.nus.cool.core.schema.FieldType;
 
-/**
- * Count aggregator class.
- */
+/** Count aggregator class. */
 public class CountAggregator implements Aggregator {
 
   @Override
-  public void process(Map<String, BitSet> groups, FieldRS field,
-      Map<String, AggregatorResult> resultMap, MetaFieldRS metaFieldRs) {
+  public void process(
+      Map<String, BitSet> groups,
+      FieldRS field,
+      Map<String, AggregatorResult> resultMap,
+      MetaFieldRS metaFieldRs) {
     for (Map.Entry<String, BitSet> entry : groups.entrySet()) {
       if (resultMap.get(entry.getKey()) == null) {
         String groupName = entry.getKey();

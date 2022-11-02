@@ -29,22 +29,14 @@ import java.nio.ByteOrder;
 import java.util.List;
 import lombok.Getter;
 
-/**
- * The in-memory data structure for cube.
- */
+/** The in-memory data structure for cube. */
 public class CubeRS {
 
-  /**
-   * Schema information of this cube.
-   */
-  @Getter
-  private final TableSchema schema;
+  /** Schema information of this cube. */
+  @Getter private final TableSchema schema;
 
-  /**
-   * Loaded cublets.
-   */
-  @Getter
-  private final List<CubletRS> cublets = Lists.newArrayList();
+  /** Loaded cublets. */
+  @Getter private final List<CubletRS> cublets = Lists.newArrayList();
 
   public CubeRS(TableSchema schema) {
     this.schema = schema;
@@ -71,7 +63,6 @@ public class CubeRS {
     CubletRS cubletRS = new CubletRS(this.schema);
     cubletRS.readFrom(buffer.order(ByteOrder.nativeOrder()));
     this.cublets.add(cubletRS);
-
   }
 
   public TableSchema getTableSchema() {

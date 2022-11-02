@@ -5,9 +5,7 @@ import com.nus.cool.core.io.storevector.InputVectorFactory;
 import com.nus.cool.core.schema.FieldType;
 import java.nio.ByteBuffer;
 
-/**
- * HashField ReadStore.
- */
+/** HashField ReadStore. */
 public class DataHashFieldRS implements FieldRS {
 
   private FieldType fieldType;
@@ -21,7 +19,7 @@ public class DataHashFieldRS implements FieldRS {
    * static create function.
    *
    * @param buffer memory
-   * @param ft     fieldtype
+   * @param ft fieldtype
    * @return DataHashFieldRS
    */
   public static DataHashFieldRS readFrom(ByteBuffer buffer, FieldType ft) {
@@ -40,7 +38,7 @@ public class DataHashFieldRS implements FieldRS {
    * initialized function.
    *
    * @param buffer memory
-   * @param ft     fieldtype
+   * @param ft fieldtype
    */
   public void readFromWithFieldType(ByteBuffer buffer, FieldType ft) {
     // get codec (no used)
@@ -55,23 +53,17 @@ public class DataHashFieldRS implements FieldRS {
     this.valueVector = InputVectorFactory.readFrom(buffer);
   }
 
-  /**
-   * BitSet array if this field has been pre-calculated.
-   */
+  /** BitSet array if this field has been pre-calculated. */
   @Override
   public FieldType getFieldType() {
     return this.fieldType;
   }
 
-  /**
-   * Get the globalId by index.
-   */
+  /** Get the globalId by index. */
   @Override
   public int getValueByIndex(int idx) {
     return this.keyVector.get(this.valueVector.get(idx));
   }
-
-
 
   // under Method is to keep compatiable with old version code
 
@@ -97,5 +89,4 @@ public class DataHashFieldRS implements FieldRS {
   public int maxKey() {
     return this.valueVector.size();
   }
-
 }

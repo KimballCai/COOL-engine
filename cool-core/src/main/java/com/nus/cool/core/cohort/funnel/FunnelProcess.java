@@ -20,9 +20,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/**
- * Funnel query operator.
- */
+/** Funnel query operator. */
 public class FunnelProcess implements CohortOperator {
 
   private static Log LOG = LogFactory.getLog(FunnelProcess.class);
@@ -53,8 +51,7 @@ public class FunnelProcess implements CohortOperator {
 
   int validFunnelStages;
 
-  public FunnelProcess() {
-  }
+  public FunnelProcess() {}
 
   public Object getCubletResults() {
     return this.cubletResults;
@@ -66,9 +63,10 @@ public class FunnelProcess implements CohortOperator {
       selection.close();
     }
 
-    LOG.info(String.format(
-        "(totalChunks = %d, totalSkippedChunks = %d, totalUsers = %d, totalSkippedUsers = %d)",
-        totalDataChunks, totalSkippedDataChunks, totalUsers, totalSkippedUsers));
+    LOG.info(
+        String.format(
+            "(totalChunks = %d, totalSkippedChunks = %d, totalUsers = %d, totalSkippedUsers = %d)",
+            totalDataChunks, totalSkippedDataChunks, totalUsers, totalSkippedUsers));
   }
 
   @Override
@@ -78,7 +76,7 @@ public class FunnelProcess implements CohortOperator {
 
   /**
    * Initialize funnel processing.
-   * 
+   *
    * @param cohortUsers existing cohort
    */
   public void init(TableSchema tableSchema, InputVector cohortUsers, FunnelQuery query) {

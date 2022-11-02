@@ -19,16 +19,11 @@
 
 package com.nus.cool.core.schema;
 
-/**
- * Measure.
- */
+/** Measure. */
 public class Measure {
 
-  /**
-   * Types of measures.
-   */
+  /** Types of measures. */
   public static enum MeasureType {
-
     ROLLRETENTION,
 
     RETENTION,
@@ -42,7 +37,6 @@ public class Measure {
     MIN,
 
     AVG
-
   }
 
   private MeasureType aggregator;
@@ -51,9 +45,7 @@ public class Measure {
 
   private String tableFieldName;
 
-  /**
-   * Create a measure.
-   */
+  /** Create a measure. */
   public Measure(String aggregator, String name, String field) {
     this.name = name;
     this.tableFieldName = field;

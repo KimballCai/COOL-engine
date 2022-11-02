@@ -19,11 +19,8 @@
 
 package com.nus.cool.core.cohort;
 
-/**
- * Time units.
- */
+/** Time units. */
 public enum TimeUnit {
-
   HOUR,
 
   DAY,
@@ -31,5 +28,4 @@ public enum TimeUnit {
   WEEK,
 
   MONTH
-
 }

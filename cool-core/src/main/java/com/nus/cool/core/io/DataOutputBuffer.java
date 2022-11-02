@@ -27,9 +27,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-/**
- * Output buffer abstraction.
- */
+/** Output buffer abstraction. */
 public class DataOutputBuffer extends DataOutputStream {
 
   private Buffer buffer;
@@ -54,7 +52,7 @@ public class DataOutputBuffer extends DataOutputStream {
   /**
    * Write input to the buffer.
    *
-   * @param in     the input stream
+   * @param in the input stream
    * @param length an int specifying the number of bytes to read
    * @throws IOException If an I/O error occurs
    */
@@ -74,10 +72,10 @@ public class DataOutputBuffer extends DataOutputStream {
 
   /**
    * Overwrite an integer into the internal buffer. Note that this call can only be used to
-   *  overwrite existing data in the buffer, i.e., buffer#count cannot be increased, and
-   *  DataOutputStream#written cannot be increased.
+   * overwrite existing data in the buffer, i.e., buffer#count cannot be increased, and
+   * DataOutputStream#written cannot be increased.
    *
-   * @param v      overwrite integer
+   * @param v overwrite integer
    * @param offset overwrite offset
    * @throws IOException if an I/O error occurs.
    */
@@ -114,7 +112,7 @@ public class DataOutputBuffer extends DataOutputStream {
     /**
      * Write len bytes from an input stream.
      *
-     * @param in  the input stream
+     * @param in the input stream
      * @param len an int specifying the number of bytes to read
      * @throws IOException If an I/O error occurs
      */

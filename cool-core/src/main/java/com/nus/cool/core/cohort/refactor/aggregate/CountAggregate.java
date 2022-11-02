@@ -3,16 +3,12 @@ package com.nus.cool.core.cohort.refactor.aggregate;
 import com.nus.cool.core.cohort.refactor.storage.ProjectedTuple;
 import com.nus.cool.core.cohort.refactor.storage.RetUnit;
 
-/**
- * Count aggregator.
- */
+/** Count aggregator. */
 public class CountAggregate implements AggregateFunc {
 
   private final AggregateType type = AggregateType.COUNT;
 
-  public CountAggregate() {
-
-  }
+  public CountAggregate() {}
 
   @Override
   public void calculate(RetUnit retUnit, ProjectedTuple tuple) {

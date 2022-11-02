@@ -28,14 +28,10 @@ import com.nus.cool.core.cohort.funnel.FunnelQuery;
 import com.nus.cool.core.io.storevector.InputVector;
 import com.nus.cool.model.CoolModel;
 
-/**
- * Funnel analysis operation.
- */
+/** Funnel analysis operation. */
 public class FunnelAnalysis {
 
-  /**
-   * Execute funnel analysis query.
-   */
+  /** Execute funnel analysis query. */
   public static void main(String[] args) {
     String datasetPath = args[0];
     String queryPath = args[1];
@@ -60,8 +56,9 @@ public class FunnelAnalysis {
 
       InputVector userVector = coolModel.getCohortUsers(query.getInputCohort());
 
-      int[] result = coolModel.cohortEngine.performFunnelQuery(
-        coolModel.getCube(inputSource), userVector, query);
+      int[] result =
+          coolModel.cohortEngine.performFunnelQuery(
+              coolModel.getCube(inputSource), userVector, query);
       System.out.println(Arrays.toString(result));
       coolModel.close();
     } catch (IOException e) {

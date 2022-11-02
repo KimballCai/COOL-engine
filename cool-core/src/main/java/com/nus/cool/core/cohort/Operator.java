@@ -23,20 +23,14 @@ import com.nus.cool.core.io.readstore.ChunkRS;
 import com.nus.cool.core.io.readstore.MetaChunkRS;
 import com.nus.cool.core.schema.TableSchema;
 
-/**
- * Operator is the father class for different operators.
- */
+/** Operator is the father class for different operators. */
 public interface Operator extends Cloneable {
 
   void init(TableSchema schema, CohortQuery query);
 
-  /**
-   * Process MetaChunk, update isUserActiveCublet.
-   */
+  /** Process MetaChunk, update isUserActiveCublet. */
   void process(MetaChunkRS metaChunk);
 
-  /**
-   * Process MetaChunk if metaChunk return isUserActiveCublet = true.
-   */
+  /** Process MetaChunk if metaChunk return isUserActiveCublet = true. */
   void process(ChunkRS dataChunk);
 }

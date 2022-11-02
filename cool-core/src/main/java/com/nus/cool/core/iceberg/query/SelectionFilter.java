@@ -24,9 +24,7 @@ import java.util.List;
 
 import com.nus.cool.core.cohort.filter.FieldFilter;
 
-/**
- * Selection filter class.
- */
+/** Selection filter class. */
 public class SelectionFilter {
 
   private SelectionQuery.SelectionType type;

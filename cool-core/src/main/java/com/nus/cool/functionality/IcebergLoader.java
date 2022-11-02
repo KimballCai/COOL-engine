@@ -28,16 +28,16 @@ import com.nus.cool.core.iceberg.result.BaseResult;
 import com.nus.cool.model.CoolModel;
 
 /**
- * IcebergLoader is a higher level abstraction for iceberg query.
- *  With IcebergLoader, you can easily get the query result
+ * IcebergLoader is a higher level abstraction for iceberg query. With IcebergLoader, you can easily
+ * get the query result
  */
 public class IcebergLoader {
 
   /**
    * IcebergLoader model for cool.
    *
-   * @param args [0] the output data dir (eg, dir of .dz file)
-   *      args [1] query's path, eg olap-tpch/query0.json
+   * @param args [0] the output data dir (eg, dir of .dz file) args [1] query's path, eg
+   *     olap-tpch/query0.json
    */
   public static void main(String[] args) throws Exception {
 
@@ -56,8 +56,8 @@ public class IcebergLoader {
     coolModel.reload(dataSourceName);
 
     // execute query
-    List<BaseResult> result = coolModel.olapEngine.performOlapQuery(
-        coolModel.getCube(dataSourceName), query);
+    List<BaseResult> result =
+        coolModel.olapEngine.performOlapQuery(coolModel.getCube(dataSourceName), query);
     System.out.println(result);
     coolModel.close();
   }

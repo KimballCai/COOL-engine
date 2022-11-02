@@ -29,16 +29,14 @@ import com.nus.cool.core.io.readstore.CubeRS;
 import com.nus.cool.model.CoolModel;
 import com.nus.cool.model.CoolOlapEngine;
 
-/**
- * Cohort profiling operation.
- */
+/** Cohort profiling operation. */
 public class CohortProfiling {
 
   /**
    * IcebergLoader model for cool.
    *
-   * @param args [0] the output data dir (eg, dir of .dz file)
-   *             args [1] query's path, eg olap-tpch/query0.json
+   * @param args [0] the output data dir (eg, dir of .dz file) args [1] query's path, eg
+   *     olap-tpch/query0.json
    */
   public static void main(String[] args) throws Exception {
     // the path of dz file eg "COOL/cube"

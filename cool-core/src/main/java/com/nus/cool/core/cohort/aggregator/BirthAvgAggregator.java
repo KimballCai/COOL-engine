@@ -26,10 +26,7 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.Map;
 
-/**
- * BirthAvgAggregator is used to aggregate the cohort results
- * when the average value is needed.
- */
+/** BirthAvgAggregator is used to aggregate the cohort results when the average value is needed. */
 public class BirthAvgAggregator implements EventAggregator {
 
   private InputVector values;
@@ -43,13 +40,12 @@ public class BirthAvgAggregator implements EventAggregator {
    * Get the average value of a list which is the cohort result at a specific age.
    *
    * @param offset the cohort result
-   *
    * @return the average value of the cohort result
    */
   @Override
   public Double birthAggregate(List<Integer> offset) {
     if (offset.isEmpty()) {
-      return null; 
+      return null;
     }
     double r = 0;
     for (Integer i : offset) {
@@ -59,24 +55,45 @@ public class BirthAvgAggregator implements EventAggregator {
   }
 
   @Override
-  public void ageAggregate(BitSet ageOffset, BitSet ageDelimiter, int start,
-      int end, int ageInterval, FieldFilter ageFilter, Map<Integer, List<Double>> ageMetrics) {
-      // TODO Auto-generated method stub
-      
-  }
-
-  @Override
-  public void ageAggregate(BitSet ageOffset, InputVector time, int birthDay, int ageOff,
-      int ageEnd, int ageInterval, TimeUnit unit, FieldFilter ageFilter,
+  public void ageAggregate(
+      BitSet ageOffset,
+      BitSet ageDelimiter,
+      int start,
+      int end,
+      int ageInterval,
+      FieldFilter ageFilter,
       Map<Integer, List<Double>> ageMetrics) {
-      // TODO Auto-generated method stub
-      
+    // TODO Auto-generated method stub
+
   }
 
   @Override
-  public void ageAggregateMetirc(BitSet ageOffset, InputVector time, int birthDay, int ageOff,
-      int ageEnd, int ageInterval, TimeUnit unit, FieldFilter ageFilter, InputVector fieldValue,
-      Map<Integer, List<Double>> ageMetrics){
+  public void ageAggregate(
+      BitSet ageOffset,
+      InputVector time,
+      int birthDay,
+      int ageOff,
+      int ageEnd,
+      int ageInterval,
+      TimeUnit unit,
+      FieldFilter ageFilter,
+      Map<Integer, List<Double>> ageMetrics) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void ageAggregateMetirc(
+      BitSet ageOffset,
+      InputVector time,
+      int birthDay,
+      int ageOff,
+      int ageEnd,
+      int ageInterval,
+      TimeUnit unit,
+      FieldFilter ageFilter,
+      InputVector fieldValue,
+      Map<Integer, List<Double>> ageMetrics) {
     // TODO Auto-generated method stub
   }
 }

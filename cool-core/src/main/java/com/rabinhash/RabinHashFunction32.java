@@ -30,53 +30,36 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
 /**
- * <p>
  * This class provides an implementation of a hash function based on Rabin fingerprints, one which
  * can efficiently produce a 32-bit hash value for a sequence of bytes. It does so by considering
  * strings of bytes as large polynomials over GF(2) -- that is, with coefficients of 0 and 1 -- and
  * then reducing them modulo some irreducible polynomial of degree 32. The result is a hash function
  * with very satisfactory properties. In addition the polynomial operations are fast in hardware;
  * even in this Java implementation the speed is reasonable.
- * </p>
  *
- * <p>
- * Methods in this class can compute a hash value for an array of bytes, chars or ints, as well as
- * any {@link Serializable} object, String, file, or resource denoted by URL.
- * </p>
+ * <p>Methods in this class can compute a hash value for an array of bytes, chars or ints, as well
+ * as any {@link Serializable} object, String, file, or resource denoted by URL.
  *
- * <p>
- * Methods of this class are all thread-safe, and hash function objects are immutable.
- * </p>
+ * <p>Methods of this class are all thread-safe, and hash function objects are immutable.
  *
- * <p>
- * Polynomials of degree 32 are used frequently in this code, and are represented efficiently as
+ * <p>Polynomials of degree 32 are used frequently in this code, and are represented efficiently as
  * <code>int</code>s. An <code>int</code> has 32 bits, whereas a polynomial of degree 32 has 33
  * coefficients. Therefore, the high-order bit of the <code>int</code> is the degree 31 term's
  * coefficient, and the low-order bit is the constant coefficient.
- * </p>
  *
- * <p>
- * For example the integer 0x00000803, in binary, is:
- * </p>
+ * <p>For example the integer 0x00000803, in binary, is:
  *
- * <p>
- * <code>00000000 00000000 00001000 00000011</code>
- * </p>
+ * <p><code>00000000 00000000 00001000 00000011</code>
  *
- * <p>
- * Therefore it correponds to the polynomial:
- * </p>
+ * <p>Therefore it correponds to the polynomial:
  *
- * <p>
- * <code>x<sup>32</sup> + x<sup>11</sup> + x + 1</code>
- * </p>
+ * <p><code>x<sup>32</sup> + x<sup>11</sup> + x + 1</code>
  *
- * <p>
- * The implementation is derived from the paper "Some applications of Rabin's fingerprinting method"
- * by Andrei Broder. See <a href="http://server3.pa-x.dec.com/SRC/publications/src-papers.html">
+ * <p>The implementation is derived from the paper "Some applications of Rabin's fingerprinting
+ * method" by Andrei Broder. See <a
+ * href="http://server3.pa-x.dec.com/SRC/publications/src-papers.html">
  * http://server3.pa-x.dec.com/SRC/publications/src-papers.html</a> for a full citation and the
  * paper in PDF format.
- * </p>
  *
  * @author Sean Owen
  * @version 2.0
@@ -87,16 +70,12 @@ public final class RabinHashFunction32 implements Serializable, Cloneable {
 
   private static final long serialVersionUID = -7391492432154101379L;
 
-  /**
-   * Represents x<sup>32</sup> + x<sup>7</sup> + x<sup>3</sup> + x<sup>2</sup> + 1.
-   */
+  /** Represents x<sup>32</sup> + x<sup>7</sup> + x<sup>3</sup> + x<sup>2</sup> + 1. */
   private static final int DEFAULT_IRREDUCIBLE_POLY = 0x0000008D;
 
-  /**
-   * Default hash function, provided for convenience.
-   */
-  public static final RabinHashFunction32 DEFAULT_HASH_FUNCTION = new RabinHashFunction32(
-      DEFAULT_IRREDUCIBLE_POLY);
+  /** Default hash function, provided for convenience. */
+  public static final RabinHashFunction32 DEFAULT_HASH_FUNCTION =
+      new RabinHashFunction32(DEFAULT_IRREDUCIBLE_POLY);
 
   private static final int P_DEGREE = 32;
   private static final int X_P_DEGREE = 1 << (P_DEGREE - 1);
@@ -106,18 +85,13 @@ public final class RabinHashFunction32 implements Serializable, Cloneable {
   private transient int[] table32, table40, table48, table56;
 
   /**
-   * <p>
    * Creates a RabinHashFunction32 based on the specified polynomial.
-   * </p>
    *
-   * <p>
-   * This class does not test the polynomial for irreducibility; therefore this constructor should
-   * only be used with polynomials that are already known to be irreducible, or else the hash
+   * <p>This class does not test the polynomial for irreducibility; therefore this constructor
+   * should only be used with polynomials that are already known to be irreducible, or else the hash
    * function will not perform optimally.
-   * </p>
    *
-   * @param P a degree 32 polynomial over GF(2), represented as an
-   *          <code>int</code>
+   * @param P a degree 32 polynomial over GF(2), represented as an <code>int</code>
    */
   public RabinHashFunction32(final int P) {
     this.P = P;
@@ -178,14 +152,14 @@ public final class RabinHashFunction32 implements Serializable, Cloneable {
   }
 
   private int computeWShifted(final int w) {
-    return table32[w & 0xFF] ^ table40[(w >>> 8) & 0xFF]
-        ^ table48[(w >>> 16) & 0xFF] ^ table56[(w >>> 24) & 0xFF];
+    return table32[w & 0xFF]
+        ^ table40[(w >>> 8) & 0xFF]
+        ^ table48[(w >>> 16) & 0xFF]
+        ^ table56[(w >>> 24) & 0xFF];
   }
 
   /**
-   * <p>
    * Return the Rabin hash value of an array of bytes.
-   * </p>
    *
    * @param A the array of bytes
    * @return the hash value
@@ -213,8 +187,12 @@ public final class RabinHashFunction32 implements Serializable, Cloneable {
 
     final int max = offset + length;
     while (s < max) {
-      w = computeWShifted(w) ^ (A[s] << 24) ^ ((A[s + 1] & 0xFF) << 16)
-          ^ ((A[s + 2] & 0xFF) << 8) ^ (A[s + 3] & 0xFF);
+      w =
+          computeWShifted(w)
+              ^ (A[s] << 24)
+              ^ ((A[s + 1] & 0xFF) << 16)
+              ^ ((A[s + 2] & 0xFF) << 8)
+              ^ (A[s + 3] & 0xFF);
       s += 4;
     }
 
@@ -222,9 +200,7 @@ public final class RabinHashFunction32 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Return the Rabin hash value of an array of chars.
-   * </p>
    *
    * @param A the array of chars
    * @return the hash value
@@ -254,10 +230,8 @@ public final class RabinHashFunction32 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Returns the Rabin hash value of an array of <code>int</code>s. This method is the most
    * efficient of all the hash methods, so it should be used when possible.
-   * </p>
    *
    * @param A array of <code>int</code>s
    * @return the hash value
@@ -275,9 +249,7 @@ public final class RabinHashFunction32 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Returns the Rabin hash value of a ByteBuffer.
-   * </p>
    *
    * @param A ByteBuffer
    * @return the hash value
@@ -288,9 +260,7 @@ public final class RabinHashFunction32 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Returns the Rabin hash value of an IntBuffer.
-   * </p>
    *
    * @param A IntBuffer
    * @return the hash value
@@ -308,9 +278,7 @@ public final class RabinHashFunction32 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Returns the Rabin hash value of a serializable object.
-   * </p>
    *
    * @param obj the object to be hashed
    * @return the hash value
@@ -331,9 +299,7 @@ public final class RabinHashFunction32 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Computes the Rabin hash value of a String.
-   * </p>
    *
    * @param s the string to be hashed
    * @return the hash value
@@ -344,15 +310,13 @@ public final class RabinHashFunction32 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Computes the Rabin hash value of the contents of a file.
-   * </p>
    *
    * @param f the file to be hashed
    * @return the hash value of the file
    * @throws FileNotFoundException if the file cannot be found
-   * @throws IOException           if an error occurs while reading the file
-   * @throws NullPointerException  if f is null
+   * @throws IOException if an error occurs while reading the file
+   * @throws NullPointerException if f is null
    */
   public int hash(final File f) throws FileNotFoundException, IOException {
     if (f == null) {
@@ -367,13 +331,11 @@ public final class RabinHashFunction32 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Computes the Rabin hash value of the contents of a file, specified by URL.
-   * </p>
    *
    * @param url the URL of the file to be hashed
    * @return the hash value of the file
-   * @throws IOException          if an error occurs while reading from the URL
+   * @throws IOException if an error occurs while reading from the URL
    * @throws NullPointerException if url is null
    */
   public int hash(final URL url) throws IOException {
@@ -386,13 +348,11 @@ public final class RabinHashFunction32 implements Serializable, Cloneable {
   }
 
   /**
-   * <p>
    * Computes the Rabin hash value of the data from an <code>InputStream</code>.
-   * </p>
    *
    * @param is the InputStream to hash
    * @return the hash value of the data from the InputStream
-   * @throws IOException          if an error occurs while reading from the InputStream
+   * @throws IOException if an error occurs while reading from the InputStream
    * @throws NullPointerException if stream is null
    */
   public int hash(final InputStream is) throws IOException {
@@ -418,14 +378,12 @@ public final class RabinHashFunction32 implements Serializable, Cloneable {
   }
 
   public String toString() {
-    return "RabinHashFunction32[P: "
-        + RabinHashFunctionUtils.polynomialToString(P) + "]";
+    return "RabinHashFunction32[P: " + RabinHashFunctionUtils.polynomialToString(P) + "]";
   }
 
-  private void readObject(final ObjectInputStream stream) throws IOException,
-      ClassNotFoundException {
+  private void readObject(final ObjectInputStream stream)
+      throws IOException, ClassNotFoundException {
     stream.defaultReadObject();
     initializeTables();
   }
-
 }

@@ -23,9 +23,7 @@ import java.util.List;
 
 import com.nus.cool.core.iceberg.aggregator.AggregatorFactory;
 
-/**
- * Aggregator query structure defines a set of aggregators on a field.
- */
+/** Aggregator query structure defines a set of aggregators on a field. */
 public class Aggregation {
   private String fieldName;
 
@@ -52,6 +50,5 @@ public class Aggregation {
     this.operators = operators;
   }
 
-  public Aggregation() {
-  }
+  public Aggregation() {}
 }

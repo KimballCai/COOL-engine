@@ -1,4 +1,3 @@
-
 package com.nus.cool.core.model;
 
 import com.nus.cool.model.CoolModel;
@@ -9,13 +8,13 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-/**
- * Testing cool model.
- */
+/** Testing cool model. */
 public class CoolModelTest {
 
-  @Test(dataProvider = "CubeListTestDP", dependsOnMethods = {
-      "com.nus.cool.functionality.CsvLoaderTest.CsvLoaderUnitTest"}, enabled = false)
+  @Test(
+      dataProvider = "CubeListTestDP",
+      dependsOnMethods = {"com.nus.cool.functionality.CsvLoaderTest.CsvLoaderUnitTest"},
+      enabled = false)
   public void cubeListUnitTest(String datasetPath, String[] out) {
     String[] cubes = CoolModel.listCubes(datasetPath);
     for (String cube : out) {
@@ -23,38 +22,35 @@ public class CoolModelTest {
     }
   }
 
-  @Test(dataProvider = "CubeReloadTestDP", dependsOnMethods = {
-      "com.nus.cool.functionality.CsvLoaderTest.CsvLoaderUnitTest"}, enabled = false)
+  @Test(
+      dataProvider = "CubeReloadTestDP",
+      dependsOnMethods = {"com.nus.cool.functionality.CsvLoaderTest.CsvLoaderUnitTest"},
+      enabled = false)
   public static void cubeReloadUnitTest(String datasetPath, String cubeName) throws IOException {
     CoolModel coolModel = new CoolModel(datasetPath);
     coolModel.reload(cubeName);
     coolModel.close();
   }
 
-  /**
-   * Data provider for cube reload testing.
-   */
+  /** Data provider for cube reload testing. */
   @DataProvider(name = "CubeReloadTestDP")
   public Object[][] cubeReloadTestDPArgObjects() {
     String sourcePath =
         Paths.get(System.getProperty("user.dir"), "..", "CubeRepo/TestCube").toString();
     return new Object[][] {
-        {sourcePath, "health"},
-        {sourcePath, "sogamo"},
-        {sourcePath, "tpc-h-10g"}
+      {sourcePath, "health"},
+      {sourcePath, "sogamo"},
+      {sourcePath, "tpc-h-10g"}
     };
   }
 
-  /**
-   * Data provider for cube list operation testing.
-   */
+  /** Data provider for cube list operation testing. */
   @DataProvider(name = "CubeListTestDP")
   public Object[][] cubeListArgObjects() {
     String sourcePath =
         Paths.get(System.getProperty("user.dir"), "..", "CubeRepo/TestCube").toString();
     return new Object[][] {
-        {sourcePath, new String[] {"sogamo", "tpc-h-10g", "health"}},
+      {sourcePath, new String[] {"sogamo", "tpc-h-10g", "health"}},
     };
   }
-
 }

@@ -24,9 +24,7 @@ import com.nus.cool.core.schema.FieldType;
 import java.io.DataOutput;
 import java.io.IOException;
 
-/**
- * Interface for write stores for meta chunks.
- */
+/** Interface for write stores for meta chunks. */
 public interface MetaFieldWS extends Output {
 
   /**
@@ -38,8 +36,7 @@ public interface MetaFieldWS extends Output {
   void put(String[] tuple, int idx);
 
   /**
-   * Find the index of value in this meta field, return -1 if no such value
-   * exists.
+   * Find the index of value in this meta field, return -1 if no such value exists.
    *
    * @param v target value
    * @return index of value in this meta field
@@ -61,15 +58,12 @@ public interface MetaFieldWS extends Output {
   FieldType getFieldType();
 
   /**
-   * Call this method before writeTo when no more values are put into this meta
-   * field.
-   * After the method returns, this meta field is frozen for writing.
+   * Call this method before writeTo when no more values are put into this meta field. After the
+   * method returns, this meta field is frozen for writing.
    */
   void complete();
 
-  /**
-   * clean internal data for processing next cublet.
-   */
+  /** clean internal data for processing next cublet. */
   void cleanForNextCublet();
 
   /**
@@ -79,5 +73,4 @@ public interface MetaFieldWS extends Output {
    * @return bytes written
    */
   public int writeCubeMeta(DataOutput out) throws IOException;
-
 }

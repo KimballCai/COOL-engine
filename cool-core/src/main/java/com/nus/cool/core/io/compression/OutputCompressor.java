@@ -24,9 +24,7 @@ import com.nus.cool.core.schema.Codec;
 import java.io.DataOutput;
 import java.io.IOException;
 
-/**
- * Utility class for writing a compressed integer/string vector into disk.
- */
+/** Utility class for writing a compressed integer/string vector into disk. */
 public class OutputCompressor implements Output {
 
   // int or string,
@@ -45,7 +43,7 @@ public class OutputCompressor implements Output {
   /**
    * Reset the Histogram with an int array.
    *
-   * @param h   histogram of compress data
+   * @param h histogram of compress data
    * @param vec compress data
    * @param off the start offset in the data
    * @param len the number of bytes read
@@ -61,7 +59,7 @@ public class OutputCompressor implements Output {
   /**
    * Reset the histogram with a byte array.
    *
-   * @param h   histogram of compress data
+   * @param h histogram of compress data
    * @param vec compress data
    * @param off the start offset in the data
    * @param len the number of bytes read
@@ -84,9 +82,10 @@ public class OutputCompressor implements Output {
     int maxLen = compressor.maxCompressedLength();
     // 3. compress it and record output to compressed array
     byte[] compressed = new byte[maxLen];
-    int compressLen = this.dataType == DataType.INTEGER
-        ? compressor.compress(this.vec, this.off, this.len, compressed, 0, maxLen)
-        : compressor.compress(this.strVec, this.off, this.len, compressed, 0, maxLen);
+    int compressLen =
+        this.dataType == DataType.INTEGER
+            ? compressor.compress(this.vec, this.off, this.len, compressed, 0, maxLen)
+            : compressor.compress(this.strVec, this.off, this.len, compressed, 0, maxLen);
 
     // Write compressor type
     out.writeByte(codec.ordinal());
@@ -98,6 +97,7 @@ public class OutputCompressor implements Output {
   }
 
   private enum DataType {
-    INTEGER, STRING
+    INTEGER,
+    STRING
   }
 }

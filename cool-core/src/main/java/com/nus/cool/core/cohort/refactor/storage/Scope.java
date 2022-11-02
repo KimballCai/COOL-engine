@@ -2,16 +2,12 @@ package com.nus.cool.core.cohort.refactor.storage;
 
 import lombok.Getter;
 
-/**
- * Represent a range from left to right [left, right).
- */
+/** Represent a range from left to right [left, right). */
 public class Scope {
 
-  @Getter
-  private Integer left;
+  @Getter private Integer left;
 
-  @Getter
-  private Integer right;
+  @Getter private Integer right;
 
   public Scope(Integer l, Integer r) {
     this.left = l == null ? Integer.MIN_VALUE : l;
@@ -22,9 +18,7 @@ public class Scope {
     return i < this.right && i >= this.left;
   }
 
-  /**
-   * Check if two scopes intersect.
-   */
+  /** Check if two scopes intersect. */
   public Boolean isIntersection(Scope scope) {
     return !(scope.getLeft() >= this.right || scope.getRight() <= this.left);
   }

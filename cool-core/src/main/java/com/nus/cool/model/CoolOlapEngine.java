@@ -40,16 +40,13 @@ import com.nus.cool.core.io.readstore.CubletRS;
 import com.nus.cool.core.io.readstore.MetaChunkRS;
 import com.nus.cool.core.schema.TableSchema;
 
-/**
- * Cool OLAP encgine.
- */
+/** Cool OLAP encgine. */
 public class CoolOlapEngine {
 
   /**
-   * Execute iceberg query.
-   * timeRange, selection => groupBY => aggregate on each group
+   * Execute iceberg query. timeRange, selection => groupBY => aggregate on each group
    *
-   * @param cube  the cube that stores the data we need
+   * @param cube the cube that stores the data we need
    * @param query the cohort query needed to process
    * @return the result of the query
    */
@@ -96,7 +93,12 @@ public class CoolOlapEngine {
             // beg = System.currentTimeMillis();
             // 2. run groupBy
             IcebergAggregation icebergAggregation = new IcebergAggregation();
-            icebergAggregation.groupBy(bs, query.getGroupFields(), metaChunk, dataChunk, timeRange,
+            icebergAggregation.groupBy(
+                bs,
+                query.getGroupFields(),
+                metaChunk,
+                dataChunk,
+                timeRange,
                 query.getGroupFieldsGranularity());
             // end = System.currentTimeMillis();
             // System.out.println("init aggregation elapsed: " + (end - beg));
@@ -110,15 +112,12 @@ public class CoolOlapEngine {
           }
         }
       }
-
     }
     results = BaseResult.merge(results);
     return results;
   }
 
-  /**
-   * Profile.
-   */
+  /** Profile. */
   public static void profiling(List<BaseResult> results) {
 
     HashMap<String, Float> profilingCount = new HashMap<>();
@@ -139,35 +138,42 @@ public class CoolOlapEngine {
       Float value = profilingCount.get(key) / totalCount;
       profilingCount.put(key, value);
       value = value * 100;
-      System.out.println("Key = " + key + ", percentage of matched records = "
-          + value.toString().substring(0, 4) + "%");
+      System.out.println(
+          "Key = "
+              + key
+              + ", percentage of matched records = "
+              + value.toString().substring(0, 4)
+              + "%");
     }
 
     for (String key : profilingSum.keySet()) {
       long sumValue = profilingSum.get(key);
       float value = sumValue / totalSum;
       value = value * 100;
-      System.out.println("Key = " + key + ", percentage of aggregation = "
-          + Float.toString(value).substring(0, 4) + "%");
+      System.out.println(
+          "Key = "
+              + key
+              + ", percentage of aggregation = "
+              + Float.toString(value).substring(0, 4)
+              + "%");
     }
   }
 
-  public static final String jsonString = "{\n"
-      + "  \"dataSource\": \"default\",\n"
-      + "  \"selection\": {\n"
-      + "    \"type\": \"filter\",\n"
-      + "    \"dimension\": \"default\",\n"
-      + "    \"values\": [ \"default\" ],\n"
-      + "    \"fields\":[]\n"
-      + "  },\n"
-      + "  \"aggregations\":[\n"
-      + "    {\"fieldName\":\"default\",\n"
-      + "      \"operators\":[\"COUNT\"]}]\n"
-      + "}";
+  public static final String jsonString =
+      "{\n"
+          + "  \"dataSource\": \"default\",\n"
+          + "  \"selection\": {\n"
+          + "    \"type\": \"filter\",\n"
+          + "    \"dimension\": \"default\",\n"
+          + "    \"values\": [ \"default\" ],\n"
+          + "    \"fields\":[]\n"
+          + "  },\n"
+          + "  \"aggregations\":[\n"
+          + "    {\"fieldName\":\"default\",\n"
+          + "      \"operators\":[\"COUNT\"]}]\n"
+          + "}";
 
-  /**
-   * Deserialize query structure.
-   */
+  /** Deserialize query structure. */
   public IcebergQuery generateQuery(String operation, String dataSourceName) throws IOException {
     String[] parsedOpe = operation.split(", ");
 
@@ -176,18 +182,17 @@ public class CoolOlapEngine {
       return null;
     }
 
-    
     String value = parsedOpe[2];
     List<String> values = new ArrayList<>();
     values.add(value);
-    
+
     // init query
     ObjectMapper mapper = new ObjectMapper();
     IcebergQuery query = mapper.readValue(jsonString, IcebergQuery.class);
-    
+
     // update query
     query.setDataSource(dataSourceName);
-    
+
     String field = parsedOpe[1];
     SelectionQuery sq = query.getSelection();
     sq.setType(SelectionQuery.SelectionType.filter);
@@ -197,13 +202,13 @@ public class CoolOlapEngine {
     query.setSelection(sq);
 
     Aggregation agg = new Aggregation();
-    
+
     List<AggregatorFactory.AggregatorType> opt = new ArrayList<>();
     opt.add(AggregatorFactory.AggregatorType.COUNT);
-    
+
     agg.setOperators(opt);
     agg.setFieldName(field);
-    
+
     List<Aggregation> aggregations = new ArrayList<>();
     aggregations.add(agg);
     query.setAggregations(aggregations);

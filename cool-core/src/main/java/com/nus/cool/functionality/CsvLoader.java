@@ -25,17 +25,13 @@ import com.nus.cool.core.util.config.CsvDataLoaderConfig;
 import com.nus.cool.core.util.config.DataLoaderConfig;
 import com.nus.cool.model.CoolLoader;
 
-/**
- * Load csv data into cool system.
- */
+/** Load csv data into cool system. */
 public class CsvLoader {
   /**
-   * Please list the necessary dataset files for the COOL system to load into a
-   * new cube.
+   * Please list the necessary dataset files for the COOL system to load into a new cube.
    *
-   * @param args there are five arguments. List in input order
-   *     (1) output cube name: to be specified when loading from the repository
-   *     (2) table.yaml (3) data.csv (4) output cube repository
+   * @param args there are five arguments. List in input order (1) output cube name: to be specified
+   *     when loading from the repository (2) table.yaml (3) data.csv (4) output cube repository
    */
   public static void main(String[] args) {
     String cube = args[0];

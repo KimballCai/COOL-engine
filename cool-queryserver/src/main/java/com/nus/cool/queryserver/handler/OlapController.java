@@ -33,23 +33,23 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-
 @RestController
 @RequestMapping("/olap")
 public class OlapController {
 
-    @PostMapping(value = "/iceberg",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> performIcebergQuery(@RequestParam("queryFile") MultipartFile queryFile) throws IOException {
-        Util.getTimeClock();
-        System.out.println("[*] Server is performing the cohort query form IP: ");
-        System.out.println("[*] This query is for iceberg query: " + queryFile);
-        String queryContent = new String(queryFile.getBytes());
-        ObjectMapper mapper = new ObjectMapper();
-        IcebergQuery q = mapper.readValue(queryContent, IcebergQuery.class);
-        System.out.println("[*] Begin to run the query....");
-        return QueryServerModel.precessIcebergQuery(q);
-    }
-
+  @PostMapping(
+      value = "/iceberg",
+      produces = MediaType.APPLICATION_JSON_VALUE,
+      consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ResponseEntity<String> performIcebergQuery(
+      @RequestParam("queryFile") MultipartFile queryFile) throws IOException {
+    Util.getTimeClock();
+    System.out.println("[*] Server is performing the cohort query form IP: ");
+    System.out.println("[*] This query is for iceberg query: " + queryFile);
+    String queryContent = new String(queryFile.getBytes());
+    ObjectMapper mapper = new ObjectMapper();
+    IcebergQuery q = mapper.readValue(queryContent, IcebergQuery.class);
+    System.out.println("[*] Begin to run the query....");
+    return QueryServerModel.precessIcebergQuery(q);
+  }
 }

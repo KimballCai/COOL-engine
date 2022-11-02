@@ -30,9 +30,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Map;
 
-/**
- * Meta HashField ReadStore.
- */
+/** Meta HashField ReadStore. */
 public class MetaHashFieldRS implements MetaFieldRS {
 
   protected static final RabinHashFunction32 rhash = RabinHashFunction32.DEFAULT_HASH_FUNCTION;
@@ -100,7 +98,8 @@ public class MetaHashFieldRS implements MetaFieldRS {
     this.fieldType = fieldType;
     this.fingerVec = InputVectorFactory.readFrom(buffer);
     this.globalIDVec = InputVectorFactory.readFrom(buffer);
-    if (this.fieldType == FieldType.Action || this.fieldType == FieldType.Segment
+    if (this.fieldType == FieldType.Action
+        || this.fieldType == FieldType.Segment
         || this.fieldType == FieldType.AppKey) {
       this.valueVec = InputVectorFactory.readFrom(buffer);
     }
@@ -111,5 +110,4 @@ public class MetaHashFieldRS implements MetaFieldRS {
     FieldType fieldType = FieldType.fromInteger(buffer.get());
     this.readFromWithFieldType(buffer, fieldType);
   }
-
 }

@@ -25,22 +25,16 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Read line as tuple from source.
- * LineTupleReader is a high-level data loader that read contents form
+ * Read line as tuple from source. LineTupleReader is a high-level data loader that read contents
+ * form FileReader LineTupleReader could test whether it has finished reading the file and close the
  * FileReader
- * LineTupleReader could test whether it has finished reading the file
- * and close the FileReader
  */
 public class LineTupleReader implements TupleReader {
 
-  /**
-   * The line to store the loaded data.
-   */
+  /** The line to store the loaded data. */
   private String line;
 
-  /**
-   * The reader to read the content of files.
-   */
+  /** The reader to read the content of files. */
   private BufferedReader reader;
 
   public LineTupleReader(File in) throws IOException {
@@ -51,8 +45,7 @@ public class LineTupleReader implements TupleReader {
   /**
    * check whether the reader finishes reading.
    *
-   * @return 1 denotes the reader still needs to read and
-   *         0 denoets there is nothing left to read.
+   * @return 1 denotes the reader still needs to read and 0 denoets there is nothing left to read.
    */
   @Override
   public boolean hasNext() {
@@ -71,9 +64,7 @@ public class LineTupleReader implements TupleReader {
     return old;
   }
 
-  /**
-   * Close the read.
-   */
+  /** Close the read. */
   @Override
   public void close() throws IOException {
     this.reader.close();

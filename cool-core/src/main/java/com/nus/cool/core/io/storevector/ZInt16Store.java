@@ -57,8 +57,7 @@ public class ZInt16Store implements ZIntStore, InputVector {
     }
     if (this.sorted)
       return ShortBuffers.binarySearchUnsigned(this.buffer, 0, this.buffer.limit(), (short) key);
-    else
-      return ShortBuffers.traverseSearch(this.buffer, 0, this.buffer.limit(), (short)key);
+    else return ShortBuffers.traverseSearch(this.buffer, 0, this.buffer.limit(), (short) key);
   }
 
   @Override

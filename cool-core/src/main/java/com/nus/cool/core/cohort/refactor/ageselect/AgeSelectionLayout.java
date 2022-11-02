@@ -8,18 +8,20 @@ import lombok.Getter;
 
 @Getter
 public class AgeSelectionLayout {
-    private TimeUtils.TimeUnit unit;
+  private TimeUtils.TimeUnit unit;
 
-    private Integer min;
+  private Integer min;
 
-    private Integer max;
+  private Integer max;
 
-    private int interval = 1;
+  private int interval = 1;
 
-    public AgeSelection generate() throws IllegalArgumentException {
-        Preconditions.checkArgument(this.min != null, "AgeSelection's min is not allowed to be missing");
-        Preconditions.checkArgument(this.max != null, "AgeSelection's max is not allowed to be missing");
-        Scope scope = new Scope(min, max + 1);
-        return new AgeSelection(scope, unit);
-    }
+  public AgeSelection generate() throws IllegalArgumentException {
+    Preconditions.checkArgument(
+        this.min != null, "AgeSelection's min is not allowed to be missing");
+    Preconditions.checkArgument(
+        this.max != null, "AgeSelection's max is not allowed to be missing");
+    Scope scope = new Scope(min, max + 1);
+    return new AgeSelection(scope, unit);
+  }
 }

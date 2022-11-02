@@ -28,10 +28,7 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.Map;
 
-/**
- * BirthSumAggregator is used to aggregate the cohort results
- * when sum is needed.
- */
+/** BirthSumAggregator is used to aggregate the cohort results when sum is needed. */
 public class BirthSumAggregator implements EventAggregator {
 
   private InputVector values;
@@ -45,7 +42,6 @@ public class BirthSumAggregator implements EventAggregator {
    * Get the sum value of a list which is the cohort result at a specific age.
    *
    * @param offset the cohort result
-   *
    * @return the sum value of the cohort result
    */
   @Override
@@ -61,8 +57,14 @@ public class BirthSumAggregator implements EventAggregator {
   }
 
   @Override
-  public void ageAggregate(BitSet ageOffset, BitSet ageDelimiter, int ageOff, int ageEnd,
-      int ageInterval, FieldFilter ageFilter, Map<Integer, List<Double>> ageMetrics) {
+  public void ageAggregate(
+      BitSet ageOffset,
+      BitSet ageDelimiter,
+      int ageOff,
+      int ageEnd,
+      int ageInterval,
+      FieldFilter ageFilter,
+      Map<Integer, List<Double>> ageMetrics) {
 
     int offset = ageOffset.nextSetBit(ageOff);
     int age = 1;
@@ -103,8 +105,15 @@ public class BirthSumAggregator implements EventAggregator {
   }
 
   @Override
-  public void ageAggregate(BitSet ageOffset, InputVector time, int birthDay, int ageOff,
-      int ageEnd, int ageInterval, TimeUnit unit, FieldFilter ageFilter,
+  public void ageAggregate(
+      BitSet ageOffset,
+      InputVector time,
+      int birthDay,
+      int ageOff,
+      int ageEnd,
+      int ageInterval,
+      TimeUnit unit,
+      FieldFilter ageFilter,
       Map<Integer, List<Double>> ageMetrics) {
     // skip to the first day
     int ageDate = TimeUtils.getDateofNextTimeUnitN(birthDay, unit, 1);
@@ -120,7 +129,7 @@ public class BirthSumAggregator implements EventAggregator {
           return;
         }
         ageDate = TimeUtils.getDateofNextTimeUnitN(ageDate, unit, ageInterval);
-        toffset = TimeUtils.skipToDate(time, toffset, ageEnd, ageDate);    
+        toffset = TimeUtils.skipToDate(time, toffset, ageEnd, ageDate);
       } while (!ageFilter.accept(age) || offset >= toffset);
 
       List<Double> metric = ageMetrics.get(age);
@@ -141,9 +150,17 @@ public class BirthSumAggregator implements EventAggregator {
   }
 
   @Override
-  public void ageAggregateMetirc(BitSet ageOffset, InputVector time, int birthDay, int ageOff,
-      int ageEnd, int ageInterval, TimeUnit unit, FieldFilter ageFilter, InputVector fieldValue,
-      Map<Integer, List<Double>> ageMetrics){
+  public void ageAggregateMetirc(
+      BitSet ageOffset,
+      InputVector time,
+      int birthDay,
+      int ageOff,
+      int ageEnd,
+      int ageInterval,
+      TimeUnit unit,
+      FieldFilter ageFilter,
+      InputVector fieldValue,
+      Map<Integer, List<Double>> ageMetrics) {
     // TODO Auto-generated method stub
   }
 }

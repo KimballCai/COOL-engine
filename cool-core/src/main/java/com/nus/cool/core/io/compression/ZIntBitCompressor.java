@@ -25,18 +25,14 @@ import java.nio.ByteOrder;
 import com.google.common.primitives.Longs;
 import com.nus.cool.core.util.IntegerUtil;
 
-/**
- * ZIntBitCompressor.
- */
+/** ZIntBitCompressor. */
 public class ZIntBitCompressor implements Compressor {
 
   private int numOfBits;
 
   private int maxCompressedLength;
 
-  /**
-   * Create a ZintBitCompressor from a histogram.
-   */
+  /** Create a ZintBitCompressor from a histogram. */
   public ZIntBitCompressor(Histogram hist) {
     if (hist.getMax() >= (1L << 32)) {
       numOfBits = 64;
@@ -56,14 +52,13 @@ public class ZIntBitCompressor implements Compressor {
   }
 
   @Override
-  public int compress(byte[] src, int srcOff, int srcLen, byte[] dest,
-      int destOff, int maxDestLen) {
+  public int compress(
+      byte[] src, int srcOff, int srcLen, byte[] dest, int destOff, int maxDestLen) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int compress(int[] src, int srcOff, int srcLen, byte[] dest,
-      int destOff, int maxDestLen) {
+  public int compress(int[] src, int srcOff, int srcLen, byte[] dest, int destOff, int maxDestLen) {
 
     ByteBuffer buffer = ByteBuffer.wrap(dest, destOff, maxDestLen);
     buffer.order(ByteOrder.nativeOrder());

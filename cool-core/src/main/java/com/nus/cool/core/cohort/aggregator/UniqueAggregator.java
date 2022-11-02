@@ -26,9 +26,7 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Unique aggregator.
- */
+/** Unique aggregator. */
 public class UniqueAggregator implements EventAggregator {
 
   private InputVector values;
@@ -52,23 +50,44 @@ public class UniqueAggregator implements EventAggregator {
   }
 
   @Override
-  public void ageAggregate(BitSet ageOffset, BitSet ageDelimiter, int start, int end,
-      int ageInterval, FieldFilter ageFilter, Map<Integer, List<Double>> ageMetrics) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void ageAggregate(BitSet ageOffset, InputVector time, int birthDay, int ageOff, int ageEnd,
-      int ageInterval, TimeUnit unit, FieldFilter ageFilter,
+  public void ageAggregate(
+      BitSet ageOffset,
+      BitSet ageDelimiter,
+      int start,
+      int end,
+      int ageInterval,
+      FieldFilter ageFilter,
       Map<Integer, List<Double>> ageMetrics) {
     // TODO Auto-generated method stub
 
   }
 
   @Override
-  public void ageAggregateMetirc(BitSet ageOffset, InputVector time, int birthDay, int ageOff,
-      int ageEnd, int ageInterval, TimeUnit unit, FieldFilter ageFilter, InputVector fieldValue,
+  public void ageAggregate(
+      BitSet ageOffset,
+      InputVector time,
+      int birthDay,
+      int ageOff,
+      int ageEnd,
+      int ageInterval,
+      TimeUnit unit,
+      FieldFilter ageFilter,
+      Map<Integer, List<Double>> ageMetrics) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void ageAggregateMetirc(
+      BitSet ageOffset,
+      InputVector time,
+      int birthDay,
+      int ageOff,
+      int ageEnd,
+      int ageInterval,
+      TimeUnit unit,
+      FieldFilter ageFilter,
+      InputVector fieldValue,
       Map<Integer, List<Double>> ageMetrics) {
     // TODO Auto-generated method stub
   }

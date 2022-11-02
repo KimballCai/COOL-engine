@@ -5,8 +5,7 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 
 /**
- * Partial of a tuple in project, when generated, the layout of schemas is
- * fixed. Instance of
+ * Partial of a tuple in project, when generated, the layout of schemas is fixed. Instance of
  * ProjectTuple can load Object[] to reuse this memory
  */
 public class ProjectedTuple {
@@ -15,9 +14,7 @@ public class ProjectedTuple {
 
   private HashMap<String, Integer> schema2Index;
 
-  /**
-   * Get the value by field name.
-   */
+  /** Get the value by field name. */
   public Object getValueBySchema(String schema) {
     if (!schema2Index.containsKey(schema)) {
       return null;
@@ -25,9 +22,7 @@ public class ProjectedTuple {
     return tuple[schema2Index.get(schema)];
   }
 
-  /**
-   * Create a partial tuple with selected fields.
-   */
+  /** Create a partial tuple with selected fields. */
   public ProjectedTuple(HashSet<String> schemaList) {
     this.schema2Index = new HashMap<>();
     int idx = 0;
@@ -52,9 +47,7 @@ public class ProjectedTuple {
     this.tuple[idx] = attrValue;
   }
 
-  /**
-   * Return the layout of this ProjectedTuple.
-   */
+  /** Return the layout of this ProjectedTuple. */
   public String[] getSchemaList() {
     String[] ret = new String[schema2Index.size()];
     for (Entry<String, Integer> entry : schema2Index.entrySet()) {

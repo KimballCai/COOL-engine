@@ -11,44 +11,42 @@ import com.nus.cool.core.schema.TableSchema;
 import org.testng.annotations.Test;
 import org.testng.Assert;
 
-
 public class RangeFieldFilterTest {
-    @Test
-    public void rangeFilterUnitTest() {
-        String schemaStr = "charset: \"UTF-8\"\n"
-                + "fields:\n"
-                + "- name: \"money\"\n"
-                + "  fieldType: \"Metric\"\n"
-                + "  preCal: false\n"
-                + "- name: \"event\"\n"
-                + "  fieldType: \"Action\"\n"
-                + "  preCal: false\n"
-                + "- name: \"eventDay\"\n"
-                + "  fieldType: \"ActionTime\"\n"
-                + "  preCal: false\n"
-                + "- name: \"other\"\n"
-                + "  fieldType: \"Segment\"\n"
-                + "  preCal: false\n";
+  @Test
+  public void rangeFilterUnitTest() {
+    String schemaStr =
+        "charset: \"UTF-8\"\n"
+            + "fields:\n"
+            + "- name: \"money\"\n"
+            + "  fieldType: \"Metric\"\n"
+            + "  preCal: false\n"
+            + "- name: \"event\"\n"
+            + "  fieldType: \"Action\"\n"
+            + "  preCal: false\n"
+            + "- name: \"eventDay\"\n"
+            + "  fieldType: \"ActionTime\"\n"
+            + "  preCal: false\n"
+            + "- name: \"other\"\n"
+            + "  fieldType: \"Segment\"\n"
+            + "  preCal: false\n";
 
-        try {
-            InputStream in = new ByteArrayInputStream(
-                    schemaStr.getBytes("UTF-8"));
-            TableSchema tschema = TableSchema.read(in);
+    try {
+      InputStream in = new ByteArrayInputStream(schemaStr.getBytes("UTF-8"));
+      TableSchema tschema = TableSchema.read(in);
 
-            List<String> values = new ArrayList<>();
-            values.add("50|90");
-            values.add("10|20");
-            FieldFilterFactory filterFactory = new FieldFilterFactory();
-            FieldFilter fieldFilter = filterFactory.create(
-                    tschema.getFieldSchema("money"), null, values);
-            Assert.assertEquals(fieldFilter.getClass(),RangeFieldFilter.class);
-            Assert.assertEquals(fieldFilter.getMaxKey(), 90);
-            Assert.assertEquals(fieldFilter.getMinKey(), 10);
-            Assert.assertTrue(fieldFilter.accept(15));
-            Assert.assertTrue(fieldFilter.accept(60));
-            Assert.assertFalse(fieldFilter.accept(30));
-        } catch (IOException e) {
-            System.err.println(e.getStackTrace());
-        }
+      List<String> values = new ArrayList<>();
+      values.add("50|90");
+      values.add("10|20");
+      FieldFilterFactory filterFactory = new FieldFilterFactory();
+      FieldFilter fieldFilter = filterFactory.create(tschema.getFieldSchema("money"), null, values);
+      Assert.assertEquals(fieldFilter.getClass(), RangeFieldFilter.class);
+      Assert.assertEquals(fieldFilter.getMaxKey(), 90);
+      Assert.assertEquals(fieldFilter.getMinKey(), 10);
+      Assert.assertTrue(fieldFilter.accept(15));
+      Assert.assertTrue(fieldFilter.accept(60));
+      Assert.assertFalse(fieldFilter.accept(30));
+    } catch (IOException e) {
+      System.err.println(e.getStackTrace());
     }
+  }
 }

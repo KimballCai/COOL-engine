@@ -5,10 +5,7 @@ import com.nus.cool.core.io.storevector.InputVectorFactory;
 import com.nus.cool.core.schema.FieldType;
 import java.nio.ByteBuffer;
 
-
-/** 
- *  RangeField ReadStore.
-*/
+/** RangeField ReadStore. */
 public class DataRangeFieldRS implements FieldRS {
 
   private FieldType fieldType;
@@ -22,7 +19,7 @@ public class DataRangeFieldRS implements FieldRS {
    * static create function.
    *
    * @param buf memory
-   * @param ft     fieldtype
+   * @param ft fieldtype
    * @return DataRangeFieldRS
    */
   public static DataRangeFieldRS readFrom(ByteBuffer buf, FieldType ft) {
@@ -66,7 +63,6 @@ public class DataRangeFieldRS implements FieldRS {
     return this.valueVector.get(idx);
   }
 
-
   // no used, only to keep compatiable with old version code
   @Override
   public InputVector getKeyVector() {
@@ -78,5 +74,4 @@ public class DataRangeFieldRS implements FieldRS {
   public InputVector getValueVector() {
     return this.valueVector;
   }
-
 }

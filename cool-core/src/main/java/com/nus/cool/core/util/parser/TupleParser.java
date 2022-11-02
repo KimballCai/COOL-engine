@@ -19,9 +19,7 @@
 
 package com.nus.cool.core.util.parser;
 
-/**
- * TupleParser is a parser to parse a tuple to array.
- */
+/** TupleParser is a parser to parse a tuple to array. */
 public interface TupleParser {
 
   /**

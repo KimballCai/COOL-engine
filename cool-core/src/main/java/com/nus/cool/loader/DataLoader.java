@@ -34,42 +34,35 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Cublet Data Layout
- * -------------------------------------------------------------------------
- * | metaChunk | chunk 1 | chunk 2 |....| chunk N | header | header offset |
+ * Cublet Data Layout ------------------------------------------------------------------------- |
+ * metaChunk | chunk 1 | chunk 2 |....| chunk N | header | header offset |
  * -------------------------------------------------------------------------
  *
- * Header layout:
- * ---------------------------------
- * | chunks | chunk header offsets |
- * ---------------------------------
- * where chunks == number of chunks stored in this cublet.
+ * <p>Header layout: --------------------------------- | chunks | chunk header offsets |
+ * --------------------------------- where chunks == number of chunks stored in this cublet.
  *
- * Each cubelet has a size of roughly 1G in order to be memory mapped
+ * <p>Each cubelet has a size of roughly 1G in order to be memory mapped
  */
 @RequiredArgsConstructor
 public class DataLoader {
-  @NonNull
-  private String dataSetName;
+  @NonNull private String dataSetName;
 
-  @NonNull
-  private final TupleReader reader;
+  @NonNull private final TupleReader reader;
 
-  @NonNull
-  private final TupleParser parser;
+  @NonNull private final TupleParser parser;
 
-  @NonNull
-  private final DataWriter writer;
+  @NonNull private final DataWriter writer;
 
-  public static Builder builder(String dataSourceName,
-      TableSchema tableSchema, File dataFile,
-      File outputDir, DataLoaderConfig config) {
+  public static Builder builder(
+      String dataSourceName,
+      TableSchema tableSchema,
+      File dataFile,
+      File outputDir,
+      DataLoaderConfig config) {
     return new Builder(dataSourceName, tableSchema, dataFile, outputDir, config);
   }
 
-  /**
-   * Load data into cool native format.
-   */
+  /** Load data into cool native format. */
   public void load() throws IOException {
     // write dataChunk first
     writer.initialize();
@@ -80,40 +73,23 @@ public class DataLoader {
     writer.finish();
   }
 
-  /**
-   * Builder of DataLoader.
-   */
+  /** Builder of DataLoader. */
   @AllArgsConstructor
   public static class Builder {
-    /**
-     * Designate the dataset name in cube repository.
-     */
-    @NonNull
-    private String dataSetName;
+    /** Designate the dataset name in cube repository. */
+    @NonNull private String dataSetName;
 
-    /**
-     * Table schema of the dataset.
-     */
-    @NonNull
-    private final TableSchema tableSchema;
+    /** Table schema of the dataset. */
+    @NonNull private final TableSchema tableSchema;
 
-    /**
-     * Raw data.
-     */
-    @NonNull
-    private final File dataFile;
+    /** Raw data. */
+    @NonNull private final File dataFile;
 
-    /**
-     * Output directory to store the dataset.
-     */
-    @NonNull
-    private final File outputDir;
+    /** Output directory to store the dataset. */
+    @NonNull private final File outputDir;
 
-    /**
-     * Configuration determines how the raw data is processed.
-     */
-    @NonNull
-    private final DataLoaderConfig config;
+    /** Configuration determines how the raw data is processed. */
+    @NonNull private final DataLoaderConfig config;
 
     /**
      * Build Data loader.
@@ -121,7 +97,8 @@ public class DataLoader {
      * @return DataLoader instance
      */
     public DataLoader build() throws IOException {
-      return new DataLoader(dataSetName,
+      return new DataLoader(
+          dataSetName,
           config.createTupleReader(dataFile),
           config.createTupleParser(tableSchema),
           new NativeDataWriter(

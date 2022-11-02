@@ -24,9 +24,7 @@ import java.io.IOException;
 
 import lombok.Data;
 
-/**
- * General query context.
- */
+/** General query context. */
 @Data
 public class LoadQuery {
   private String dataFileType;
@@ -36,15 +34,16 @@ public class LoadQuery {
   private String outputPath;
   private String configPath;
 
-  /**
-   * Check query validity.
-   */
+  /** Check query validity. */
   public boolean isValid() throws IOException {
     boolean f = true;
     if (dataFileType == "AVRO") {
       f = isExist(configPath);
     }
-    return f && isExist(schemaPath) && isExist(dataPath) && cubeName.isEmpty()
+    return f
+        && isExist(schemaPath)
+        && isExist(dataPath)
+        && cubeName.isEmpty()
         && outputPath.isEmpty();
   }
 

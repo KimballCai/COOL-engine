@@ -21,9 +21,7 @@ package com.nus.cool.core.io.storevector;
 
 import java.nio.ByteBuffer;
 
-/**
- * Input vector of a run-length-encoded structure.
- */
+/** Input vector of a run-length-encoded structure. */
 public class RLEInputVector implements InputVector {
 
   // total number of blocks
@@ -105,9 +103,7 @@ public class RLEInputVector implements InputVector {
     buffer.limit(oldLimit);
   }
 
-  /**
-   * Move to the next block.
-   */
+  /** Move to the next block. */
   public void nextBlock(Block blk) {
     if (this.boff < this.bend) {
       blk.value = this.bval;
@@ -124,11 +120,8 @@ public class RLEInputVector implements InputVector {
   }
 
   /**
-   * read block, and update current value.
-   * read 8 bites first,
-   * first two bites => size of value
-   * medium two bites => size of boff
-   * last two bites => size of bend
+   * read block, and update current value. read 8 bites first, first two bites => size of value
+   * medium two bites => size of boff last two bites => size of bend
    */
   private void readNextBlock() {
     int b = this.buffer.get();
@@ -156,9 +149,7 @@ public class RLEInputVector implements InputVector {
     }
   }
 
-  /**
-   * Data block.
-   */
+  /** Data block. */
   public static class Block {
     public int value;
     public int off;

@@ -20,8 +20,8 @@
 package com.nus.cool.core.util.converter;
 
 /**
- * NumericConverter could obtain an interger object from a string
- * or obtain a string from an interger object.
+ * NumericConverter could obtain an interger object from a string or obtain a string from an
+ * interger object.
  */
 public interface NumericConverter {
 

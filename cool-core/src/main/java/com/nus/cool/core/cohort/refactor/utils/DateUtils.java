@@ -5,18 +5,14 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.TimeZone;
 
-/**
- * Utilities to process time related fields.
- */
+/** Utilities to process time related fields. */
 public class DateUtils {
-  /**
-   * Create a LocalDateTime Instance from a unix timestamp.
-   */
+  /** Create a LocalDateTime Instance from a unix timestamp. */
   // public static Local
   public static LocalDateTime createCalender(long unixTime) {
     // LocalDateTime.ofInstant(, zone)
-    return LocalDateTime.ofInstant(Instant.ofEpochSecond(unixTime),
-        TimeZone.getDefault().toZoneId());
+    return LocalDateTime.ofInstant(
+        Instant.ofEpochSecond(unixTime), TimeZone.getDefault().toZoneId());
   }
 
   public static LocalDateTime daysSinceEpoch(int days) {
@@ -24,9 +20,7 @@ public class DateUtils {
     return createCalender(unixTime);
   }
 
-  /**
-   * Get part of a time by unit (day, hour, minute, second, week, year).
-   */
+  /** Get part of a time by unit (day, hour, minute, second, week, year). */
   public static int getPart(LocalDateTime time, TimeUtils.TimeUnit unit) {
     switch (unit) {
       case DAY:
@@ -50,14 +44,14 @@ public class DateUtils {
 
   /**
    * Calculate the difference of two time at a certain unit.
-
-   * @param ts1  the start localDateTime
-   * @param ts2  the compared lis duration.
+   *
+   * @param ts1 the start localDateTime
+   * @param ts2 the compared lis duration.
    * @param unit duration's unit
    * @return a TimeWindow to descripte duration
    */
-  public static TimeWindow getDifference(LocalDateTime ts1, LocalDateTime ts2,
-      TimeUtils.TimeUnit unit) {
+  public static TimeWindow getDifference(
+      LocalDateTime ts1, LocalDateTime ts2, TimeUtils.TimeUnit unit) {
     Duration d = Duration.between(ts1, ts2);
     switch (unit) {
       case DAY:

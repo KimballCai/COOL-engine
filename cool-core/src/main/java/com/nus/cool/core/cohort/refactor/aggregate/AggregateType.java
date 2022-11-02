@@ -3,11 +3,14 @@ package com.nus.cool.core.cohort.refactor.aggregate;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Enum class for aggregate type.
- */
+/** Enum class for aggregate type. */
 public enum AggregateType {
-  AVERAGE("AVERAGE"), COUNT("COUNT"), MAX("MAX"), MIN("MIN"), SUM("SUM"), DISTINCT("DISTINCT");
+  AVERAGE("AVERAGE"),
+  COUNT("COUNT"),
+  MAX("MAX"),
+  MIN("MIN"),
+  SUM("SUM"),
+  DISTINCT("DISTINCT");
 
   private final String text;
 
@@ -21,9 +24,7 @@ public enum AggregateType {
     return text;
   }
 
-  /**
-   * return AggregateType named by string.
-   */
+  /** return AggregateType named by string. */
   @JsonCreator
   public static AggregateType forValue(String str) {
     switch (str) {

@@ -20,8 +20,8 @@
 package com.nus.cool.core.util.parser;
 
 /**
- * VerticalTupleParser is a parser to parse a field which is separated with a
- * vertical bar(the pipe character, |) to array.
+ * VerticalTupleParser is a parser to parse a field which is separated with a vertical bar(the pipe
+ * character, |) to array.
  */
 public class VerticalTupleParser implements TupleParser {
 

@@ -23,19 +23,13 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-/**
- * DateBase is the base date for all date-related storage.
- */
+/** DateBase is the base date for all date-related storage. */
 public class DateBase {
 
-  /**
-   * Date formatter.
-   */
+  /** Date formatter. */
   public static final DateTimeFormatter FORMATTER;
 
-  /**
-   * Reference day.
-   */
+  /** Reference day. */
   public static final DateTime BASE;
 
   static {
