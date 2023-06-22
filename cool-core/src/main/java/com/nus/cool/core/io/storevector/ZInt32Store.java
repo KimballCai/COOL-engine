@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.nus.cool.core.io.storevector;
 
 import com.google.common.primitives.Ints;
@@ -23,21 +24,21 @@ import com.nus.cool.core.util.IntBuffers;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
-public class ZInt32Store implements ZIntStore, InputVector {
+/**
+ * Decompress data which stores integers in four bytes.
+ * <p>
+ * The data layout is as follows
+ * ------------------------------------
+ * | count | ZInt compressed integers |
+ * ------------------------------------
+ */
+public class ZInt32Store implements ZIntStore {
 
   private int count;
 
+  private boolean sorted;
+
   private IntBuffer buffer;
-
-  public ZInt32Store(int count) {
-    this.count = count;
-  }
-
-  public static ZIntStore load(ByteBuffer buffer, int n) {
-    ZIntStore store = new ZInt32Store(n);
-    store.readFrom(buffer);
-    return store;
-  }
 
   @Override
   public int size() {
@@ -45,12 +46,16 @@ public class ZInt32Store implements ZIntStore, InputVector {
   }
 
   @Override
-  public int find(int key) {
-    return IntBuffers.binarySearch(this.buffer, 0, this.buffer.limit(), key);
+  public Integer find(Integer key) {
+    if (this.sorted) {
+      return IntBuffers.binarySearch(this.buffer, 0, this.buffer.limit(), key);
+    } else {
+      return IntBuffers.traverseSearch(this.buffer, 0, this.buffer.limit(), key);
+    }
   }
 
   @Override
-  public int get(int index) {
+  public Integer get(int index) {
     return this.buffer.get(index);
   }
 
@@ -60,7 +65,7 @@ public class ZInt32Store implements ZIntStore, InputVector {
   }
 
   @Override
-  public int next() {
+  public Integer next() {
     return this.buffer.get();
   }
 
@@ -71,6 +76,9 @@ public class ZInt32Store implements ZIntStore, InputVector {
 
   @Override
   public void readFrom(ByteBuffer buffer) {
+    this.count = buffer.getInt();
+    int flag = buffer.get(); // get byte into int
+    this.sorted = flag == 1;
     int limit = buffer.limit();
     int newLimit = buffer.position() + this.count * Ints.BYTES;
     buffer.limit(newLimit);

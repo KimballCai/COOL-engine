@@ -11,11 +11,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.nus.cool.core.io.readstore;
 
+import com.nus.cool.core.field.FieldValue;
+import com.nus.cool.core.field.RangeField;
 import com.nus.cool.core.io.Input;
 import com.nus.cool.core.schema.FieldType;
 import java.nio.ByteBuffer;
+import java.util.Optional;
 
 /**
  * For the moment, we only support Hash based meta field.
@@ -25,36 +29,30 @@ public interface MetaFieldRS extends Input {
   FieldType getFieldType();
 
   /**
-   * Return the id of the given value
-   *
-   * @param key
-   * @return
+   * Return the id of the given value.
    */
-
   int find(String key);
 
   /**
-   * Return number of values in the field
+   * Return number of values in the field.
    */
   int count();
 
   /**
-   * Return the value for the given id
-   *
-   * @param i
-   * @return
+   * Return the value for the given id.
    */
-  String getString(int i);
+  Optional<? extends FieldValue> get(int i);
 
   /**
-   * Return the max value of the field
+   * Return the max value of the field.
    */
-  int getMaxValue();
+  RangeField getMaxValue();
 
   /**
-   * Return the min value of the field
+   * Return the min value of the field.
    */
-  int getMinValue();
+  RangeField getMinValue();
 
-  void readFromWithFieldType(ByteBuffer buffer, FieldType fieldType);
+  void readFromWithFieldType(ByteBuffer buffer, FieldType fieldType)
+      throws IllegalArgumentException;
 }

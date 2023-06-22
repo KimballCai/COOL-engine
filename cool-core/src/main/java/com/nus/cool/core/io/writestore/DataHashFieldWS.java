@@ -16,31 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.nus.cool.core.io.writestore;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.primitives.Ints;
-import com.nus.cool.core.io.DataInputBuffer;
-import com.nus.cool.core.io.DataOutputBuffer;
+import com.nus.cool.core.field.FieldValue;
+import com.nus.cool.core.field.HashField;
+import com.nus.cool.core.field.ValueWrapper;
 import com.nus.cool.core.io.compression.Histogram;
 import com.nus.cool.core.io.compression.OutputCompressor;
 import com.nus.cool.core.io.compression.SimpleBitSetCompressor;
 import com.nus.cool.core.schema.Codec;
 import com.nus.cool.core.schema.CompressType;
 import com.nus.cool.core.schema.FieldType;
-import com.nus.cool.core.util.ArrayUtil;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Hash-like indexed field, used to store chunk data for four fieldTypes,
+ * Hash-like indexed field, used to store chunk data for four fieldTypes.
  * including AppKey, UserKey,
  * Action, Segment
  * <p>
@@ -54,38 +54,32 @@ import java.util.Map;
  */
 public class DataHashFieldWS implements DataFieldWS {
 
-  /**
-   * Field index to get data from tuple
-   */
-  private final int fieldIndex;
-
-  private final MetaFieldWS metaField;
-
-  private final OutputCompressor compressor;
+  private final MetaHashFieldWS metaField;
 
   private final FieldType fieldType;
 
   /**
-   * Convert globalID to localID
+   * Convert globalID to localID.
    * Key: globalID
    * Value: localID
    */
   private final Map<Integer, Integer> idMap = Maps.newTreeMap();
 
   // buffer used to store global ID
-  private final DataOutputBuffer buffer = new DataOutputBuffer();
+  private final List<Integer> gIdList = new LinkedList<>();
 
-  private final List<BitSet> bitSetList = Lists.newArrayList();
+  private final List<BitSet> bitSetList = new ArrayList<>();
 
   private final Boolean preCal;
 
-  public DataHashFieldWS(FieldType fieldType, int fieldIndex, MetaFieldWS metaField, OutputCompressor compressor,
-                         boolean preCal) {
-    checkArgument(fieldIndex >= 0);
+  /**
+   * Construct a write store of string fields for data chunk.
+   *
+   * @param preCal is preCalculated
+   */
+  public DataHashFieldWS(FieldType fieldType, MetaHashFieldWS metaField, boolean preCal) {
     this.fieldType = fieldType;
-    this.fieldIndex = fieldIndex;
     this.metaField = checkNotNull(metaField);
-    this.compressor = checkNotNull(compressor);
     this.preCal = preCal;
   }
 
@@ -95,13 +89,18 @@ public class DataHashFieldWS implements DataFieldWS {
   }
 
   @Override
-  public void put(String tupleValue) throws IOException {
-    int gId = this.metaField.find(tupleValue);
-    if (gId == -1){
-      throw new IllegalArgumentException("Value not exist in dimension: " + tupleValue);
+  public void put(FieldValue tupleValue) throws IllegalArgumentException {
+    if (!(tupleValue instanceof HashField)) {
+      throw new IllegalArgumentException(
+          "Invalid argument for DataHashFieldWS (HashField required)");
+    }
+    HashField v = (HashField) tupleValue;
+    final int gId = this.metaField.find(v);
+    if (gId == -1) {
+      throw new IllegalArgumentException("Value not exist in dimension: " + v.getString());
     }
     // Write globalIDs as values for temporary
-    this.buffer.writeInt(gId);
+    this.gIdList.add(gId);
     // Set localID as 0 for temporary
     // It will be changed while calling writeTo function
     this.idMap.put(gId, 0);
@@ -109,16 +108,20 @@ public class DataHashFieldWS implements DataFieldWS {
 
   @Override
   public int writeTo(DataOutput out) throws IOException {
-    int bytesWritten = 0;
     // number of global id
-    int size = this.buffer.size() / Ints.BYTES;
+    int size = this.gIdList.size();
 
     // Store globalID in order, key: unique global id
-    int[] key = new int[this.idMap.size()];
+    List<FieldValue> key = new ArrayList<>(this.idMap.size());
     // i: local id, indicate order or globalID
     int i = 0;
+    int min = Integer.MAX_VALUE;
+    int max = Integer.MIN_VALUE;
     for (Map.Entry<Integer, Integer> en : this.idMap.entrySet()) {
-      key[i] = en.getKey();
+      int k = en.getKey();
+      min = (min > k) ? k : min;
+      max = (max < k) ? k : max;
+      key.add(ValueWrapper.of(k));
       // Store localID into the map
       en.setValue(i);
       // Store value bitSet if pre-calculate
@@ -130,35 +133,25 @@ public class DataHashFieldWS implements DataFieldWS {
     }
 
     // Store value vector, local IDs
-    int[] value = new int[size];
-    // outputBuffer to InputBuffer, for read
-    try (DataInputBuffer input = new DataInputBuffer()) {
-      input.reset(this.buffer);
-      for (i = 0; i < size; i++) {
-        int id = input.readInt(); // read globalID
-        // Store localID to value i-th position
-        value[i] = this.idMap.get(id);
-        if (this.preCal) {
-          // Store value bitSet
-          this.bitSetList.get(this.idMap.get(id)).set(i);
-        }
+    List<FieldValue> value = new ArrayList<>(size);
+    i = 0;
+    for (Integer id : gIdList) {
+      // Store localID to value i-th position
+      value.add(ValueWrapper.of(this.idMap.get(id)));
+      if (this.preCal) {
+        // Store value bitSet
+        this.bitSetList.get(this.idMap.get(id)).set(i++);
       }
     }
-//    System.out.println(value);
+
     // Write compressed key vector (unique global id)
-    int min = ArrayUtil.min(key);
-    int max = ArrayUtil.max(key);
-    int count = key.length;
-    int rawSize = count * Ints.BYTES;
     Histogram hist = Histogram.builder()
-        .min(min)
-        .max(max)
-        .numOfValues(count)
-        .rawSize(rawSize)
-        .type(CompressType.KeyHash)
+        .sorted(true)
+        .min(ValueWrapper.of(min))
+        .max(ValueWrapper.of(max))
+        .numOfValues(key.size())
         .build();
-    this.compressor.reset(hist, key, 0, key.length);
-    bytesWritten += this.compressor.writeTo(out);
+    int bytesWritten = OutputCompressor.writeTo(CompressType.KeyHash, hist, key, out);
 
     // Write compressed bitSetList if pre-calculate
     if (this.preCal) {
@@ -174,20 +167,12 @@ public class DataHashFieldWS implements DataFieldWS {
       }
     } else {
       // Write compressed value vector (local ids)
-      min = ArrayUtil.min(value);
-      max = ArrayUtil.max(value);
-      count = value.length;
-      rawSize = count * Ints.BYTES;
       hist = Histogram.builder()
-          .sorted(this.fieldType == FieldType.AppKey || this.fieldType == FieldType.UserKey)
-          .min(min)
-          .max(max)
-          .numOfValues(count)
-          .rawSize(rawSize)
-          .type(CompressType.Value)
+          .min(ValueWrapper.of(0))
+          .max(ValueWrapper.of(idMap.size()))
+          .numOfValues(value.size())
           .build();
-      this.compressor.reset(hist, value, 0, value.length);
-      bytesWritten += this.compressor.writeTo(out);
+      bytesWritten += OutputCompressor.writeTo(CompressType.Value, hist, value, out);
     }
     return bytesWritten;
   }

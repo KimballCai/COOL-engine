@@ -16,17 +16,20 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.nus.cool.core.io.readstore;
 
-import java.nio.ByteBuffer;
+package com.nus.cool.core.io.readstore;
 
 import com.nus.cool.core.io.Input;
 import com.nus.cool.core.io.storevector.InputVector;
 import com.nus.cool.core.io.storevector.ZIntBitInputVector;
+import java.nio.ByteBuffer;
 
+/**
+ * Read store of the cohort result.
+ */
 public class CohortRS implements Input {
 
-  private InputVector userList;
+  private InputVector<Integer> userList;
 
   private final ByteBuffer buffer;
 
@@ -39,21 +42,31 @@ public class CohortRS implements Input {
     startPos = buffer.position();
   }
 
+  /**
+   * Load the cohort result from a buffer.
+   */
   public static CohortRS load(ByteBuffer buffer) {
     CohortRS st = new CohortRS(buffer);
-    //st.readFrom(buffer);
+    // st.readFrom(buffer);
     return st;
   }
 
-  public InputVector getUsers() {
+  /**
+   * Return the users in the cohort as an input vector.
+   */
+  public InputVector<Integer> getUsers() {
     // need to get a new input vector
     readFrom(buffer);
     return userList;
   }
 
+  /**
+   * Return the query that is used to generate this cohort.
+   */
   public String getQuery() {
-    if (query == null)
+    if (query == null) {
       readFrom(buffer);
+    }
     return query;
   }
 

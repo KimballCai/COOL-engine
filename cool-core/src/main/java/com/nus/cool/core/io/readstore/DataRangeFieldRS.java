@@ -1,87 +1,82 @@
 package com.nus.cool.core.io.readstore;
 
+import com.nus.cool.core.field.RangeField;
+import com.nus.cool.core.field.ValueWrapper;
+import com.nus.cool.core.io.storevector.InputVectorFactory;
+import com.nus.cool.core.io.storevector.RangeFieldInputVector;
+import com.nus.cool.core.schema.FieldType;
 import java.nio.ByteBuffer;
 
-import com.google.common.base.Preconditions;
-import com.nus.cool.core.io.storevector.InputVector;
-import com.nus.cool.core.io.storevector.InputVectorFactory;
-import com.nus.cool.core.schema.FieldType;
 
+/** 
+ *  RangeField ReadStore.
+*/
 public class DataRangeFieldRS implements FieldRS {
 
-    private FieldType fieldType;
-    
+  private FieldType fieldType;
 
-    private int minKey;
-    private int maxKey;
+  private RangeField minKey;
+  private RangeField maxKey;
 
-    private boolean initialized = false;
-    private InputVector valueVector;
+  private RangeFieldInputVector valueVector;
 
+  /**
+   * static create function.
+   *
+   * @param buf memory
+   * @param ft  fieldtype
+   * @return DataRangeFieldRS
+   */
+  public static DataRangeFieldRS readFrom(ByteBuffer buf, FieldType ft) {
+    DataRangeFieldRS instance = new DataRangeFieldRS();
+    instance.readFromWithFieldType(buf, ft);
+    return instance;
+  }
 
-    @Override
-    public FieldType getFieldType() {
-        return this.fieldType;
+  @Override
+  public void readFrom(ByteBuffer buffer) {
+    FieldType ft = FieldType.fromInteger(buffer.get());
+    this.readFromWithFieldType(buffer, ft);
+  }
+
+  private void readFromWithFieldType(ByteBuffer buf, FieldType ft) {
+    // get codec (no used)
+    buf.get();
+    switch (ft) {
+      case Metric:
+      case ActionTime:
+        this.minKey = ValueWrapper.of(buf.getInt());
+        this.maxKey = ValueWrapper.of(buf.getInt());
+        break;
+      case Float:
+        this.minKey = ValueWrapper.of(buf.getFloat());
+        this.maxKey = ValueWrapper.of(buf.getFloat());
+        break;
+      default:
+        throw new IllegalArgumentException("Unexpected FieldType: " + ft);
     }
+    this.fieldType = ft;
+    this.valueVector = InputVectorFactory.genRangeFieldInputVector(buf);
+  }
 
+  @Override
+  public FieldType getFieldType() {
+    return this.fieldType;
+  }
 
-    @Override
-    public int minKey() {
-        validateInitialization();
-        return this.minKey;
-    }
+  // @Override
+  public RangeField minKey() {
+    return this.minKey;
+  }
 
-    @Override
-    public int maxKey() {
-        validateInitialization();
-        return this.maxKey;
-    }
+  // @Override
+  public RangeField maxKey() {
+    return this.maxKey;
+  }
 
-    @Override
-    public boolean isSetField() {
-        validateInitialization();
-        return false;
-    }
-
-    @Override
-    public int getValueByIndex(int idx){
-        return this.valueVector.get(idx);
-    }
-
-    @Override
-    public void readFromWithFieldType(ByteBuffer buf, FieldType ft) {
-        this.initialized = true;
-        this.fieldType = ft;
-        this.minKey = buf.getInt();
-        this.maxKey = buf.getInt();
-        this.valueVector = InputVectorFactory.readFrom(buf);
-        // TODO(Lingze) There is still room for optimization
-        // We can directly read from buffer to ArrayList<Integar>
-
-    }
-
-    private void validateInitialization(){
-        Preconditions.checkState(this.initialized, "DataRangeFiledRS is not initialized");
-    }   
-
-
-    @Override
-    public void readFrom(ByteBuffer buffer) {
-        FieldType fieldType = FieldType.fromInteger(buffer.get());
-        this.readFromWithFieldType(buffer, fieldType);
-    }
-    
-
-    //no used, only to keep compatiable with old version code
-    @Override
-    public InputVector getKeyVector() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public InputVector getValueVector() {
-        return this.valueVector;
-    }
+  @Override
+  public RangeField getValueByIndex(int idx) {
+    return this.valueVector.getValue(idx);
+  }
 
 }

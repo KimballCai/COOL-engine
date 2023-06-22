@@ -16,11 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.nus.cool.core.io.storevector;
 
 import java.nio.ByteBuffer;
 
-public class RLEInputVector implements InputVector {
+/**
+ * Input vector of a run-length-encoded structure.
+ */
+public class RLEInputVector implements InputVector<Integer> {
 
   // total number of blocks
   private int blks;
@@ -44,12 +48,12 @@ public class RLEInputVector implements InputVector {
   }
 
   @Override
-  public int find(int key) {
+  public Integer find(Integer key) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int get(int index) {
+  public Integer get(int index) {
     int offset = this.boff;
     this.skipTo(index); // skip to one block, and read the value
     int v = next();
@@ -63,7 +67,7 @@ public class RLEInputVector implements InputVector {
   }
 
   @Override
-  public int next() {
+  public Integer next() {
     if (this.boff < this.bend) {
       this.boff++;
       return bval;
@@ -81,19 +85,19 @@ public class RLEInputVector implements InputVector {
       readNextBlock();
     }
     while (pos >= this.bend && this.curBlk < this.blks) {
-        readNextBlock();
+      readNextBlock();
     }
     if (pos >= this.bend) {
-        throw new IllegalArgumentException("Too large pos param");
+      throw new IllegalArgumentException("Too large pos param");
     }
     this.boff = pos;
   }
 
   @Override
   public void readFrom(ByteBuffer buffer) {
-    int zLen = buffer.getInt();
+    final int zLen = buffer.getInt();
     this.blks = buffer.getInt();
-    int oldLimit = buffer.limit();
+    final int oldLimit = buffer.limit();
     int newLimit = buffer.position() + zLen;
     buffer.limit(newLimit);
     this.buffer = buffer.slice().order(buffer.order());
@@ -101,6 +105,9 @@ public class RLEInputVector implements InputVector {
     buffer.limit(oldLimit);
   }
 
+  /**
+   * Move to the next block.
+   */
   public void nextBlock(Block blk) {
     if (this.boff < this.bend) {
       blk.value = this.bval;
@@ -122,7 +129,7 @@ public class RLEInputVector implements InputVector {
    * first two bites => size of value
    * medium two bites => size of boff
    * last two bites => size of bend
-  */
+   */
   private void readNextBlock() {
     int b = this.buffer.get();
     this.bval = read((b >> 4) & 3);
@@ -149,6 +156,9 @@ public class RLEInputVector implements InputVector {
     }
   }
 
+  /**
+   * Data block.
+   */
   public static class Block {
     public int value;
     public int off;

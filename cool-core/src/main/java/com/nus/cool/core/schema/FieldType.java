@@ -16,10 +16,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.nus.cool.core.schema;
 
 /**
- * FieldType defines the types of fields
+ * FieldType defines the types of fields.
  */
 public enum FieldType {
 
@@ -39,20 +40,28 @@ public enum FieldType {
   ActionTime,
 
   /**
-   * String value
+   * String value.
    */
   Action,
 
   /**
-   * String value
+   * String value.
    */
   Segment,
 
   /**
-   * Numeric
+   * Numeric.
    */
-  Metric;
+  Metric,
 
+  /**
+   * Float.
+   */
+  Float;
+
+  /**
+   * Translate an integer to its corresponding field type.
+   */
   public static FieldType fromInteger(int i) {
     switch (i) {
       case 0:
@@ -67,20 +76,26 @@ public enum FieldType {
         return Segment;
       case 5:
         return Metric;
+      case 6:
+        return Float;
       default:
         throw new IllegalArgumentException("Invalid field type int: " + i);
     }
   }
 
-  public static boolean IsHashType(FieldType fieldType) {
+  /**
+   * Check if a type is a hash type.
+   */
+  public static boolean isHashType(FieldType fieldType) {
     switch (fieldType) {
       case Action:
       case AppKey:
       case Segment:
-        return true;
       case UserKey:
+        return true;
       case ActionTime:
       case Metric:
+      case Float:
         return false;
       default:
         throw new IllegalArgumentException("Invalid field" + fieldType.toString());

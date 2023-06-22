@@ -1,31 +1,31 @@
 package com.nus.cool.core.util.writer;
 
+import com.nus.cool.core.field.FieldValue;
 import java.io.Closeable;
 import java.io.IOException;
 
+/**
+ * Interface for data writers.
+ */
 public interface DataWriter extends Closeable {
-  
+
   /**
-   * Initialize the writer
-   * 
+   * Initialize the writer.
+   *
    * @return successful initialization
-   * @throws IOException
    */
-  boolean Initialize() throws IOException;
+  boolean initialize() throws IOException;
 
   /**
-   * Add a tuple to the data set
-   * 
-   * @param tuple
+   * Add a tuple to the data set.
+   *
+   * @param tuple tuple to add
    * @return status
-   * @throws IOException
    */
-  boolean Add(Object tuple) throws IOException;
+  boolean add(FieldValue[] tuple) throws IOException;
 
   /**
-   * finish writing at the end
-   * 
-   * @throws IOException
+   * Finish writing at the end.
    */
-  void Finish() throws IOException;
+  void finish() throws IOException;
 }

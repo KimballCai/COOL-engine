@@ -20,50 +20,73 @@
 
 package com.nus.cool.functionality;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nus.cool.core.cohort.ExtendedCohortQuery;
+import com.google.common.io.Files;
+import com.nus.cool.core.cohort.CohortProcessor;
+import com.nus.cool.core.cohort.CohortQueryLayout;
+import com.nus.cool.core.cohort.CohortWriter;
+import com.nus.cool.core.cohort.storage.CohortRet;
 import com.nus.cool.core.io.readstore.CubeRS;
-import com.nus.cool.core.io.storevector.InputVector;
-import com.nus.cool.result.ExtendedResultTuple;
 import com.nus.cool.model.CoolModel;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
+/**
+ * Cohort analysis operation.
+ */
 public class CohortAnalysis {
-    /**
-     * perform cohort query to conduct cohort analysis
-     *
-     * @param args [0] dataset path: the path to all datasets, e.g., datasetSource
-     *        args [1] query path: the path to the cohort query, e.g., health/query2.json
-     */
-    public static void main(String[] args) {
-        String datasetPath = args[0];
-        String queryPath = args[1];
+  /**
+   * perform cohort query to conduct cohort analysis.
+   *
+   * @param cubeRepo cube path: the path to all datasets, e.g., CubeRepo
+   * @param queryPath query path: the path to the cohort query, e.g.,
+   *                  datasets/health_raw/sample_query_distinctcount/query.json
+   */
+  public static CohortRet performCohortAnalysis(String cubeRepo, String queryPath)
+      throws IOException {
+    CohortQueryLayout layout = CohortQueryLayout.readFromJson(queryPath);
+    CohortProcessor cohortProcessor = new CohortProcessor(layout);
 
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            ExtendedCohortQuery query = mapper.readValue(new File(queryPath), ExtendedCohortQuery.class);
+    // start a new cool model and reload the cube
+    CoolModel coolModel = new CoolModel(cubeRepo);
+    coolModel.reload(cohortProcessor.getDataSource());
+    CubeRS cube = coolModel.getCube(cohortProcessor.getDataSource());
+    File currentVersion = coolModel.getCubeStorePath(cohortProcessor.getDataSource());
 
-            String inputSource = query.getDataSource();
-            CoolModel coolModel = new CoolModel(datasetPath);
-            coolModel.reload(inputSource);
-
-            if (!query.isValid())
-                throw new IOException("[x] Invalid cohort query.");
-
-            CubeRS inputCube = coolModel.getCube(query.getDataSource());
-            String inputCohort = query.getInputCohort();
-            if (inputCohort != null) {
-                coolModel.loadCohorts(inputCohort, inputSource);
-                System.out.println("Input cohort: " + inputCohort);
-            }
-            InputVector userVector = coolModel.getCohortUsers(inputCohort);
-            List<ExtendedResultTuple> result = coolModel.cohortEngine.performCohortQuery(inputCube, userVector, query);
-            System.out.println("Result for the query is  " + result);
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+    // load input cohort
+    if (cohortProcessor.getInputCohort() != null) {
+      File cohortFile = new File(currentVersion, "cohort/" + cohortProcessor.getInputCohort());
+      if (cohortFile.exists()) {
+        cohortProcessor.readOneCohort(cohortFile);
+      }
     }
+
+    // run analysis
+    CohortRet ret = cohortProcessor.process(cube);
+
+    // persist the results
+    String outputPath = currentVersion.toString() + "/cohort/" + layout.getQueryName();
+    CohortWriter.setUpOutputFolder(outputPath);
+    Files.copy(new File(queryPath), new File(outputPath + "/query.json"));;
+    CohortWriter.persistCohortResult(ret, outputPath);
+    coolModel.close();
+    return ret;
+  }
+
+  /**
+   * API for cohort analysis.
+   *
+   * @param args [0]: cubeRepo
+   *             [1]: queryPath
+   */
+  public static void main(String[] args) {
+    String cubeRepo = args[0];
+    String queryPath = args[1];
+
+    try {
+      CohortRet ret = performCohortAnalysis(cubeRepo, queryPath);
+      System.out.println("Result for the query is  " + ret.toString());
+    } catch (IOException e) {
+      System.out.println(e);
+    }
+  }
 }

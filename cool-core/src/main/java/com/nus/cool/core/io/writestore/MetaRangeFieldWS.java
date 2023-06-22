@@ -16,98 +16,116 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.nus.cool.core.io.writestore;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import com.google.common.primitives.Ints;
+import com.nus.cool.core.field.FieldValue;
+import com.nus.cool.core.field.RangeField;
 import com.nus.cool.core.schema.FieldType;
-import com.nus.cool.core.util.IntegerUtil;
-import com.nus.cool.core.util.converter.DayIntConverter;
-import com.nus.cool.core.util.parser.TupleParser;
-import com.nus.cool.core.util.parser.VerticalTupleParser;
-
-import lombok.Getter;
-
 import java.io.DataOutput;
 import java.io.IOException;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Range MetaField write store
+ * Range MetaField write store.
+ * 
  * <p>
  * Data Layout
  * -------------
  * | min | max |
  * -------------
  */
+@RequiredArgsConstructor
 public class MetaRangeFieldWS implements MetaFieldWS {
 
   private final FieldType fieldType;
 
   @Getter
-  private int min;
+  private RangeField min = null;
 
   @Getter
-  private int max;
+  private RangeField max = null;
 
-  public MetaRangeFieldWS(FieldType type) {
-    this.fieldType = type;
-    this.min = Integer.MAX_VALUE;
-    this.max = Integer.MIN_VALUE;
-  }
+  private RangeField cubeMax = null;
 
+  private RangeField cubeMin = null;
 
   @Override
-  public void put(String v) {
-    v = checkNotNull(v);
-    switch (this.fieldType) {
-      case Metric:
-        this.min = Math.min(this.min, Integer.parseInt(v));
-        this.max = Math.max(this.max, Integer.parseInt(v));
-        break;
-      case ActionTime:
-        DayIntConverter converter = new DayIntConverter();
-        this.min = Math.min(this.min, converter.toInt(v));
-        this.max = Math.max(this.max, converter.toInt(v));
-        break;
-      default:
-        throw new IllegalArgumentException("Unable to index: " + this.fieldType);
+  public void put(FieldValue[] tuple, int idx) throws IllegalArgumentException {
+    if (!(tuple[idx] instanceof RangeField)) {
+      throw new IllegalArgumentException(
+        "Illegal argument for MetaRangeFieldWS (RangeField required).");
     }
-    checkArgument(this.min <= this.max);
+    RangeField v = (RangeField) tuple[idx];
+    min = ((min == null) || (min.compareTo(v) > 0)) ? v : min;
+    max = ((max == null) || (max.compareTo(v) < 0)) ? v : max;
   }
-
-  @Override
-  public int find(String v) {
-    throw new UnsupportedOperationException();
-  }
-
+  
   @Override
   public int count() {
     throw new UnsupportedOperationException();
   }
-
+  
   @Override
   public FieldType getFieldType() {
     return this.fieldType;
   }
-
+  
   @Override
   public void complete() {
-
+    if (min == null) {
+      return; // empty
+    }
+    cubeMin = ((cubeMin == null) || (cubeMin.compareTo(min) > 0)) ? min : cubeMin;
+    cubeMax = ((cubeMax == null) || (cubeMax.compareTo(max) < 0)) ? max : cubeMax;
   }
 
   @Override
-  public void update(String v) {
-    throw new UnsupportedOperationException("Doesn't support update now");
+  public void cleanForNextCublet() {
+    this.max = null;
+    this.min = null;
   }
 
   @Override
   public int writeTo(DataOutput out) throws IOException {
     int bytesWritten = 0;
-    out.writeInt(IntegerUtil.toNativeByteOrder(this.min));
-    out.writeInt(IntegerUtil.toNativeByteOrder(this.max));
-    bytesWritten += 2 * Ints.BYTES;
+    switch (this.fieldType) {
+      case Float:
+        out.writeFloat(this.min.getFloat());
+        out.writeFloat(this.max.getFloat());
+        bytesWritten += 2 * Float.BYTES;
+        break;
+      case Metric:
+      case ActionTime:
+        out.writeInt(this.min.getInt());
+        out.writeInt(this.max.getInt());
+        bytesWritten += 2 * Integer.BYTES;
+        break;
+      default:
+        throw new IllegalArgumentException("Invalid field type: " + this.fieldType);   
+    }
+    return bytesWritten;
+  }
+
+  @Override
+  public int writeCubeMeta(DataOutput out) throws IOException {
+    int bytesWritten = 0;
+    switch (this.fieldType) {
+      case Float:
+        out.writeFloat(this.cubeMin.getFloat());
+        out.writeFloat(this.cubeMax.getFloat());
+        bytesWritten += 2 * Float.BYTES;
+        break;
+      case Metric:
+      case ActionTime:
+        out.writeInt(this.cubeMin.getInt());
+        out.writeInt(this.cubeMax.getInt());
+        bytesWritten += 2 * Integer.BYTES;
+        break;
+      default:
+        throw new IllegalArgumentException("Invalid field type: " + this.fieldType);   
+    }
     return bytesWritten;
   }
 

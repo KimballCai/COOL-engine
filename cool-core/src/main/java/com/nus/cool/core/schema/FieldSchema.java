@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.nus.cool.core.schema;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -25,7 +26,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * FieldSchema defines the schema for filed
+ * FieldSchema defines the schema for field.
  */
 @Data
 @NoArgsConstructor
@@ -39,22 +40,7 @@ public class FieldSchema {
   @NotNull
   private FieldType fieldType;
 
-  // @NotNull
-  private DataType dataType; // not used for now
-
-  // @NotNull
-  private String aggregator; // not used for now
-
   private boolean preCal;
 
   private boolean invariantField;
-
-  // /**
-  //  * @return the aggregator
-  //  */
-  // public String getAggregator() {
-  //   return aggregator;
-  // }
-
-
 }

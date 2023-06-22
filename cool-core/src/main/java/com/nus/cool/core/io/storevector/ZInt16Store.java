@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.nus.cool.core.io.storevector;
 
 import com.google.common.primitives.Shorts;
@@ -23,21 +24,21 @@ import com.nus.cool.core.util.ShortBuffers;
 import java.nio.ByteBuffer;
 import java.nio.ShortBuffer;
 
-public class ZInt16Store implements ZIntStore, InputVector {
+/**
+ * Decompress data which stores integers in two bytes.
+ * <p>
+ * The data layout is as follows
+ * ------------------------------------
+ * | count | ZInt compressed integers |
+ * ------------------------------------
+ */
+public class ZInt16Store implements ZIntStore {
 
   private int count;
 
+  private boolean sorted;
+
   private ShortBuffer buffer;
-
-  public ZInt16Store(int count) {
-    this.count = count;
-  }
-
-  public static ZIntStore load(ByteBuffer buffer, int n) {
-    ZIntStore store = new ZInt16Store(n);
-    store.readFrom(buffer);
-    return store;
-  }
 
   @Override
   public int size() {
@@ -45,15 +46,20 @@ public class ZInt16Store implements ZIntStore, InputVector {
   }
 
   @Override
-  public int find(int key) {
-      if (key > Short.MAX_VALUE || key < 0) {
-          return -1;
-      }
-    return ShortBuffers.binarySearchUnsigned(this.buffer, 0, this.buffer.limit(), (short) key);
+  public Integer find(Integer key) {
+    if (key > Short.MAX_VALUE || key < 0) {
+      return -1;
+    }
+    if (this.sorted) {
+      return ShortBuffers.binarySearchUnsigned(this.buffer, 0,
+        this.buffer.limit(), key.shortValue());
+    } else {
+      return ShortBuffers.traverseSearch(this.buffer, 0, this.buffer.limit(), key.shortValue());
+    }
   }
 
   @Override
-  public int get(int index) {
+  public Integer get(int index) {
     return (this.buffer.get(index) & 0xFFFF);
   }
 
@@ -63,7 +69,7 @@ public class ZInt16Store implements ZIntStore, InputVector {
   }
 
   @Override
-  public int next() {
+  public Integer next() {
     return (this.buffer.get() & 0xFFFF);
   }
 
@@ -74,6 +80,9 @@ public class ZInt16Store implements ZIntStore, InputVector {
 
   @Override
   public void readFrom(ByteBuffer buffer) {
+    this.count = buffer.getInt();
+    int flag = buffer.get(); // get byte into int
+    this.sorted = flag == 1;
     int limit = buffer.limit();
     int newLimit = buffer.position() + this.count * Shorts.BYTES;
     buffer.limit(newLimit);

@@ -16,6 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.nus.cool.core.io.readstore;
 
 import com.google.common.collect.Lists;
@@ -24,7 +25,6 @@ import com.nus.cool.core.schema.TableSchema;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.List;
 import lombok.Getter;
 
@@ -34,13 +34,13 @@ import lombok.Getter;
 public class CubeRS {
 
   /**
-   * schema information of this cube
+   * Schema information of this cube.
    */
   @Getter
   private final TableSchema schema;
 
   /**
-   * loaded cublets
+   * Loaded cublets.
    */
   @Getter
   private final List<CubletRS> cublets = Lists.newArrayList();
@@ -50,24 +50,25 @@ public class CubeRS {
   }
 
   /**
-   * load a cubelet from a file
+   * Load a cubelet from a file.
+   *
    * @param cubletFile read from cubletFile
-   * @throws IOException
    */
   public void addCublet(File cubletFile) throws IOException {
     CubletRS cubletRS = new CubletRS(this.schema);
-    cubletRS.readFrom(Files.map(cubletFile).order(ByteOrder.nativeOrder()));
+    cubletRS.readFrom(Files.map(cubletFile));
     cubletRS.setFile(cubletFile.getName());
     this.cublets.add(cubletRS);
   }
 
   /**
-   * Load from ByteByffer
+   * Load from ByteByffer.
+   *
    * @param buffer read from byteBuffer
    */
   public void addCublet(ByteBuffer buffer) {
     CubletRS cubletRS = new CubletRS(this.schema);
-    cubletRS.readFrom(buffer.order(ByteOrder.nativeOrder()));
+    cubletRS.readFrom(buffer);
     this.cublets.add(cubletRS);
 
   }

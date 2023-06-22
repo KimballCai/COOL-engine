@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.nus.cool.core.io.compression;
 
 import com.google.common.primitives.Ints;
-import com.nus.cool.core.util.IntegerUtil;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -29,6 +29,7 @@ import java.util.List;
 
 /**
  * Compress BitSet using rle schema, prefer sorted BitSet.
+ * 
  * <p>
  * Data layout
  * ------------------------------------
@@ -40,8 +41,13 @@ import java.util.List;
  */
 public class SimpleBitSetCompressor {
 
+  /**
+   * Compress biset.
+   */
   public static int compress(BitSet bs, DataOutput out) throws IOException {
-    int pos1 = 0, pos2, bytesWritten = 0;
+    int pos1 = 0;
+    int pos2;
+    int bytesWritten = 0;
     List<Integer> blks = new ArrayList<>();
     boolean sign = bs.get(pos1);
     while (true) {
@@ -59,20 +65,24 @@ public class SimpleBitSetCompressor {
     }
     out.write(bs.get(0) ? 1 : 0);
     bytesWritten++;
-    out.writeInt(IntegerUtil.toNativeByteOrder(blks.size()));
+    out.writeInt(blks.size());
     bytesWritten += Ints.BYTES;
     for (int blk : blks) {
-      out.writeInt(IntegerUtil.toNativeByteOrder(blk));
+      out.writeInt(blk);
       bytesWritten += Ints.BYTES;
     }
     return bytesWritten;
   }
 
+  /**
+   * Decompress a compressed biset buffer.
+   */
   public static BitSet read(ByteBuffer buff) {
     boolean sign = buff.get() != 0;
     int blks = buff.getInt();
     BitSet bs = new BitSet();
-    int pos = 0, len;
+    int pos = 0;
+    int len;
     for (int i = 0; i < blks; i++) {
       len = buff.getInt();
       if (sign) {

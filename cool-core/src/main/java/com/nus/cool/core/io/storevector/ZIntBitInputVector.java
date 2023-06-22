@@ -16,12 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.nus.cool.core.io.storevector;
 
 import java.nio.ByteBuffer;
 import java.nio.LongBuffer;
 
-public class ZIntBitInputVector implements ZIntStore, InputVector {
+/**
+ * Input vector of ZIntBit compressed structure.
+ */
+public class ZIntBitInputVector implements ZIntStore {
 
   private final LongBuffer bitPack;
 
@@ -42,6 +46,9 @@ public class ZIntBitInputVector implements ZIntStore, InputVector {
     this.bitPack = buffer;
   }
 
+  /**
+   * Create input vector on a buffer that is ZIntBit encoded.
+   */
   public static ZIntBitInputVector load(ByteBuffer buffer) {
     int capacity = buffer.getInt();
     int width = buffer.getInt();
@@ -66,15 +73,15 @@ public class ZIntBitInputVector implements ZIntStore, InputVector {
   }
 
   @Override
-  public int find(int key) {
+  public Integer find(Integer key) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public int get(int index) {
-      if (index >= this.capacity) {
-          throw new IndexOutOfBoundsException();
-      }
+  public Integer get(int index) {
+    if (index >= this.capacity) {
+      throw new IndexOutOfBoundsException();
+    }
     int offset = 64 - (1 + index % this.noValPerPack) * this.bitWidth;
     long pack = getPack(index);
     long val = ((pack >>> offset) & this.mask);
@@ -87,15 +94,15 @@ public class ZIntBitInputVector implements ZIntStore, InputVector {
   }
 
   @Override
-  public int next() {
+  public Integer next() {
     return (int) nextLong();
   }
 
   @Override
   public void skipTo(int pos) {
-      if (pos >= this.capacity) {
-          throw new IndexOutOfBoundsException();
-      }
+    if (pos >= this.capacity) {
+      throw new IndexOutOfBoundsException();
+    }
     this.pos = pos;
     this.packOffset = 64 - (pos % this.noValPerPack) * this.bitWidth;
     this.bitPack.position(pos / this.noValPerPack);

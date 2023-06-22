@@ -16,21 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.nus.cool.core.util.parser;
 
+import com.nus.cool.core.field.FieldValue;
+import com.nus.cool.core.field.ValueConverter;
+import java.io.IOException;
+import lombok.AllArgsConstructor;
+
 /**
- * CsvTupleParser is a parser to parse a tuple from a csv file to array
+ * CsvTupleParser is a parser to parse a tuple from a csv file to array.
  */
+@AllArgsConstructor
 public class CsvTupleParser implements TupleParser {
+  
+  private ValueConverter converter;
+
   /**
-   * Parse csv tuple to array
+   * Parse csv tuple to array.
    *
    * @param tuple target tuple
    * @return string array
    */
   @Override
-  public String[] parse(Object tuple) {
+  public FieldValue[] parse(Object tuple) throws IOException {
     String record = (String) tuple;
-    return record.split(",", -1);
+    return converter.convert(record.split(",", -1));
   }
 }

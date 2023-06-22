@@ -16,15 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 package com.nus.cool.core.io.compression;
 
+import com.nus.cool.core.field.FieldValue;
+import com.nus.cool.core.io.DataOutputBuffer;
+import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
+import java.nio.charset.Charset;
+import java.util.List;
 import net.jpountz.lz4.LZ4Compressor;
 import net.jpountz.lz4.LZ4Factory;
 
 /**
- * LZ4Compressor for compressing string values
+ * LZ4Compressor for compressing string values.
+ * 
  * <p>
  * The compressed data layout
  * ---------------------------------------
@@ -34,43 +40,55 @@ import net.jpountz.lz4.LZ4Factory;
 public class LZ4JavaCompressor implements Compressor {
 
   /**
-   * Bytes number for z len and raw len
+   * Bytes number for z len and raw len.
    */
   public static final int HEADACC = 4 + 4;
 
-  /**
-   * Maximum size of compressed data
-   */
-  private final int maxLen;
+  public final Charset charset;
 
   /**
-   * LZ4 compressor
+   * LZ4 compressor.
    */
   private final LZ4Compressor lz4;
 
-  public LZ4JavaCompressor(Histogram hist) {
+  /**
+   * Compression operator for general string.
+   */
+  public LZ4JavaCompressor(Charset charset) {
+    this.charset = charset;
     this.lz4 = LZ4Factory.fastestInstance().fastCompressor();
-    this.maxLen = lz4.maxCompressedLength(hist.getRawSize()) + HEADACC;
   }
-
+  
   @Override
-  public int maxCompressedLength() {
-    return this.maxLen;
-  }
+  public CompressorOutput compress(List<? extends FieldValue> src) {
+    try {
+      // serialize
+      DataOutputBuffer srcBuf = new DataOutputBuffer();
+      srcBuf.writeInt(src.size());
 
-  @Override
-  public int compress(byte[] src, int srcOff, int srcLen, byte[] dest, int destOff, int maxDestLen) {
-    ByteBuffer buffer = ByteBuffer.wrap(dest, destOff, maxDestLen).order(ByteOrder.nativeOrder());
-    int zLen = this.lz4.compress(src, srcOff, srcLen, dest, destOff + HEADACC, maxDestLen - HEADACC);
-    // write z len and raw len for decompressing
-    buffer.putInt(zLen);
-    buffer.putInt(srcLen);
-    return HEADACC + zLen;
-  }
+      int offset = 0;
+      for (FieldValue v : src) { 
+        srcBuf.writeInt(offset);
+        offset += v.getString().getBytes(this.charset).length;
+      }
 
-  @Override
-  public int compress(int[] src, int srcOff, int srcLen, byte[] dest, int destOff, int maxDestLen) {
-    throw new UnsupportedOperationException();
+      for (FieldValue v : src) { 
+        srcBuf.write(v.getString().getBytes(this.charset));
+      }
+      // compress
+      int maxLen = lz4.maxCompressedLength(srcBuf.size()) + HEADACC;
+      byte[] compressed = new byte[maxLen];
+      int zlen = this.lz4.compress(srcBuf.getData(), 0, srcBuf.size(), compressed,
+          HEADACC, maxLen - HEADACC);
+      ByteBuffer buffer = ByteBuffer.wrap(compressed, 0, HEADACC);
+      // write z len and raw len for decompressing
+      buffer.putInt(zlen);
+      buffer.putInt(srcBuf.size());
+      srcBuf.close();
+      return new CompressorOutput(compressed, HEADACC + zlen);
+    } catch (IOException e) {
+      System.out.println("IO exception while serializing field values");
+      return CompressorOutput.emptyCompressorOutput();
+    }
   }
-
 }
